@@ -168,4 +168,10 @@
   <data name="Success" xml:space="preserve">
     <value>成功</value>
   </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>图像文件</value>
+  </data>
+  <data name="OutputImage" xml:space="preserve">
+    <value>输出图像</value>
+  </data>
 </root>

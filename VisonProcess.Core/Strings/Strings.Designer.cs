@@ -187,6 +187,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Image Files 的本地化字符串。
+        /// </summary>
+        public static string ImageFiles {
+            get {
+                return ResourceManager.GetString("ImageFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Last access 的本地化字符串。
         /// </summary>
         public static string LastAccess {
@@ -304,6 +313,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Output Image 的本地化字符串。
+        /// </summary>
+        public static string OutputImage {
+            get {
+                return ResourceManager.GetString("OutputImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Password 的本地化字符串。
         /// </summary>
         public static string Password {
@@ -318,6 +336,15 @@ namespace VisonProcess.Core.Strings {
         public static string Pictures {
             get {
                 return ResourceManager.GetString("Pictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please select files 的本地化字符串。
+        /// </summary>
+        public static string PleaseSelectFiles {
+            get {
+                return ResourceManager.GetString("PleaseSelectFiles", resourceCulture);
             }
         }
         

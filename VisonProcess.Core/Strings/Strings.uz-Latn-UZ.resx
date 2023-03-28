@@ -198,4 +198,7 @@
   <data name="Videos" xml:space="preserve">
     <value>Videolar</value>
   </data>
+  <data name="PleaseSelectFiles" xml:space="preserve">
+    <value>请选择文件</value>
+  </data>
 </root>

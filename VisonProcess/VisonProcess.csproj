@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VisonProcess.Core\VisonProcess.Core.csproj" />
+    <ProjectReference Include="..\VisonProcess.Tools\VisonProcess.Tools.csproj" />
   </ItemGroup>
 
 </Project>

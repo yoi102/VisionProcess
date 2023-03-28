@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace VisonProcess.Core.ToolBase
 {
-    public interface IOperation
+    public class GraphicsBase: IGraphics
     {
 
-        RunStatus RunStatus { get; }
 
-        event EventHandler? Executed;
-        event EventHandler? Executing;
-
-
-        void Execute( );
 
     }
+
 }

@@ -1,6 +1,9 @@
-﻿using ControlzEx.Standard;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using ControlzEx.Standard;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -10,20 +13,20 @@ using System.Windows.Documents;
 
 namespace VisonProcess.Core.ToolBase
 {
-    public abstract class Operation<T1, T2, T3> : IOperation where T1 : class, IInputs, new() where T2 : class, IOutputs, new() where T3 : class, IGraphics, new()
+    public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation where T1 : class, IInputs, new() where T2 : class, IOutputs, new() where T3 : class, IGraphics, new()
     {
 
-        public Operation()
+        public OperationBase()
         {
             Inputs = new T1();
             Outputs = new T2();
             Graphic = new T3();
-
         }
-        public event EventHandler? Ran;
-        public event EventHandler? Running;
+        public event EventHandler? Executed;
+        public event EventHandler? Executing;
 
-        public  RunStatus RunStatus { get; protected set; } = new RunStatus();
+        public RunStatus RunStatus { get; } = new RunStatus();
+        public ObservableCollection<Record> Records {  get; } = new ObservableCollection<Record>();
         private Stopwatch? sw;
 
         public T1 Inputs { get; protected set; }
@@ -31,10 +34,10 @@ namespace VisonProcess.Core.ToolBase
         public T2 Outputs { get; protected set; }
         public T3 Graphic { get; protected set; }
 
-
+        [RelayCommand]
         public void Execute()
         {
-            OnRunning();
+            OnExecutng();
 
             sw ??= new Stopwatch();
             sw.Reset();
@@ -48,7 +51,7 @@ namespace VisonProcess.Core.ToolBase
             try
             {
                 RunStatus.LastTime = DateTime.Now;
-                RunStatus.Result = Run(out string message);
+                RunStatus.Result = InternalExecute(out string message);
                 RunStatus.Message = message;
 
             }
@@ -64,24 +67,24 @@ namespace VisonProcess.Core.ToolBase
             {
                 sw.Stop();
                 RunStatus.ProcessingTime = sw.ElapsedMilliseconds;
-                OnRan();
+                OnExecuted();
             }
         }
 
 
 
 
-         
-        protected abstract bool Run(out string message);
 
-        protected virtual void OnRunning()
+        protected abstract bool InternalExecute(out string message);
+
+        protected virtual void OnExecutng()
         {
-            Running?.Invoke(this, new EventArgs());
+            Executing?.Invoke(this, new EventArgs());
         }
 
-        protected virtual void OnRan()
+        protected virtual void OnExecuted()
         {
-            Ran?.Invoke(this, new EventArgs());
+            Executed?.Invoke(this, new EventArgs());
         }
 
 

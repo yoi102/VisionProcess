@@ -249,4 +249,13 @@
   <data name="Success" xml:space="preserve">
     <value>Success</value>
   </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>Image Files</value>
+  </data>
+  <data name="PleaseSelectFiles" xml:space="preserve">
+    <value>Please select files</value>
+  </data>
+  <data name="OutputImage" xml:space="preserve">
+    <value>Output Image</value>
+  </data>
 </root>

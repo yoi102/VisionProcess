@@ -246,4 +246,13 @@
   <data name="Success" xml:space="preserve">
     <value>成功</value>
   </data>
+  <data name="ImageFiles" xml:space="preserve">
+    <value>画像ファイル</value>
+  </data>
+  <data name="PleaseSelectFiles" xml:space="preserve">
+    <value>ファイルを選択してください</value>
+  </data>
+  <data name="OutputImage" xml:space="preserve">
+    <value>出力画像</value>
+  </data>
 </root>

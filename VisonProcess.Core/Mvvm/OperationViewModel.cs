@@ -12,7 +12,7 @@ using VisonProcess.Core.ToolBase;
 
 namespace VisonProcess.Core.Mvvm
 {
-    public class OperationViewModel : ObservableValidator
+    public class OperationViewModel : ObservableObject
     {
         public OperationViewModel()
         {
@@ -83,7 +83,7 @@ namespace VisonProcess.Core.Mvvm
             set => SetProperty(ref _title, value);
         }
 
-        private bool _isSelected = default;
+        private bool _isSelected = false;
         public bool IsSelected
         {
             get => _isSelected;
@@ -103,9 +103,30 @@ namespace VisonProcess.Core.Mvvm
 
 
 
+
+
         public NodifyObservableCollection<ConnectorViewModel> Input { get; } = new NodifyObservableCollection<ConnectorViewModel>();
 
+
         public NodifyObservableCollection<ConnectorViewModel> Output { get; } = new NodifyObservableCollection<ConnectorViewModel>();
+
+
+        //private NodifyObservableCollection<ConnectorViewModel> _input = new NodifyObservableCollection<ConnectorViewModel>();
+        //public NodifyObservableCollection<ConnectorViewModel> Input
+        //{
+        //    get { return _input; }
+        //    private set { SetProperty(ref _input, value); }
+        //}
+        //private NodifyObservableCollection<ConnectorViewModel> _output = new NodifyObservableCollection<ConnectorViewModel>();
+        //public NodifyObservableCollection<ConnectorViewModel> Output
+        //{
+        //    get { return _output; }
+        //    private set { SetProperty(ref _output, value); }
+        //}
+
+
+
+
 
 
         protected virtual void OnInputValueChanged()
