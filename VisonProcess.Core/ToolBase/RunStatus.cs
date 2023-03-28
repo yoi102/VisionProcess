@@ -12,6 +12,8 @@ namespace VisonProcess.Core.ToolBase
         public RunStatus()
         {
             
+
+
         }
 
 

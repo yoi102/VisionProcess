@@ -18,7 +18,7 @@ namespace VisonProcess
     /// </summary>
     public partial class App : Application
     {
-        private static Mutex appMutex;
+        private static Mutex? appMutex;
 
 
         public App()
