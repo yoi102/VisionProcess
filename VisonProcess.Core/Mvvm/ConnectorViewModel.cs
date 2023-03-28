@@ -5,9 +5,9 @@ using VisonProcess.Core.Extentions;
 
 namespace VisonProcess.Core.Mvvm
 {
-    public partial class ConnectorViewModel : ObservableObject
+    public class ConnectorViewModel : ObservableObject
     {
-        public ConnectorViewModel(string title, object value , string path)
+        public ConnectorViewModel(string title, object value, string path)
         {
             _title = title;
             _value = value;
@@ -24,15 +24,51 @@ namespace VisonProcess.Core.Mvvm
         }
 
 
+        private Point _anchor = default;
+        private bool _isConnected = false;
+        private bool _isInput = true;
+        private OperationViewModel _operation = default!;
         private string _title;
+        private object? _value;
+        private string _valuePath;
+        private Type _valueType;
+
+        public string _ValuePath
+        {
+            get { return _valuePath; }
+            protected set { SetProperty(ref _valuePath, value); }
+        }
+
+        public Point Anchor
+        {
+            get => _anchor;
+            set => SetProperty(ref _anchor, value);
+        }
+
+        public bool IsConnected
+        {
+            get => _isConnected;
+            set => SetProperty(ref _isConnected, value);
+        }
+
+        public bool IsInput
+        {
+            get => _isInput;
+            set => SetProperty(ref _isInput, value);
+        }
+
+        public OperationViewModel Operation
+        {
+            get => _operation;
+            set => SetProperty(ref _operation, value);
+        }
+
         public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
         }
-
-        private object _value;
-        public object Value
+        public object? Value
         {
             get => _value;
             set
@@ -42,59 +78,19 @@ namespace VisonProcess.Core.Mvvm
                     Type type = value.GetType();
                     if (type.Name != ValueType.Name && type.GetInterface(ValueType.Name) == null && ValueType.GetInterface(type.Name) == null)
                     {
-                        throw new ArgumentException($"The value type must be {ValueType.Name} !!!");
+                        throw new ArgumentException($"The value's type must be {ValueType.Name} !!!");
                     }
-                    SetProperty(ref _value, value).Then(() => ValueObservers.ForEach(o => o.Value = value));
                 }
+                SetProperty(ref _value, value).Then(() => ValueObservers.ForEach(o => o.Value = value));
+
             }
         }
+        public List<ConnectorViewModel> ValueObservers { get; } = new List<ConnectorViewModel>();
 
-        private Type _valueType;
         public Type ValueType
         {
             get => _valueType;
-            set => SetProperty(ref _valueType, value);
+            protected set => SetProperty(ref _valueType, value);
         }
-
-        private string _valuePath;
-        public string _ValuePath
-        {
-            get { return _valuePath; }
-            set { SetProperty(ref _valuePath, value); }
-        }
-
-
-
-
-        private bool _isConnected = false;
-        public bool IsConnected
-        {
-            get => _isConnected;
-            set => SetProperty(ref _isConnected, value);
-        }
-
-        private bool _isInput = true;
-        public bool IsInput
-        {
-            get => _isInput;
-            set => SetProperty(ref _isInput, value);
-        }
-
-        private Point _anchor = default;
-        public Point Anchor
-        {
-            get => _anchor;
-            set => SetProperty(ref _anchor, value);
-        }
-
-        private OperationViewModel _operation = default!;
-
-        public OperationViewModel Operation
-        {
-            get => _operation;
-            set => SetProperty(ref _operation, value);
-        }
-
-        public List<ConnectorViewModel> ValueObservers { get; } = new List<ConnectorViewModel>();
     }
 }

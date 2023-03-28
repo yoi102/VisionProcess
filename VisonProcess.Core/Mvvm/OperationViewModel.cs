@@ -12,7 +12,7 @@ using VisonProcess.Core.Interfaces;
 
 namespace VisonProcess.Core.Mvvm
 {
-    public partial class OperationViewModel :ObservableValidator
+    public class OperationViewModel : ObservableValidator
     {
         public OperationViewModel()
         {
@@ -26,24 +26,50 @@ namespace VisonProcess.Core.Mvvm
             {
                 x.PropertyChanged -= OnInputValueChanged;
             });
+
+
+
+            Output.WhenAdded(x =>
+            {
+                x.Operation = this;
+                x.IsInput = false;
+                x.PropertyChanged += OnInputValueChanged;
+            })
+          .WhenRemoved(x =>
+          {
+              x.PropertyChanged -= OnInputValueChanged;
+          });
+
+
+
+
+
         }
-        private void OnInputValueChanged(object sender, PropertyChangedEventArgs e)
+        private void OnInputValueChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ConnectorViewModel.Value))
             {
                 OnInputValueChanged();
             }
         }
+        private void OnOutputValueChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ConnectorViewModel.Value))
+            {
+                OnOutputValueChanged();
+            }
+        }
 
 
-        private Point _location;
+
+        private Point _location = default;
         public Point Location
         {
             get => _location;
             set => SetProperty(ref _location, value);
         }
 
-        private Size _size;
+        private Size _size = default;
         public Size Size
         {
             get => _size;
@@ -57,7 +83,7 @@ namespace VisonProcess.Core.Mvvm
             set => SetProperty(ref _title, value);
         }
 
-        private bool _isSelected;
+        private bool _isSelected = default;
         public bool IsSelected
         {
             get => _isSelected;
@@ -80,18 +106,8 @@ namespace VisonProcess.Core.Mvvm
 
         public NodifyObservableCollection<ConnectorViewModel> Input { get; } = new NodifyObservableCollection<ConnectorViewModel>();
 
-        private ConnectorViewModel? _output;
-        public ConnectorViewModel? Output
-        {
-            get => _output;
-            set
-            {
-                if (SetProperty(ref _output, value) && _output != null)
-                {
-                    _output.Operation = this;
-                }
-            }
-        }
+        public NodifyObservableCollection<ConnectorViewModel> Output { get; } = new NodifyObservableCollection<ConnectorViewModel>();
+
 
         protected virtual void OnInputValueChanged()
         {
@@ -100,12 +116,8 @@ namespace VisonProcess.Core.Mvvm
                 try
                 {
                     var input = Input.Select(i => i.Value).ToArray();
-
+                    Operation?.Execute(out _);
                     //Output.Value = Operation?.Execute(input) ?? 0;
-
-
-
-
 
                 }
                 catch
@@ -114,5 +126,24 @@ namespace VisonProcess.Core.Mvvm
                 }
             }
         }
+        protected virtual void OnOutputValueChanged()
+        {
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
     }
 }
