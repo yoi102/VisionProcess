@@ -70,6 +70,8 @@ namespace VisonProcess.Core.ToolBase
 
 
 
+
+         
         protected abstract bool Run(out string message);
 
         protected virtual void OnRunning()
