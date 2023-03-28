@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using VisonProcess.Core.Extentions;
-using VisonProcess.Core.Interfaces;
+using VisonProcess.Core.ToolBase;
 
 namespace VisonProcess.Core.Mvvm
 {
@@ -90,7 +90,6 @@ namespace VisonProcess.Core.Mvvm
             set => SetProperty(ref _isSelected, value);
         }
 
-        public bool IsReadOnly { get; set; }
 
         private IOperation? _operation;
         public IOperation? Operation
@@ -116,8 +115,8 @@ namespace VisonProcess.Core.Mvvm
                 try
                 {
                     var input = Input.Select(i => i.Value).ToArray();
-                    Operation?.Execute(out _);
-                    //Output.Value = Operation?.Execute(input) ?? 0;
+                    Operation?.Execute();
+
 
                 }
                 catch
@@ -126,6 +125,8 @@ namespace VisonProcess.Core.Mvvm
                 }
             }
         }
+
+
         protected virtual void OnOutputValueChanged()
         {
 

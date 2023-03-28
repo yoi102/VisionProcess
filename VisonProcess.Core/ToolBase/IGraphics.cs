@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisonProcess.Core.Interfaces
+namespace VisonProcess.Core.ToolBase
 {
-    public interface IOperation
+    public interface IGraphics
     {
-        bool Execute(out string message);
-
     }
 }
