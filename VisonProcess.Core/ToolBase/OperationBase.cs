@@ -13,7 +13,7 @@ using System.Windows.Documents;
 
 namespace VisonProcess.Core.ToolBase
 {
-    public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation where T1 : class, IInputs, new() where T2 : class, IOutputs, new() where T3 : class, IGraphics, new()
+    public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation<T1, T2, T3> where T1 : InputsBase, new() where T2 : OutputsBase, new() where T3 : GraphicsBase, new()
     {
 
         public OperationBase()
@@ -26,7 +26,7 @@ namespace VisonProcess.Core.ToolBase
         public event EventHandler? Executing;
 
         public RunStatus RunStatus { get; } = new RunStatus();
-        public ObservableCollection<Record> Records {  get; } = new ObservableCollection<Record>();
+        public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
         private Stopwatch? sw;
 
         public T1 Inputs { get; protected set; }
