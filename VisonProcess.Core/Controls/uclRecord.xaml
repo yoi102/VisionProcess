@@ -5,14 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VisonProcess.Core.Controls"
              mc:Ignorable="d"
+             x:Name="uclRecord"
              d:Background="Wheat"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <Grid>
         <DockPanel>
-            <ComboBox  DockPanel.Dock="Top" />
-            <local:uclImage />
-
+            <ComboBox  DockPanel.Dock="Top"
+                       ItemsSource="{Binding ElementName=uclRecord,Path=RecordSource}"
+                       SelectedItem="{Binding ElementName=uclRecord,Path=SelectedRecord}"
+                       DisplayMemberPath="Title" />
+            <local:uclImage ImageSource="{Binding ElementName=uclRecord,Path=SelectedRecord.DisplayImage}" />
         </DockPanel>
     </Grid>
 </UserControl>

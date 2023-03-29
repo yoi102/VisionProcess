@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VisonProcess.Core.ToolBase;
 
 namespace VisonProcess.Core.Controls
 {
@@ -29,14 +31,18 @@ namespace VisonProcess.Core.Controls
 
 
 
-        public IEnumerable Records
+        public ObservableCollection<Record> RecordSource
         {
-            get { return (IEnumerable)GetValue(RecordsProperty); }
+            get { return (ObservableCollection<Record>)GetValue(RecordsProperty); }
             set { SetValue(RecordsProperty, value); }
         }
 
         public static readonly DependencyProperty RecordsProperty =
-            DependencyProperty.Register(nameof(Records), typeof(IEnumerable), typeof(uclRecord), new PropertyMetadata(null, RecordsPropertyChanged));
+            DependencyProperty.Register(
+                nameof(RecordSource),
+                typeof(ObservableCollection<Record>), 
+                typeof(uclRecord), 
+                new PropertyMetadata(null, RecordsPropertyChanged));
 
         private static void RecordsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -48,8 +54,24 @@ namespace VisonProcess.Core.Controls
 
 
 
+        public Record SelectedRecord
+        {
+            get { return (Record)GetValue(SelectedRecordProperty); }
+            set { SetValue(SelectedRecordProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedRecordProperty =
+            DependencyProperty.Register(
+                nameof(SelectedRecord),
+                typeof(Record),
+                typeof(uclRecord), 
+                new PropertyMetadata(null, SeletedRecordChenged));
+
+        private static void SeletedRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
 
 
 
+        }
     }
 }

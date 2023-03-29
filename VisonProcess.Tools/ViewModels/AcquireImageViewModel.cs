@@ -2,11 +2,8 @@
 using Microsoft.Win32;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
 using VisonProcess.Core.ToolBase;
@@ -22,20 +19,8 @@ namespace VisonProcess.Tools.ViewModels
             Init();
         }
 
-
-        private List<string>? imagePaths;
-
         private int currentIndex = 0;
-
-
-
-        private void Init()
-        {
-            Records.Add(new() { Tiltie = Strings.OutputImage});
-        }
-
-
-
+        private List<string>? imagePaths;
         protected override bool InternalExecute(out string message)
         {
             message = "";
@@ -53,11 +38,9 @@ namespace VisonProcess.Tools.ViewModels
             Outputs.Image = new Mat(imagePaths[currentIndex]);
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
-
             currentIndex++;
             return true;
         }
-
 
         [RelayCommand]
         private void AcquireLocalImages()
@@ -81,13 +64,9 @@ namespace VisonProcess.Tools.ViewModels
             }
         }
 
-
-
-
-
+        private void Init()
+        {
+            Records.Add(new() { Tiltie = Strings.OutputImage });
+        }
     }
-
-
-
-
 }

@@ -1,11 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ControlzEx.Standard;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using VisonProcess.Core.Extentions;
 using VisonProcess.Core.ToolBase;
@@ -27,8 +21,6 @@ namespace VisonProcess.Core.Mvvm
                 x.PropertyChanged -= OnInputValueChanged;
             });
 
-
-
             Output.WhenAdded(x =>
             {
                 x.Operation = this;
@@ -39,59 +31,32 @@ namespace VisonProcess.Core.Mvvm
           {
               x.PropertyChanged -= OnInputValueChanged;
           });
-
-
-
-
-
-        }
-        private void OnInputValueChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ConnectorViewModel.Value))
-            {
-                OnInputValueChanged();
-            }
-        }
-        private void OnOutputValueChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ConnectorViewModel.Value))
-            {
-                OnOutputValueChanged();
-            }
-        }
-
-
-
-        private Point _location = default;
-        public Point Location
-        {
-            get => _location;
-            set => SetProperty(ref _location, value);
-        }
-
-        private Size _size = default;
-        public Size Size
-        {
-            get => _size;
-            set => SetProperty(ref _size, value);
-        }
-
-        private string? _title;
-        public string? Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
         }
 
         private bool _isSelected = false;
+
+        private Point _location = default;
+
+        private IOperation? _operation;
+
+        private Size _size = default;
+
+        private string? _title;
+
+        public NodifyObservableCollection<ConnectorViewModel> Input { get; } = new NodifyObservableCollection<ConnectorViewModel>();
+
         public bool IsSelected
         {
             get => _isSelected;
             set => SetProperty(ref _isSelected, value);
         }
 
+        public Point Location
+        {
+            get => _location;
+            set => SetProperty(ref _location, value);
+        }
 
-        private IOperation? _operation;
         public IOperation? Operation
         {
             get => _operation;
@@ -99,17 +64,34 @@ namespace VisonProcess.Core.Mvvm
                 .Then(OnInputValueChanged);
         }
 
-
-
-
-
-
-
-        public NodifyObservableCollection<ConnectorViewModel> Input { get; } = new NodifyObservableCollection<ConnectorViewModel>();
-
-
         public NodifyObservableCollection<ConnectorViewModel> Output { get; } = new NodifyObservableCollection<ConnectorViewModel>();
 
+        public Size Size
+        {
+            get => _size;
+            set => SetProperty(ref _size, value);
+        }
+
+        public string? Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
+
+        protected virtual void OnInputValueChanged()
+        {
+            if (Output != null && Operation != null)
+            {
+                try
+                {
+                    var input = Input.Select(i => i.Value).ToArray();
+                    Operation?.Execute();
+                }
+                catch
+                {
+                }
+            }
+        }
 
         //private NodifyObservableCollection<ConnectorViewModel> _input = new NodifyObservableCollection<ConnectorViewModel>();
         //public NodifyObservableCollection<ConnectorViewModel> Input
@@ -123,49 +105,24 @@ namespace VisonProcess.Core.Mvvm
         //    get { return _output; }
         //    private set { SetProperty(ref _output, value); }
         //}
-
-
-
-
-
-
-        protected virtual void OnInputValueChanged()
+        protected virtual void OnOutputValueChanged()
         {
-            if (Output != null && Operation != null)
+        }
+
+        private void OnInputValueChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ConnectorViewModel.Value))
             {
-                try
-                {
-                    var input = Input.Select(i => i.Value).ToArray();
-                    Operation?.Execute();
-
-
-                }
-                catch
-                {
-
-                }
+                OnInputValueChanged();
             }
         }
 
-
-        protected virtual void OnOutputValueChanged()
+        private void OnOutputValueChanged(object? sender, PropertyChangedEventArgs e)
         {
-
-
-
-
-
-
-
-
+            if (e.PropertyName == nameof(ConnectorViewModel.Value))
+            {
+                OnOutputValueChanged();
+            }
         }
-
-
-
-
-
-
-
-
     }
 }
