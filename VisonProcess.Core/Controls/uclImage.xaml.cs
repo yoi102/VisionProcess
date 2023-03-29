@@ -36,12 +36,12 @@ namespace VisonProcess.Core.Controls
             DependencyProperty.Register("ImageSource",
                 typeof(ImageSource), typeof(uclImage),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure,
-                    new PropertyChangedCallback(OnCurrentReadingChanged)));
+                    new PropertyChangedCallback(OnImageSourceChanged)));
 
-        private static void OnCurrentReadingChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        private static void OnImageSourceChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
 
-            var uclImage = depObj as uclImage;
+            var uclImage = (uclImage)depObj ;
             if (e.NewValue != null)
             {
 

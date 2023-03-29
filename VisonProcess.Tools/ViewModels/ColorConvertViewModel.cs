@@ -37,13 +37,13 @@ namespace VisonProcess.Tools.ViewModels
 
             if (Inputs.Image is null)
             {
-                message = "Error";
+                message = "Input image can not be null";
                 return false;
             }
-            //Cv2.CvtColor(Inputs.Image, Outputs.Image, ColorConversionCodes.RGB2BGRA);
-            Outputs.Image= Inputs.Image.CvtColor(ColorConversionCodes.RGB2BGRA);   //RGB2BGRA? BRG2BGRA?
+            //Cv2.CvtColor(Inputs.Image, Outputs.Image, ColorConversionCodes.RGB2BGRA);//RGB2BGRA? BRG2BGRA?
+            Outputs.Image= Inputs.Image.CvtColor(Inputs.ColorConversionCodes);   
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
-            //to one channel
+            //to one channel ? 
             //R*Weight
             //G*Weight
             //B*Weight

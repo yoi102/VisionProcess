@@ -6,14 +6,16 @@
              xmlns:local="clr-namespace:VisonProcess.Tools.Views"
              xmlns:viewmodels="clr-namespace:VisonProcess.Tools.ViewModels"
              d:DataContext="{d:DesignInstance Type=viewmodels:AcquireImageViewModel}"
+             xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
              d:Background="Wheat"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="300">
-    <Grid>
+    <GroupBox Header="AcquireImageView">
         <StackPanel>
-            <Button Margin="50" Content="AcquireLocalImages"
+            <Button Margin="50"
+                    Content="{x:Static strings:Strings.Select}"
                     Command="{Binding AcquireLocalImagesCommand}" />
         </StackPanel>
-    </Grid>
+    </GroupBox>
 </UserControl>

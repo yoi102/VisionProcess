@@ -28,7 +28,12 @@ namespace VisonProcess.Tools.Models
         }
 
 
-
+        private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.RGB2GRAY;
+        public ColorConversionCodes ColorConversionCodes
+        {
+            get { return _colorConversionCodes; }
+            set { SetProperty(ref _colorConversionCodes, value); }
+        }
 
 
 

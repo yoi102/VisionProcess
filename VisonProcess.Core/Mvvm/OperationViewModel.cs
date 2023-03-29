@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 using System.Windows;
+using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Extentions;
 using VisonProcess.Core.ToolBase;
 
@@ -25,11 +26,11 @@ namespace VisonProcess.Core.Mvvm
             {
                 x.Operation = this;
                 x.IsInput = false;
-                x.PropertyChanged += OnInputValueChanged;
+                x.PropertyChanged += OnOutputValueChanged;
             })
           .WhenRemoved(x =>
           {
-              x.PropertyChanged -= OnInputValueChanged;
+              x.PropertyChanged -= OnOutputValueChanged;
           });
         }
 
@@ -60,8 +61,39 @@ namespace VisonProcess.Core.Mvvm
         public IOperation? Operation
         {
             get => _operation;
-            set => SetProperty(ref _operation, value)
+            set
+            {
+                if (value is not null)
+                {
+                    var attributes = (DefaultToolConnectorAttribute[])value.GetType().GetCustomAttributes(typeof(DefaultToolConnectorAttribute), false);
+                    foreach (var item in attributes)
+                    {
+                        var t = PropertyMisc.GetType(value, item.Path);
+                        var v = PropertyMisc.GetValue(value, item.Path);
+                        if (t == null || v == null)
+                        {
+                            throw new ArgumentException("Error, DefaultToolConnectorAttribute setting  error");
+                        }
+                        if (item.IsInput)
+                        {
+                            Input.Add(new ConnectorViewModel(item.Title, v, t, item.Path));
+                        }
+                        else
+                        {
+                            Output.Add(new ConnectorViewModel(item.Title, v, t, item.Path));
+                        }
+                    }
+                }
+                else
+                {
+                    Input.Clear();
+                    Output.Clear();
+                }
+
+
+                SetProperty(ref _operation, value)
                 .Then(OnInputValueChanged);
+            }
         }
 
         public NodifyObservableCollection<ConnectorViewModel> Output { get; } = new NodifyObservableCollection<ConnectorViewModel>();
@@ -80,12 +112,15 @@ namespace VisonProcess.Core.Mvvm
 
         protected virtual void OnInputValueChanged()
         {
-            if (Output != null && Operation != null)
+            if (Operation != null)
             {
                 try
                 {
-                    var input = Input.Select(i => i.Value).ToArray();
-                    Operation?.Execute();
+                    foreach (var item in Input)
+                    {
+                        PropertyMisc.SetValue(Operation, item.ValuePath, item.Value);
+                    }
+                    Operation.Execute();
                 }
                 catch
                 {

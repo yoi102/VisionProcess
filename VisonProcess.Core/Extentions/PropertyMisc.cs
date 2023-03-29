@@ -8,103 +8,96 @@ using System.Threading.Tasks;
 
 namespace VisonProcess.Core.Extentions
 {
-    //待修改
+
     public class PropertyMisc
     {
         private static List<string> SplitFullPath(string fullPath, params char[] spiltChars)
         {
-            string[] array = ((spiltChars.Length == 0) ? fullPath.Split('.', '\\', '/') : fullPath.Split(spiltChars));
-            List<string> list = new List<string>();
-            bool flag = false;
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i].Contains("(") && array[i].Contains(")"))
-                {
-                    list.Add(array[i]);
-                }
-                else if (array[i].Contains("("))
-                {
-                    flag = true;
-                    list.Add(array[i]);
-                }
-                else if (flag && array[i].Contains(")"))
-                {
-                    flag = false;
-                    List<string> list2 = list;
-                    int index = list.Count - 1;
-                    list2[index] = list2[index] + "." + array[i];
-                }
-                else if (flag)
-                {
-                    List<string> list2 = list;
-                    int index = list.Count - 1;
-                    list2[index] = list2[index] + "." + array[i];
-                }
-                else
-                {
-                    list.Add(array[i]);
-                }
-            }
+            string[] array = ((spiltChars.Length == 0) ? fullPath.Split('.', '\\', '/') : fullPath.Split(spiltChars));//默认设置
+            return array.ToList();
+            //List<string> list = new();
+            //bool flag = false;
+            //for (int i = 0; i < array.Length; i++)
+            //{
+            //    if (array[i].Contains('(') && array[i].Contains(')'))
+            //    {
+            //        list.Add(array[i]);
+            //    }
+            //    else if (array[i].Contains('('))
+            //    {
+            //        flag = true;
+            //        list.Add(array[i]);
+            //    }
+            //    else if (flag && array[i].Contains(')'))
+            //    {
+            //        flag = false;
+            //        List<string> list2 = list;
+            //        int index = list.Count - 1;
+            //        list2[index] = list2[index] + "." + array[i];
+            //    }
+            //    else if (flag)
+            //    {
+            //        List<string> list2 = list;
+            //        int index = list.Count - 1;
+            //        list2[index] = list2[index] + "." + array[i];
+            //    }
+            //    else
+            //    {
+            //        list.Add(array[i]);
+            //    }
+            //}
 
-            return list;
+            //return list;
         }
 
-        public static object GetValue(object ob, string fullPath, params char[] spiltChars)
+        public static object? GetValue(object ob, string fullPath, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);
+            object? o = null;
             if (list.Count == 0)
             {
-                return ob;
+                return o;
             }
-
             for (int i = 0; i < list.Count; i++)
             {
                 string[] array = list[i].Split('[', ']', '<', '>', '(', '=');
-                if (list[i].Contains("(") && list[i].Contains(")"))
+                if (list[i].Contains('(') && list[i].Contains(')'))//如果是方法
                 {
                     if (list[i].IndexOf('(') != 0)
                     {
                         try
                         {
-                            ob = RunMethod(ob, array[0]);
+                            o = RunMethod(ob, array[0]);
                         }
                         catch
                         {
-                            ob = null;
-                        }
-
-                        if (ob == null)
-                        {
-                            return null;
+                            o = null;
                         }
                     }
                 }
-                else
+                else//如果是属性
                 {
-                    ob = GetPropertyValue(ob, list[i]);
-                    if (ob == null)
-                    {
-                        return null;
-                    }
+                    o = GetPropertyValue(ob, list[i]);
+
                 }
             }
 
-            return ob;
+            return o;
         }
 
-        public static bool SetValue(object ob, string fullPath, object value, params char[] spiltChars)
+        public static bool SetValue(object ob, string fullPath, object? value, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);
             if (list.Count == 0)
             {
                 return false;
             }
-
+            object? o = null;
             try
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (!list[i].Contains("("))
+                    if (!list[i].Contains('('))
                     {
                         if (i == list.Count - 1)
                         {
@@ -112,10 +105,10 @@ namespace VisonProcess.Core.Extentions
                         }
                         else
                         {
-                            ob = GetPropertyValue(ob, list[i]);
+                            o = GetPropertyValue(ob, list[i]);
                         }
 
-                        if (ob == null)
+                        if (o == null)
                         {
                             return false;
                         }
@@ -130,9 +123,13 @@ namespace VisonProcess.Core.Extentions
             }
         }
 
-        public static Type GetType(object ob, string fullPath, params char[] spiltChars)
+
+
+
+
+        public static Type? GetType(object ob, string fullPath, params char[] spiltChars)
         {
-            List<string> list = SplitFullPath(fullPath, spiltChars);
+            List<string> list = SplitFullPath(fullPath, spiltChars);//默认为 "."
             if (list.Count == 0)
             {
                 return typeof(object);
@@ -142,34 +139,32 @@ namespace VisonProcess.Core.Extentions
             for (int i = 0; i < list.Count; i++)
             {
                 string[] array = list[i].Split('[', ']', '<', '>', '(', ')', '=');
-                if (list[i].Contains("(") && list[i].Contains(")"))
+                if (list[i].Contains('(') && list[i].Contains(')'))//如有（）则为方法
                 {
-                    if (list[i].IndexOf('(') == 0)
+                    if (list[i].IndexOf('(') == 0)//如果（ 在第一位置
                     {
                         type = GetType(array[1]);
                         continue;
                     }
 
                     MethodInfo[] methods = type.GetMethods();
-                    MethodInfo methodInfo = null;
-                    MethodInfo[] array2 = methods;
-                    foreach (MethodInfo methodInfo2 in array2)
+                    foreach (MethodInfo methodInfo in methods)
                     {
-                        if (methodInfo2.Name == array[0])
+                        if (methodInfo.Name == array[0])
                         {
-                            methodInfo = methodInfo2;
+                            type = methodInfo.ReturnType;
                             break;
                         }
                     }
 
-                    type = methodInfo.ReturnType;
                 }
-                else
+                else//如没有（）则为属性
                 {
-                    PropertyInfo propertyInfo = GetPropertyInfo(type, array[0]);
+                    PropertyInfo? propertyInfo = GetPropertyInfo(type, array[0]);
                     if (propertyInfo == null)
                     {
-                        return typeof(object);
+                        //return typeof(object);
+                        return null;
                     }
 
                     type = propertyInfo.PropertyType;
@@ -179,7 +174,7 @@ namespace VisonProcess.Core.Extentions
             return type;
         }
 
-        public static Type GetType(string typeName)
+        public static Type GetType(string typeName)//不清楚这干嘛的，获取方法的type？
         {
             Type type = null;
             List<Assembly> list = AppDomain.CurrentDomain.GetAssemblies().ToList();
@@ -273,36 +268,33 @@ namespace VisonProcess.Core.Extentions
             return list;
         }
 
-        public static PropertyInfo GetPropertyInfo(Type type, string propertyName)
+        public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
         {
             string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            PropertyInfo result = null;
+            PropertyInfo? result = null;
             try
             {
-                result = type.GetProperty(array[0]);
+                //这个应该没错
+                result = type.GetProperty(array.First());
             }
             catch (AmbiguousMatchException)
             {
-                if (propertyName.Contains("["))
+                if (propertyName.Contains('['))
                 {
-                    bool flag = true;
-                    int result2 = 0;
-                    bool flag2 = int.TryParse(array[1], out result2);
-                    flag = flag2;
+                    bool flag = int.TryParse(array[1], out int result2);
                     PropertyInfo[] properties = type.GetProperties();
-                    PropertyInfo[] array2 = properties;
-                    foreach (PropertyInfo propertyInfo in array2)
+                    foreach (var propertyInfo in properties)
                     {
                         if (propertyInfo.Name == array[0])
                         {
-                            string text = propertyInfo.ToString();
-                            if (propertyInfo.ToString().Contains("System.String") && !flag)
+                            string? text = propertyInfo.ToString();
+                            if (propertyInfo.ToString()!.Contains("System.String") && !flag)
                             {
                                 result = propertyInfo;
                                 break;
                             }
 
-                            if (propertyInfo.ToString().Contains("Int32") && flag)
+                            if (propertyInfo.ToString()!.Contains("Int32") && flag)
                             {
                                 result = propertyInfo;
                                 break;
@@ -312,59 +304,60 @@ namespace VisonProcess.Core.Extentions
                 }
                 else
                 {
-                    result = type.GetProperty(array[0], BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
+                    result = type.GetProperty(array.First(), BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
                 }
             }
 
             return result;
         }
 
-        public static object GetPropertyValue(object ob, string propertyName)
+
+
+
+
+
+        public static object? GetPropertyValue(object ob, string propertyName)
         {
-            PropertyInfo propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
+            PropertyInfo? propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
             if (propertyInfo == null)
             {
                 return null;
             }
-
+            object? o;
             string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            if (propertyName.Contains("["))
+            if (propertyName.Contains('['))
             {
-                int result = 0;
-                if (int.TryParse(array[1], out result))
+                if (int.TryParse(array[1], out int result))
                 {
-                    int num = int.Parse(array[1]);
-                    ob = propertyInfo.GetValue(ob, new object[1] { num });
+                    o = propertyInfo.GetValue(ob, new object[1] { result });
                 }
                 else
                 {
-                    ob = propertyInfo.GetValue(ob, new object[1] { array[1] });
+                    o = propertyInfo.GetValue(ob, new object[1] { array[1] });
                 }
             }
             else
             {
-                ob = propertyInfo.GetValue(ob, null);
+                o = propertyInfo.GetValue(ob, null);
             }
 
-            return ob;
+            return o;
         }
 
-        public static bool SetPropertyValue(object ob, string propertyName, object objValue)
+        public static bool SetPropertyValue(object ob, string propertyName, object? objValue)
         {
-            PropertyInfo propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
+            PropertyInfo? propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
             if (propertyInfo == null)
             {
                 return false;
             }
 
             string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            if (propertyName.Contains("["))
+            if (propertyName.Contains('['))
             {
-                int result = 0;
-                if (int.TryParse(array[1], out result))
+                if (int.TryParse(array[1], out int result))
                 {
-                    int num = int.Parse(array[1]);
-                    propertyInfo.SetValue(ob, objValue, new object[1] { num });
+                    propertyInfo.SetValue(ob, objValue, new object[1] { result });
                 }
                 else
                 {
@@ -379,25 +372,27 @@ namespace VisonProcess.Core.Extentions
             return true;
         }
 
-        public static object RunMethod(object ob, string methodName)
+        public static object? RunMethod(object ob, string methodName)
         {
             try
             {
-                MethodInfo method = ob.GetType().GetMethod(methodName, Type.EmptyTypes);
-                return method.Invoke(ob, null);
+                MethodInfo? method = ob.GetType().GetMethod(methodName, Type.EmptyTypes);
+                return method?.Invoke(ob, null);
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                //throw ex.InnerException;
+                return null;
+
             }
         }
 
-        public static object RunMethod(object ob, string methodName, Type[] paramType, params object[] param)
+        public static object? RunMethod(object ob, string methodName, Type[] paramType, params object[] param)
         {
             try
             {
-                MethodInfo method = ob.GetType().GetMethod(methodName, paramType);
-                return method.Invoke(ob, param);
+                MethodInfo? method = ob.GetType().GetMethod(methodName, paramType);
+                return method?.Invoke(ob, param);
             }
             catch (Exception)
             {

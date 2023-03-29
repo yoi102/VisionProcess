@@ -7,20 +7,20 @@ namespace VisonProcess.Core.Mvvm
 {
     public class ConnectorViewModel : ObservableObject
     {
-        public ConnectorViewModel(string title, object value, string path)
-        {
-            _title = title;
-            _value = value;
-            _valueType = value.GetType();
-            _valuePath = path;
-        }
+        //public ConnectorViewModel(string title, object value, string path)
+        //{
+        //    _title = title;
+        //    _value = value;
+        //    _valueType = value.GetType();
+        //    _valuePath = path;
+        //}
 
-        public ConnectorViewModel(string title, object value, Type type, string path)
+        public ConnectorViewModel(string title, object value, Type valueType, string valuePath)
         {
             _title = title;
             _value = value;
-            _valueType = type;
-            _valuePath = path;
+            _valueType = valueType;
+            _valuePath = valuePath;
         }
 
 
@@ -33,7 +33,7 @@ namespace VisonProcess.Core.Mvvm
         private string _valuePath;
         private Type _valueType;
 
-        public string _ValuePath
+        public string ValuePath
         {
             get { return _valuePath; }
             protected set { SetProperty(ref _valuePath, value); }
