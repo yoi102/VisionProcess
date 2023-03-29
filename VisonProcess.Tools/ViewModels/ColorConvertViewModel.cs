@@ -19,6 +19,8 @@ namespace VisonProcess.Tools.ViewModels
         public ColorConvertViewModel() : base() 
         {
             Init();
+
+            IOperation s = new AcquireImageViewModel();
         }
 
         private void Init()

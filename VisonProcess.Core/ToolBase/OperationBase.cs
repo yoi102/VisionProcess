@@ -5,15 +5,17 @@ using System.Diagnostics;
 
 namespace VisonProcess.Core.ToolBase
 {
-    public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation where T1 : IInputs, new() where T2 : IOutputs, new() where T3 : IGraphics, new()
+    public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation where T1 : InputsBase, new() where T2 : OutputsBase, new() where T3 : GraphicsBase, new()
     {
         public OperationBase()
         {
             Inputs = new T1();
             Outputs = new T2();
-            Graphic = new T3(); 
+            Graphic = new T3();
 
 
+            //如果，，将被运行两次!!!!!!!
+            //Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
 
         private Stopwatch? sw;
@@ -23,9 +25,13 @@ namespace VisonProcess.Core.ToolBase
         public event EventHandler? Executing;
 
         public T3 Graphic { get; protected set; }
+
         public T1 Inputs { get; protected set; }
+
         public T2 Outputs { get; protected set; }
+
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
+
         public RunStatus RunStatus { get; } = new RunStatus();
 
         [RelayCommand]
@@ -69,6 +75,11 @@ namespace VisonProcess.Core.ToolBase
         protected virtual void OnExecutng()
         {
             Executing?.Invoke(this, new EventArgs());
+        }
+
+        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Execute();
         }
     }
 }

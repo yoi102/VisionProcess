@@ -22,6 +22,7 @@ namespace VisonProcess.Tools.Models
                 {
                     _image?.Dispose();
                     _image = value;
+                    OnPropertyChanged();
                 }
             }
         }
