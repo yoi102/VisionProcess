@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VisonProcess.Core.Controls"
+             xmlns:strings="clr-namespace:VisonProcess.Core.Strings"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -24,7 +25,7 @@
                               x:Name="BackFrame">
                     <ScrollViewer.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="恢复"
+                            <MenuItem Header="{x:Static strings:Strings.AdaptiveForm}"
                                       Click="MenuItem_Click" />
                         </ContextMenu>
                     </ScrollViewer.ContextMenu>

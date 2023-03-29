@@ -70,6 +70,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Adaptive Form 的本地化字符串。
+        /// </summary>
+        public static string AdaptiveForm {
+            get {
+                return ResourceManager.GetString("AdaptiveForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         public static string Cancel {

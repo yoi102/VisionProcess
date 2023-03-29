@@ -255,4 +255,7 @@
   <data name="OutputImage" xml:space="preserve">
     <value>出力画像</value>
   </data>
+  <data name="AdaptiveForm" xml:space="preserve">
+    <value>フォームに合わせる</value>
+  </data>
 </root>

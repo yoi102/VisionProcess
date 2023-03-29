@@ -174,4 +174,7 @@
   <data name="OutputImage" xml:space="preserve">
     <value>输出图像</value>
   </data>
+  <data name="AdaptiveForm" xml:space="preserve">
+    <value>适应窗体</value>
+  </data>
 </root>

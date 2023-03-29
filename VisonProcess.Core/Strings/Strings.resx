@@ -258,4 +258,7 @@
   <data name="OutputImage" xml:space="preserve">
     <value>Output Image</value>
   </data>
+  <data name="AdaptiveForm" xml:space="preserve">
+    <value>Adaptive Form</value>
+  </data>
 </root>

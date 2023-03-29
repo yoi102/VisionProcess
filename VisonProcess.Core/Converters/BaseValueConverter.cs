@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace VisonProcess.Converters
+namespace VisonProcess.Core.Converters
 {
     public abstract class BaseValueConverter : MarkupExtension, IValueConverter
     {
