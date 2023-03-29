@@ -38,9 +38,6 @@ namespace VisonProcess.Core.ToolBase
             sw.Start();
 
             RunStatus.Exception = null;
-            RunStatus.Message = "";
-            RunStatus.ProcessingTime = 0;
-            RunStatus.Result = true;
 
             try
             {
