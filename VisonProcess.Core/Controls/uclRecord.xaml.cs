@@ -65,9 +65,9 @@ namespace VisonProcess.Core.Controls
                 nameof(SelectedRecord),
                 typeof(Record),
                 typeof(uclRecord), 
-                new PropertyMetadata(null, SeletedRecordChenged));
+                new PropertyMetadata(null, SelectedRecordRecordChenged));
 
-        private static void SeletedRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 
 
