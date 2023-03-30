@@ -90,7 +90,6 @@ namespace VisonProcess.Core.Mvvm
                     Output.Clear();
                 }
 
-
                 SetProperty(ref _operation, value)
                 .Then(OnInputValueChanged);
             }
