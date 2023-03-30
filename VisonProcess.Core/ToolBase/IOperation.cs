@@ -1,4 +1,7 @@
-﻿namespace VisonProcess.Core.ToolBase
+﻿using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
+
+namespace VisonProcess.Core.ToolBase
 {
     public interface IOperation
     {
@@ -12,5 +15,7 @@
         RunStatus RunStatus { get; }
 
         void Execute();
+
+        IRelayCommand? ExecuteCommand { get; }
     }
 }
