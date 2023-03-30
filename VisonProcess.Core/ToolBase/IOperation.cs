@@ -16,6 +16,6 @@ namespace VisonProcess.Core.ToolBase
 
         void Execute();
 
-        IRelayCommand? ExecuteCommand { get; }
+        IAsyncRelayCommand? ExecuteCommand { get; }
     }
 }

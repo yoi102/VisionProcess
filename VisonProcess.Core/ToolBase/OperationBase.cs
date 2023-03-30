@@ -35,6 +35,13 @@ namespace VisonProcess.Core.ToolBase
         public RunStatus RunStatus { get; } = new RunStatus();
 
         [RelayCommand]
+        private async Task ExecuteAsync()
+        {
+            await Task.Run(() => Execute());
+        }
+
+
+
         public void Execute()
         {
             OnExecutng();
