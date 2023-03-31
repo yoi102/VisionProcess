@@ -22,9 +22,9 @@
                 <!-- Material Design -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 
-
-
-
+                <ResourceDictionary Source="pack://application:,,,/Nodify;component/Themes/Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/VisonProcess.Core;component/Themes/Icons.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/VisonProcess.Core;component/Themes/Dark.xaml" />-->
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

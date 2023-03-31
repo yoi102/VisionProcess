@@ -6,8 +6,11 @@
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-                 xmlns:local="clr-namespace:VisonProcess"
+                 xmlns:local="clr-namespace:VisonProcess.Views"
+                 xmlns:viewModels="clr-namespace:VisonProcess.ViewModels"
                  xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
+                 xmlns:core="clr-namespace:VisonProcess.Core;assembly=VisonProcess.Core"
+                 xmlns:coreControls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
                  ResizeMode="CanResizeWithGrip"
                  mah:ControlsHelper.CornerRadius="22"
                  mc:Ignorable="d"
@@ -15,6 +18,15 @@
                  Title="VisonProcess"
                  Height="850"
                  Width="1400">
+    <Window.Resources>
+        <core:BindingProxy x:Key="Proxy"
+                           DataContext="{Binding}" />
+
+        <DataTemplate DataType="{x:Type viewModels:EditorViewModel}">
+            <local:EditorView />
+        </DataTemplate>
+    </Window.Resources>
+
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
             <Button>
@@ -25,8 +37,10 @@
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
     <!--<WindowChrome.WindowChrome>
-        --><!--<WindowChrome  CaptionHeight="0"
-                       ResizeBorderThickness="5" />--><!--
+        -->
+    <!--<WindowChrome  CaptionHeight="0"
+                       ResizeBorderThickness="5" />-->
+    <!--
         <WindowChrome GlassFrameThickness="0"
                       CornerRadius="10"
                       CaptionHeight="0"
@@ -95,6 +109,33 @@
             <Grid Grid.Column="1"
                   Margin=" 5 0 ">
 
+                <coreControls:TabControlEx ItemsSource="{Binding Editors}"
+                                     SelectedItem="{Binding SelectedEditor}"
+                                     AddTabCommand="{Binding AddEditorCommand}"
+                                     AutoScrollToEnd="{Binding AutoSelectNewEditor}">
+                    <coreControls:TabControlEx.ItemContainerStyle>
+                        <Style TargetType="{x:Type coreControls:TabItemEx}">
+                            <!--BasedOn="{StaticResource {x:Type coreControls:TabItemEx}}">-->
+                            <Setter Property="Header"
+                                    Value="{Binding Name}" />
+                            <Setter Property="CloseTabCommand"
+                                    Value="{Binding DataContext.CloseEditorCommand ,Source={StaticResource Proxy}}" />
+                            <Setter Property="CloseTabCommandParameter"
+                                    Value="{Binding Id}" />
+                        </Style>
+                    </coreControls:TabControlEx.ItemContainerStyle>
+                </coreControls:TabControlEx>
+
+                <local:EditorView />
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 <!--<GridSplitter Width="5"
                               HorizontalAlignment="Right"
                               Background="Red" />-->

@@ -22,7 +22,7 @@ namespace VisonProcess.Views
     /// <summary>
     /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainView 
+    public partial class MainView
     {
         public MainView()
         {
@@ -38,20 +38,13 @@ namespace VisonProcess.Views
 
             //IntPtr hWnd = new WindowInteropHelper(GetWindow(this)).EnsureHandle();
             //var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-            //var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+            //var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;   1
             //DwmSetWindowAttribute(hWnd, attribute, ref preference, sizeof(uint));
 
             //还有云母布局。。。
             //https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-snap-layout-menu
 
         }
-
-
-
-
-
-
-
 
 
 
