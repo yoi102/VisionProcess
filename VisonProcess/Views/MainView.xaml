@@ -9,6 +9,7 @@
                  xmlns:local="clr-namespace:VisonProcess"
                  xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
                  ResizeMode="CanResizeWithGrip"
+                 mah:ControlsHelper.CornerRadius="22"
                  mc:Ignorable="d"
                  TitleCharacterCasing="Normal"
                  Title="VisonProcess"
