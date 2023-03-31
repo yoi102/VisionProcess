@@ -1,9 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VisonProcess.Core.ToolBase
 {
@@ -11,11 +6,7 @@ namespace VisonProcess.Core.ToolBase
     {
         public RunStatus()
         {
-            
-
-
         }
-
 
         public RunStatus(string message)
         {
@@ -33,12 +24,12 @@ namespace VisonProcess.Core.ToolBase
         private double _processingTime = 0;
         private bool _result = false;
 
-
         public Exception? Exception
         {
             get { return _exception; }
             internal set { SetProperty(ref _exception, value); }
         }
+
         public DateTime LastTime
         {
             get { return _lastTime; }
@@ -50,17 +41,17 @@ namespace VisonProcess.Core.ToolBase
             get { return _message; }
             internal set { SetProperty(ref _message, value); }
         }
+
         public double ProcessingTime
         {
             get { return _processingTime; }
             internal set { SetProperty(ref _processingTime, value); }
         }
+
         public bool Result
         {
             get { return _result; }
             internal set { SetProperty(ref _result, value); }
         }
-
-
     }
 }

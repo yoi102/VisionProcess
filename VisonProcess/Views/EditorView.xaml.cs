@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using VisonProcess.ViewModels;
 
 namespace VisonProcess.Views
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    /// EditorView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView 
+    public partial class EditorView : UserControl
     {
-        public MainView()
+        public EditorView()
         {
             InitializeComponent();
-
-            App.Current.Services.GetService<MainViewModel>();
         }
     }
 }

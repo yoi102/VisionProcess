@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using VisonProcess.ViewModels;
 using static ControlzEx.Standard.NativeMethods;
 
 namespace VisonProcess
@@ -66,11 +67,11 @@ namespace VisonProcess
         {
             var services = new ServiceCollection();
 
+            services.AddSingleton<MainViewModel>();
+            services.AddTransient<EditorViewModel>();
             //services.AddSingleton<IFilesService, FilesService>();
-            //services.AddSingleton<ISettingsService, SettingsService>();
-            //services.AddSingleton<IClipboardService, ClipboardService>();
-            //services.AddSingleton<IShareService, ShareService>();
-            //services.AddSingleton<IEmailService, EmailService>();
+
+
 
             return services.BuildServiceProvider();
         }

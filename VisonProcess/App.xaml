@@ -9,8 +9,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:MahAppsBundledTheme BaseTheme="Dark"
-                                             PrimaryColor="BlueGrey"
-                                             SecondaryColor="Lime" />
+                                             PrimaryColor="Blue"
+                                             SecondaryColor="DeepPurple" />
                 
                 
                 
