@@ -258,4 +258,13 @@
   <data name="AdaptiveForm" xml:space="preserve">
     <value>フォームに合わせる</value>
   </data>
+  <data name="Toolbox" xml:space="preserve">
+    <value>ツール ボックス</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>プロパティ</value>
+  </data>
+  <data name="Operations" xml:space="preserve">
+    <value>動作</value>
+  </data>
 </root>

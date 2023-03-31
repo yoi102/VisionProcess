@@ -177,4 +177,13 @@
   <data name="AdaptiveForm" xml:space="preserve">
     <value>适应窗体</value>
   </data>
+  <data name="Toolbox" xml:space="preserve">
+    <value>工具箱</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="Operations" xml:space="preserve">
+    <value>操作</value>
+  </data>
 </root>

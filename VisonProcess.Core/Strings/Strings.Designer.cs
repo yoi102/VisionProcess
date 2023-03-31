@@ -322,6 +322,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Operations 的本地化字符串。
+        /// </summary>
+        public static string Operations {
+            get {
+                return ResourceManager.GetString("Operations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Output Image 的本地化字符串。
         /// </summary>
         public static string OutputImage {
@@ -354,6 +363,15 @@ namespace VisonProcess.Core.Strings {
         public static string PleaseSelectFiles {
             get {
                 return ResourceManager.GetString("PleaseSelectFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Property 的本地化字符串。
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
             }
         }
         
@@ -462,6 +480,15 @@ namespace VisonProcess.Core.Strings {
         public static string TheDirectoryXAlreadyExists {
             get {
                 return ResourceManager.GetString("TheDirectoryXAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Toolbox 的本地化字符串。
+        /// </summary>
+        public static string Toolbox {
+            get {
+                return ResourceManager.GetString("Toolbox", resourceCulture);
             }
         }
         

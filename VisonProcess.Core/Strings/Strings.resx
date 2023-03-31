@@ -261,4 +261,13 @@
   <data name="AdaptiveForm" xml:space="preserve">
     <value>Adaptive Form</value>
   </data>
+  <data name="Toolbox" xml:space="preserve">
+    <value>Toolbox</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="Operations" xml:space="preserve">
+    <value>Operations</value>
+  </data>
 </root>
