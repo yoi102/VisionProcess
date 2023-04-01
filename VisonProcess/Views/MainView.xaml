@@ -63,6 +63,7 @@
             </Grid.ColumnDefinitions>
 
             <Expander  Margin="0 0 0 5"
+                       Style="{StaticResource MaterialDesignExpander}"
                        ExpandDirection="Right"
                        VerticalContentAlignment="Top"
                        md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6">
@@ -86,6 +87,7 @@
             </Expander>
 
             <Expander  Grid.Column="2"
+                       Style="{StaticResource MaterialDesignExpander}"
                        Margin="5 0 0 0"
                        IsExpanded="True"
                        ExpandDirection="Left"
@@ -114,8 +116,8 @@
                                      AddTabCommand="{Binding AddEditorCommand}"
                                      AutoScrollToEnd="{Binding AutoSelectNewEditor}">
                     <coreControls:TabControlEx.ItemContainerStyle>
-                        <Style TargetType="{x:Type coreControls:TabItemEx}">
-                            <!--BasedOn="{StaticResource {x:Type coreControls:TabItemEx}}">-->
+                        <Style TargetType="{x:Type coreControls:TabItemEx}"
+                            BasedOn="{StaticResource {x:Type coreControls:TabItemEx}}">
                             <Setter Property="Header"
                                     Value="{Binding Name}" />
                             <Setter Property="CloseTabCommand"
@@ -124,6 +126,9 @@
                                     Value="{Binding Id}" />
                         </Style>
                     </coreControls:TabControlEx.ItemContainerStyle>
+
+     
+                    
                 </coreControls:TabControlEx>
 
                 <local:EditorView />
