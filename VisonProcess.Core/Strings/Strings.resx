@@ -243,17 +243,14 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="ValueTypeMustBe" xml:space="preserve">
-    <value>The value's type must be</value>
+  <data name="ValueTypeMustBeX" xml:space="preserve">
+    <value>The value's type must be '{0}’ !!!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
   </data>
   <data name="ImageFiles" xml:space="preserve">
     <value>Image Files</value>
-  </data>
-  <data name="PleaseSelectFiles" xml:space="preserve">
-    <value>Please select files</value>
   </data>
   <data name="OutputImage" xml:space="preserve">
     <value>Output Image</value>
@@ -269,5 +266,8 @@
   </data>
   <data name="Operations" xml:space="preserve">
     <value>Operations</value>
+  </data>
+  <data name="PleaseSelectFiles" xml:space="preserve">
+    <value>Please select files</value>
   </data>
 </root>

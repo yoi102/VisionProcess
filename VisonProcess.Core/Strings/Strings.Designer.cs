@@ -502,11 +502,11 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
-        ///   查找类似 The value&apos;s type must be 的本地化字符串。
+        ///   查找类似 The value&apos;s type must be &apos;{0}’ !!! 的本地化字符串。
         /// </summary>
-        public static string ValueTypeMustBe {
+        public static string ValueTypeMustBeX {
             get {
-                return ResourceManager.GetString("ValueTypeMustBe", resourceCulture);
+                return ResourceManager.GetString("ValueTypeMustBeX", resourceCulture);
             }
         }
         

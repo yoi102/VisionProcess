@@ -112,12 +112,12 @@
                   Margin=" 5 0 ">
 
                 <coreControls:TabControlEx ItemsSource="{Binding Editors}"
-                                     SelectedItem="{Binding SelectedEditor}"
-                                     AddTabCommand="{Binding AddEditorCommand}"
-                                     AutoScrollToEnd="{Binding AutoSelectNewEditor}">
+                                           SelectedItem="{Binding SelectedEditor}"
+                                           AddTabCommand="{Binding AddEditorCommand}"
+                                           AutoScrollToEnd="{Binding AutoSelectNewEditor}">
                     <coreControls:TabControlEx.ItemContainerStyle>
                         <Style TargetType="{x:Type coreControls:TabItemEx}"
-                            BasedOn="{StaticResource {x:Type coreControls:TabItemEx}}">
+                               BasedOn="{StaticResource {x:Type coreControls:TabItemEx}}">
                             <Setter Property="Header"
                                     Value="{Binding Name}" />
                             <Setter Property="CloseTabCommand"
@@ -127,20 +127,10 @@
                         </Style>
                     </coreControls:TabControlEx.ItemContainerStyle>
 
-     
-                    
                 </coreControls:TabControlEx>
 
                 <local:EditorView />
-                
-                
-                
-                
-                
-                
-                
-                
-                
+
                 <!--<GridSplitter Width="5"
                               HorizontalAlignment="Right"
                               Background="Red" />-->
@@ -158,12 +148,18 @@
                       Height="5"
                       HorizontalAlignment="Stretch"
                       d:Background="Red" />
-        <GroupBox Grid.Row="2"
-                  Header="{x:Static strings:Strings.Operations}">
+        <StackPanel Grid.Row="2">
+            <md:ColorZone VerticalContentAlignment="Center"
+                          Height="30">
+                <md:ColorZone.Content>
+                    <TextBlock Margin=" 10 0 0 0"
+                               Text="{x:Static strings:Strings.Operations}" />
+                </md:ColorZone.Content>
+            </md:ColorZone>
             <ListBox SelectionMode="Single"
                      d:Background="Beige">
 
             </ListBox>
-        </GroupBox>
+        </StackPanel>
     </Grid>
 </mah:MetroWindow>

@@ -162,8 +162,8 @@
   <data name="Password" xml:space="preserve">
     <value>密码</value>
   </data>
-  <data name="ValueTypeMustBe" xml:space="preserve">
-    <value>value的类型必须为</value>
+  <data name="ValueTypeMustBeX" xml:space="preserve">
+    <value>Value的类型必须为 '{0}’ !!!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>成功</value>
@@ -185,5 +185,89 @@
   </data>
   <data name="Operations" xml:space="preserve">
     <value>操作</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Music" xml:space="preserve">
+    <value>音乐</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="PleaseSelectFiles" xml:space="preserve">
+    <value>请选择文件</value>
+  </data>
+  <data name="Desktop" xml:space="preserve">
+    <value>桌面</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>详细</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>文档</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="FileSize" xml:space="preserve">
+    <value>文件大小</value>
+  </data>
+  <data name="Folders" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="LongPathsAreNotSupported" xml:space="preserve">
+    <value>不支持长路径</value>
+  </data>
+  <data name="Maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="NoSelectedFiles" xml:space="preserve">
+    <value>没有选中任何文件</value>
+  </data>
+  <data name="NoSelectedDirectories" xml:space="preserve">
+    <value>没有选中任何目录</value>
+  </data>
+  <data name="NewDirectoryName" xml:space="preserve">
+    <value>新目录名</value>
+  </data>
+  <data name="TheDirectoryNameIsInvalid" xml:space="preserve">
+    <value>新目录名称无效</value>
+  </data>
+  <data name="DirectoryXNotFound" xml:space="preserve">
+    <value>没有找到'{0}'目录</value>
+  </data>
+  <data name="LocalDrive" xml:space="preserve">
+    <value>本地驱动器</value>
+  </data>
+  <data name="Drives" xml:space="preserve">
+    <value>驱动器</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>创建日期</value>
+  </data>
+  <data name="TheDirectoryNameMustNotBeEmpty" xml:space="preserve">
+    <value>目录名不能为空</value>
+  </data>
+  <data name="EmptyDirectory" xml:space="preserve">
+    <value>空目录</value>
+  </data>
+  <data name="AccessToDirectoryXDenied" xml:space="preserve">
+    <value>文件夹'{0}'拒绝访问</value>
+  </data>
+  <data name="TheDirectoryXAlreadyExists" xml:space="preserve">
+    <value>目录'{0}'已存在</value>
+  </data>
+  <data name="LastAccess" xml:space="preserve">
+    <value>上次访问</value>
+  </data>
+  <data name="LastModified" xml:space="preserve">
+    <value>更新日期</value>
   </data>
 </root>

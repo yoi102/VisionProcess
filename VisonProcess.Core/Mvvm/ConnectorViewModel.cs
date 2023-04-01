@@ -78,7 +78,7 @@ namespace VisonProcess.Core.Mvvm
                     Type type = value.GetType();
                     if (type.Name != ValueType.Name && type.GetInterface(ValueType.Name) == null && ValueType.GetInterface(type.Name) == null)
                     {
-                        throw new ArgumentException($"{Strings.Strings.ValueTypeMustBe} {ValueType.Name} !!!");
+                        throw new ArgumentException($"{Strings.Strings.ValueTypeMustBeX} ", ValueType.Name);
                     }
                 }
                 SetProperty(ref _value, value).Then(() => ValueObservers.ForEach(o => o.Value = value));

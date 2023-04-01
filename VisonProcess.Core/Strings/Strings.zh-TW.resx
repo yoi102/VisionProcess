@@ -117,154 +117,157 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DirectoryXNotFound" xml:space="preserve">
-    <value>フォルダー '{0}' が見つかりませんでした</value>
+  <data name="Videos" xml:space="preserve">
+    <value>視頻</value>
   </data>
-  <data name="AccessToDirectoryXDenied" xml:space="preserve">
-    <value>フォルダー '{0}' へのアクセスが拒否されました</value>
+  <data name="User" xml:space="preserve">
+    <value>用户</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>キャンセル</value>
+  <data name="Selection" xml:space="preserve">
+    <value>选项</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>閉じる</value>
+  <data name="SelectDirectory" xml:space="preserve">
+    <value>选择目录</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>作成</value>
+  <data name="Select" xml:space="preserve">
+    <value>选择</value>
   </data>
-  <data name="Created" xml:space="preserve">
-    <value>作成日時</value>
+  <data name="Search" xml:space="preserve">
+    <value>檢索</value>
   </data>
-  <data name="Desktop" xml:space="preserve">
-    <value>デスクトップ</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>詳細</value>
-  </data>
-  <data name="Documents" xml:space="preserve">
-    <value>ドキュメント</value>
-  </data>
-  <data name="Drives" xml:space="preserve">
-    <value>ドライブ</value>
-  </data>
-  <data name="EmptyDirectory" xml:space="preserve">
-    <value>空のフォルダー</value>
-  </data>
-  <data name="Files" xml:space="preserve">
-    <value>ファイル</value>
-  </data>
-  <data name="FileSize" xml:space="preserve">
-    <value>ファイルサイズ</value>
-  </data>
-  <data name="Folders" xml:space="preserve">
-    <value>フォルダー</value>
-  </data>
-  <data name="LastAccess" xml:space="preserve">
-    <value>アクセス日時</value>
-  </data>
-  <data name="LastModified" xml:space="preserve">
-    <value>更新日時</value>
-  </data>
-  <data name="LocalDrive" xml:space="preserve">
-    <value>ローカル ディスク</value>
-  </data>
-  <data name="LongPathsAreNotSupported" xml:space="preserve">
-    <value>ロングパスネームはサポートされていません</value>
-  </data>
-  <data name="Maximize" xml:space="preserve">
-    <value>最大化</value>
-  </data>
-  <data name="Minimize" xml:space="preserve">
-    <value>最小化</value>
-  </data>
-  <data name="Music" xml:space="preserve">
-    <value>ミュージック</value>
-  </data>
-  <data name="NewDirectoryName" xml:space="preserve">
-    <value>新しいフォルダー</value>
-  </data>
-  <data name="NoSelectedDirectories" xml:space="preserve">
-    <value>フォルダーが選択されていません</value>
-  </data>
-  <data name="NoSelectedFiles" xml:space="preserve">
-    <value>ファイルが選択されていません</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>開く</value>
-  </data>
-  <data name="OpenFile" xml:space="preserve">
-    <value>ファイルを開く</value>
-  </data>
-  <data name="Pictures" xml:space="preserve">
-    <value>ピクチャ</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>削除</value>
-  </data>
-  <data name="Restore" xml:space="preserve">
-    <value>元に戻す</value>
+  <data name="SaveFile" xml:space="preserve">
+    <value>保存文件</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="SaveFile" xml:space="preserve">
-    <value>ファイルの保存</value>
+  <data name="Restore" xml:space="preserve">
+    <value>返回</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>検索</value>
+  <data name="Remove" xml:space="preserve">
+    <value>移除</value>
   </data>
-  <data name="Select" xml:space="preserve">
-    <value>選択</value>
+  <data name="Pictures" xml:space="preserve">
+    <value>相片</value>
   </data>
-  <data name="SelectDirectory" xml:space="preserve">
-    <value>フォルダーの選択</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>打開文件</value>
   </data>
-  <data name="Selection" xml:space="preserve">
-    <value>選択</value>
+  <data name="Open" xml:space="preserve">
+    <value>打開</value>
   </data>
-  <data name="TheDirectoryNameIsInvalid" xml:space="preserve">
-    <value>ディレクトリ名が無効です</value>
-  </data>
-  <data name="TheDirectoryNameMustNotBeEmpty" xml:space="preserve">
-    <value>ディレクトリ名は空にできません</value>
-  </data>
-  <data name="TheDirectoryXAlreadyExists" xml:space="preserve">
-    <value>ディレクトリ '{0}' は既に存在します</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>ユーザー</value>
-  </data>
-  <data name="Videos" xml:space="preserve">
-    <value>ビデオ</value>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>パスワード</value>
+    <value>密碼</value>
+  </data>
+  <data name="ValueTypeMustBeX" xml:space="preserve">
+    <value>Value的類型必須為 '{0}’ !!!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>成功</value>
   </data>
   <data name="ImageFiles" xml:space="preserve">
-    <value>画像ファイル</value>
+    <value>圖像文件</value>
   </data>
   <data name="OutputImage" xml:space="preserve">
-    <value>出力画像</value>
+    <value>輸出圖像</value>
   </data>
   <data name="AdaptiveForm" xml:space="preserve">
-    <value>フォームに合わせる</value>
+    <value>適應窗體</value>
   </data>
   <data name="Toolbox" xml:space="preserve">
-    <value>ツール ボックス</value>
+    <value>工具箱</value>
   </data>
   <data name="Property" xml:space="preserve">
-    <value>プロパティ</value>
+    <value>屬性</value>
   </data>
   <data name="Operations" xml:space="preserve">
-    <value>動作</value>
+    <value>操作</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Music" xml:space="preserve">
+    <value>音乐</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>創建</value>
   </data>
   <data name="PleaseSelectFiles" xml:space="preserve">
-    <value>ファイルを選択してください</value>
+    <value>請選擇文件</value>
+  </data>
+  <data name="Desktop" xml:space="preserve">
+    <value>桌面</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>詳細</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>文檔</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="FileSize" xml:space="preserve">
+    <value>文件大小</value>
+  </data>
+  <data name="Folders" xml:space="preserve">
+    <value>文件夾</value>
+  </data>
+  <data name="LongPathsAreNotSupported" xml:space="preserve">
+    <value>不支持長路徑</value>
+  </data>
+  <data name="Maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="NoSelectedFiles" xml:space="preserve">
+    <value>沒有選擇任何文件</value>
+  </data>
+  <data name="NoSelectedDirectories" xml:space="preserve">
+    <value>沒有選擇任何目錄</value>
+  </data>
+  <data name="NewDirectoryName" xml:space="preserve">
+    <value>新目录名</value>
+  </data>
+  <data name="TheDirectoryNameIsInvalid" xml:space="preserve">
+    <value>新目录名称无效</value>
+  </data>
+  <data name="DirectoryXNotFound" xml:space="preserve">
+    <value>沒有找到 '{0}' 目錄</value>
+  </data>
+  <data name="LocalDrive" xml:space="preserve">
+    <value>本地驅動器</value>
+  </data>
+  <data name="Drives" xml:space="preserve">
+    <value>驅動器</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>創建日期</value>
+  </data>
+  <data name="TheDirectoryNameMustNotBeEmpty" xml:space="preserve">
+    <value>目錄名不能為空</value>
+  </data>
+  <data name="EmptyDirectory" xml:space="preserve">
+    <value>空目錄</value>
+  </data>
+  <data name="AccessToDirectoryXDenied" xml:space="preserve">
+    <value>文件夾 '{0}' 拒絕訪問</value>
+  </data>
+  <data name="TheDirectoryXAlreadyExists" xml:space="preserve">
+    <value>目錄 '{0}' 已存在</value>
+  </data>
+  <data name="LastAccess" xml:space="preserve">
+    <value>上次訪問</value>
+  </data>
+  <data name="LastModified" xml:space="preserve">
+    <value>更新日期</value>
   </data>
 </root>
