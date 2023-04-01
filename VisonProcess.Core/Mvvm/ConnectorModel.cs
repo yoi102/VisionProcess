@@ -5,9 +5,9 @@ using VisonProcess.Core.Extentions;
 
 namespace VisonProcess.Core.Mvvm
 {
-    public class ConnectorViewModel : ObservableObject
+    public class ConnectorModel : ObservableObject
     {
-        //public ConnectorViewModel(string title, object value, string path)
+        //public ConnectorModel(string title, object value, string path)
         //{
         //    _title = title;
         //    _value = value;
@@ -15,7 +15,7 @@ namespace VisonProcess.Core.Mvvm
         //    _valuePath = path;
         //}
 
-        public ConnectorViewModel(string title, object value, Type valueType, string valuePath)
+        public ConnectorModel(string title, object value, Type valueType, string valuePath)
         {
             _title = title;
             _value = value;
@@ -27,7 +27,7 @@ namespace VisonProcess.Core.Mvvm
         private Point _anchor = default;
         private bool _isConnected = false;
         private bool _isInput = true;
-        private OperationViewModel _operation = default!;
+        private OperationModel _operation = default!;
         private string _title;
         private object? _value;
         private string _valuePath;
@@ -57,7 +57,7 @@ namespace VisonProcess.Core.Mvvm
             set => SetProperty(ref _isInput, value);
         }
 
-        public OperationViewModel Operation
+        public OperationModel Operation
         {
             get => _operation;
             set => SetProperty(ref _operation, value);
@@ -85,7 +85,7 @@ namespace VisonProcess.Core.Mvvm
 
             }
         }
-        public List<ConnectorViewModel> ValueObservers { get; } = new List<ConnectorViewModel>();
+        public List<ConnectorModel> ValueObservers { get; } = new List<ConnectorModel>();
 
         public Type ValueType
         {

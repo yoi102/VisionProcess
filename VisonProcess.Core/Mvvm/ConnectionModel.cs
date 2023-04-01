@@ -2,17 +2,17 @@
 
 namespace VisonProcess.Core.Mvvm
 {
-    public class ConnectionViewModel : ObservableObject
+    public class ConnectionModel : ObservableObject
     {
-        private ConnectorViewModel _input = default!;
-        public ConnectorViewModel Input
+        private ConnectorModel _input = default!;
+        public ConnectorModel Input
         {
             get => _input;
             set => SetProperty(ref _input, value);
         }
 
-        private ConnectorViewModel _output = default!;
-        public ConnectorViewModel Output
+        private ConnectorModel _output = default!;
+        public ConnectorModel Output
         {
             get => _output;
             set => SetProperty(ref _output, value);

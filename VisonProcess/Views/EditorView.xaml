@@ -5,10 +5,71 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:nodify="https://miroiu.github.io/nodify"
              xmlns:local="clr-namespace:VisonProcess.Views"
+             xmlns:mvvm="clr-namespace:VisonProcess.Core.Mvvm;assembly=VisonProcess.Core"
+             xmlns:converter="clr-namespace:VisonProcess.Core.Converters;assembly=VisonProcess.Core"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <GeometryDrawing x:Key="SmallGridGeometry"
+                         Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />
+
+        <GeometryDrawing x:Key="LargeGridGeometry"
+                         Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />
+        <DrawingBrush x:Key="SmallGridLinesDrawingBrush"
+                      TileMode="Tile"
+                      ViewportUnits="Absolute"
+                      Viewport="0 0 15 15"
+                      Transform="{Binding ViewportTransform, ElementName=Editor}"
+                      Drawing="{StaticResource SmallGridGeometry}" />
+        <DrawingBrush x:Key="LargeGridLinesDrawingBrush"
+                      TileMode="Tile"
+                      ViewportUnits="Absolute"
+                      Opacity="0.5"
+                      Viewport="0 0 150 150"
+                      Transform="{Binding ViewportTransform, ElementName=Editor}"
+                      Drawing="{StaticResource LargeGridGeometry}" />
+
+        <!--<converter:ItemToListConverter x:Key="ItemToListConverter" />-->
+
+        <DataTemplate x:Key="ConnectionTemplate"
+                      DataType="{x:Type mvvm:ConnectionModel}">
+            <nodify:CircuitConnection Source="{Binding Output.Anchor}"
+                                      Target="{Binding Input.Anchor}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="PendingConnectionTemplate"
+                      DataType="{x:Type mvvm:PendingConnectionModel}">
+            <nodify:PendingConnection IsVisible="{Binding IsVisible}"
+                                      Source="{Binding Source, Mode=OneWayToSource}"
+                                      Target="{Binding Target, Mode=OneWayToSource}"
+                                      TargetAnchor="{Binding TargetLocation, Mode=OneWayToSource}"
+                                      StartedCommand="{Binding DataContext.StartConnectionCommand, RelativeSource={RelativeSource AncestorType={x:Type nodify:NodifyEditor}}}"
+                                      CompletedCommand="{Binding DataContext.CreateConnectionCommand, RelativeSource={RelativeSource AncestorType={x:Type nodify:NodifyEditor}}}" />
+        </DataTemplate>
+
+        <Style x:Key="ItemContainerStyle"
+               TargetType="{x:Type nodify:ItemContainer}"
+               BasedOn="{StaticResource {x:Type nodify:ItemContainer}}">
+            <Setter Property="Location"
+                    Value="{Binding Location}" />
+            <Setter Property="IsSelected"
+                    Value="{Binding IsSelected}" />
+            <Setter Property="ActualSize"
+                    Value="{Binding Size, Mode=OneWayToSource}" />
+        </Style>
+
+    </UserControl.Resources>
     <Grid>
 
+        
+        
+        
+        
+        
+        
+        
       
         
         

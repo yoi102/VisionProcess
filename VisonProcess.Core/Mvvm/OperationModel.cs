@@ -7,9 +7,9 @@ using VisonProcess.Core.ToolBase;
 
 namespace VisonProcess.Core.Mvvm
 {
-    public class OperationViewModel : ObservableObject
+    public class OperationModel : ObservableObject
     {
-        public OperationViewModel()
+        public OperationModel()
         {
             Input.WhenAdded(x =>
             {
@@ -44,7 +44,7 @@ namespace VisonProcess.Core.Mvvm
 
         private string? _title;
 
-        public NodifyObservableCollection<ConnectorViewModel> Input { get; } = new NodifyObservableCollection<ConnectorViewModel>();
+        public NodifyObservableCollection<ConnectorModel> Input { get; } = new NodifyObservableCollection<ConnectorModel>();
 
         public bool IsSelected
         {
@@ -76,11 +76,11 @@ namespace VisonProcess.Core.Mvvm
                         }
                         if (item.IsInput)
                         {
-                            Input.Add(new ConnectorViewModel(item.Title, v, t, item.Path));
+                            Input.Add(new ConnectorModel(item.Title, v, t, item.Path));
                         }
                         else
                         {
-                            Output.Add(new ConnectorViewModel(item.Title, v, t, item.Path));
+                            Output.Add(new ConnectorModel(item.Title, v, t, item.Path));
                         }
                     }
                 }
@@ -95,7 +95,7 @@ namespace VisonProcess.Core.Mvvm
             }
         }
 
-        public NodifyObservableCollection<ConnectorViewModel> Output { get; } = new NodifyObservableCollection<ConnectorViewModel>();
+        public NodifyObservableCollection<ConnectorModel> Output { get; } = new NodifyObservableCollection<ConnectorModel>();
 
         public Size Size
         {
@@ -127,14 +127,14 @@ namespace VisonProcess.Core.Mvvm
             }
         }
 
-        //private NodifyObservableCollection<ConnectorViewModel> _input = new NodifyObservableCollection<ConnectorViewModel>();
-        //public NodifyObservableCollection<ConnectorViewModel> Input
+        //private NodifyObservableCollection<ConnectorModel> _input = new NodifyObservableCollection<ConnectorModel>();
+        //public NodifyObservableCollection<ConnectorModel> Input
         //{
         //    get { return _input; }
         //    private set { SetProperty(ref _input, value); }
         //}
-        //private NodifyObservableCollection<ConnectorViewModel> _output = new NodifyObservableCollection<ConnectorViewModel>();
-        //public NodifyObservableCollection<ConnectorViewModel> Output
+        //private NodifyObservableCollection<ConnectorModel> _output = new NodifyObservableCollection<ConnectorModel>();
+        //public NodifyObservableCollection<ConnectorModel> Output
         //{
         //    get { return _output; }
         //    private set { SetProperty(ref _output, value); }
@@ -145,7 +145,7 @@ namespace VisonProcess.Core.Mvvm
 
         private void OnInputValueChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ConnectorViewModel.Value))
+            if (e.PropertyName == nameof(ConnectorModel.Value))
             {
                 OnInputValueChanged();
             }
@@ -153,7 +153,7 @@ namespace VisonProcess.Core.Mvvm
 
         private void OnOutputValueChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ConnectorViewModel.Value))
+            if (e.PropertyName == nameof(ConnectorModel.Value))
             {
                 OnOutputValueChanged();
             }
