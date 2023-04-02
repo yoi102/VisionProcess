@@ -97,6 +97,7 @@ namespace VisonProcess.Core.Mvvm
         {
             return IsCanCreateConnection(PendingConnection.Source, PendingConnection.Target);
         }
+        //不能与 CanCreateConnection 重名？？
         internal static bool IsCanCreateConnection(ConnectorModel source, ConnectorModel? target)
     => target == null || (source != target && source.Operation != target.Operation && source.IsInput != target.IsInput && source.ValueType == target.ValueType);
 
