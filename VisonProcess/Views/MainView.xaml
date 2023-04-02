@@ -103,9 +103,8 @@
                     </TextBlock>
                 </Expander.Header>
 
-                <GridSplitter Width="5"
-                              HorizontalAlignment="Left"
-                              d:Background="Red" />
+                <local:uclOperationView />
+
             </Expander>
 
             <Grid Grid.Column="1"

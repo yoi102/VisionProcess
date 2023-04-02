@@ -11,7 +11,7 @@ namespace VisonProcess.ViewModels
 {
     public partial class EditorViewModel : ObservableObject
     {
-        public event Action<EditorViewModel, ProcessModel>? OnOpenInnerCalculator;
+        public event Action<EditorViewModel, ProcessModel>? OnOpenInnerProcess;
 
         public EditorViewModel? Parent { get; set; }
 
@@ -25,7 +25,7 @@ namespace VisonProcess.ViewModels
         [RelayCommand]
         void OpenProcess(ProcessModel process)
         {
-            OnOpenInnerCalculator?.Invoke(this, process);
+            OnOpenInnerProcess?.Invoke(this, process);
         }
 
 

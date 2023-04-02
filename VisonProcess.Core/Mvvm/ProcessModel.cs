@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
-using System.Windows.Controls;
 using VisonProcess.Core.Extentions;
 
 namespace VisonProcess.Core.Mvvm
@@ -77,6 +76,7 @@ namespace VisonProcess.Core.Mvvm
         private NodifyObservableCollection<OperationModel> _selectedOperations = new();
 
         public NodifyObservableCollection<ConnectionModel> Connections { get; } = new();
+
         public NodifyObservableCollection<OperationModel> Operations
         {
             get => _operations;
@@ -84,6 +84,7 @@ namespace VisonProcess.Core.Mvvm
         }
 
         public PendingConnectionModel PendingConnection { get; set; } = new();
+
         public NodifyObservableCollection<OperationModel> SelectedOperations
         {
             get => _selectedOperations;
@@ -93,16 +94,15 @@ namespace VisonProcess.Core.Mvvm
         #endregion Properties
 
         #region Commands
-        private bool CanCreateConnection()
-        {
-            return IsCanCreateConnection(PendingConnection.Source, PendingConnection.Target);
-        }
+
         //不能与 CanCreateConnection 重名？？
         internal static bool IsCanCreateConnection(ConnectorModel source, ConnectorModel? target)
     => target == null || (source != target && source.Operation != target.Operation && source.IsInput != target.IsInput && source.ValueType == target.ValueType);
 
-
-
+        private bool CanCreateConnection()
+        {
+            return IsCanCreateConnection(PendingConnection.Source, PendingConnection.Target);
+        }
         private bool CanGroupSelection()
         {
             return SelectedOperations.Count > 0;
@@ -113,6 +113,7 @@ namespace VisonProcess.Core.Mvvm
         {
             CreateConnection(PendingConnection.Source, PendingConnection.Target);
         }
+
         private void CreateConnection(ConnectorModel source, ConnectorModel? target)
         {
             if (target == null)
@@ -138,6 +139,7 @@ namespace VisonProcess.Core.Mvvm
             });
             //}
         }
+
         [RelayCommand]
         private void DeleteSelection()
         {
@@ -164,6 +166,7 @@ namespace VisonProcess.Core.Mvvm
                 GroupSize = new Size(bounding.Width, bounding.Height)
             });
         }
+
         [RelayCommand]
         private void StartConnection()
         {

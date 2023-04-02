@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="VisonProcess.Views.uclOperationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VisonProcess.Views"
+             xmlns:controls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
+             xmlns:mvvm="clr-namespace:VisonProcess.Core.Mvvm;assembly=VisonProcess.Core"
+             xmlns:tvm="clr-namespace:VisonProcess.Tools.ViewModels;assembly=VisonProcess.Tools"
+            xmlns:tv="clr-namespace:VisonProcess.Tools.Views;assembly=VisonProcess.Tools"
+             d:DataContext="{d:DesignInstance Type=mvvm:OperationModel}"
+             mc:Ignorable="d" 
+             d:Background="Wheat"
+             d:DesignHeight="450" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type tvm:AcquireImageViewModel}">
+            <tv:AcquireImageView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type tvm:ColorConvertViewModel}">
+            <tv:ColorConvertView />
+
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <controls:uclRecord  RecordSource="{Binding  Operation.Records, Mode=OneWay}"  />
+        <ContentControl DataContext="{Binding Operation}" Grid.Row="1"/>
+    </Grid>
+</UserControl>

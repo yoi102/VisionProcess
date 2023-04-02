@@ -31,16 +31,16 @@ namespace VisonProcess.Core.Controls
 
 
 
-        public IEnumerable<Record> RecordSource
+        public ICollection<Record> RecordSource
         {
-            get { return (IEnumerable<Record>)GetValue(RecordsProperty); }
+            get { return (ICollection<Record>)GetValue(RecordsProperty); }
             set { SetValue(RecordsProperty, value); }
         }
 
         public static readonly DependencyProperty RecordsProperty =
             DependencyProperty.Register(
                 nameof(RecordSource),
-                typeof(IEnumerable<Record>), 
+                typeof(ICollection<Record>), 
                 typeof(uclRecord), 
                 new PropertyMetadata(null, RecordsPropertyChanged));
 
@@ -49,7 +49,7 @@ namespace VisonProcess.Core.Controls
             var uclRecord = (uclRecord)d;
             if (e.NewValue is not null)
             {
-                uclRecord.SelectedRecord = ((IEnumerable<Record>)e.NewValue).FirstOrDefault()!;
+                uclRecord.SelectedRecord = ((ICollection<Record>)e.NewValue).FirstOrDefault()!;
             }
 
         }
