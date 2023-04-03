@@ -164,19 +164,20 @@
                 </md:ColorZone.Content>
             </md:ColorZone>
             <ListBox SelectionMode="Single"
-                     ItemsSource="{Binding SelectedEditor.Process.Operations}"
-                     d:Background="Beige">
+                     ItemsSource="{Binding SelectedEditor.Process.Operations}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
+                        <WrapPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <Image Source="{Binding Operation.Records[0].DisplayImage}" />
-                            <TextBlock Text="{Binding  Operation.Records[0].Title}" />
-                        </StackPanel>
+                        <GroupBox Header="{Binding Title}">
+                            <StackPanel>
+                                <Image Source="{Binding Operation.Records[0].DisplayImage}" />
+                                <TextBlock Text="{Binding  Operation.Records[0].Title}" />
+                            </StackPanel>
+                        </GroupBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

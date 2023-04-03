@@ -65,6 +65,7 @@ namespace VisonProcess.Core.Mvvm
             {
                 if (value is not null)
                 {
+                    Title = value.GetType().Name;
                     var attributes = (DefaultToolConnectorAttribute[])value.GetType().GetCustomAttributes(typeof(DefaultToolConnectorAttribute), false);
                     foreach (var item in attributes)
                     {

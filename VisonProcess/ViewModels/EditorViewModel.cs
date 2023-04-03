@@ -13,6 +13,7 @@ namespace VisonProcess.ViewModels
     {
         public event Action<EditorViewModel, ProcessModel>? OnOpenInnerProcess;
 
+        //用于Group
         public EditorViewModel? Parent { get; set; }
 
         public EditorViewModel()
