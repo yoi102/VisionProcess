@@ -11,6 +11,7 @@
                  xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
                  xmlns:core="clr-namespace:VisonProcess.Core;assembly=VisonProcess.Core"
                  xmlns:coreControls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
+                 d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
                  ResizeMode="CanResizeWithGrip"
                  mah:ControlsHelper.CornerRadius="22"
                  mc:Ignorable="d"
@@ -62,11 +63,11 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Expander  Margin="0 0 0 5"
-                       Style="{StaticResource MaterialDesignExpander}"
-                       ExpandDirection="Right"
-                       VerticalContentAlignment="Top"
-                       md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6">
+            <Expander Margin="0 0 5 0"
+                      Style="{StaticResource MaterialDesignExpander}"
+                      ExpandDirection="Right"
+                      VerticalContentAlignment="Top"
+                      md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6">
                 <Expander.Header>
                     <TextBlock Text="{x:Static strings:Strings.Toolbox}"
                                HorizontalAlignment="Center"
@@ -79,13 +80,19 @@
 
                 <Grid>
 
-                    <GridSplitter Width="5"
+                    <!--<GridSplitter Width="5"
                                   HorizontalAlignment="Right"
-                                  d:Background="Red" />
+                                  d:Background="Red" />-->
                 </Grid>
 
             </Expander>
-
+            <GridSplitter Width="5"
+                          HorizontalAlignment="Right"
+                          d:Background="Red" />
+            <GridSplitter Grid.Column="2"
+                          Width="5"
+                          HorizontalAlignment="Left"
+                          d:Background="Red" />
             <Expander  Grid.Column="2"
                        Style="{StaticResource MaterialDesignExpander}"
                        Margin="5 0 0 0"
@@ -103,7 +110,7 @@
                     </TextBlock>
                 </Expander.Header>
 
-                <local:uclOperationView />
+                <local:uclOperationView HorizontalContentAlignment="Left" />
 
             </Expander>
 
@@ -157,8 +164,21 @@
                 </md:ColorZone.Content>
             </md:ColorZone>
             <ListBox SelectionMode="Single"
+                     ItemsSource="{Binding SelectedEditor.Process.Operations}"
                      d:Background="Beige">
-
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Image Source="{Binding Operation.Records[0].DisplayImage}" />
+                            <TextBlock Text="{Binding  Operation.Records[0].Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
     </Grid>

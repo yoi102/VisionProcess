@@ -12,11 +12,11 @@ namespace VisonProcess.Core.ToolBase
     {
 
 
-        private string? _tiltle;
-        public string? Tiltie
+        private string? _title;
+        public string? Title
         {
-            get { return _tiltle; }
-            set { SetProperty(ref _tiltle, value); }
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
         }
 
         private BitmapSource? _displayImage;
