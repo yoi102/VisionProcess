@@ -73,6 +73,7 @@ namespace VisonProcess.Core.Mvvm
         #region Properties
 
         private NodifyObservableCollection<OperationModel> _operations = new();
+        private OperationModel? _selectedOperation ;
         private NodifyObservableCollection<OperationModel> _selectedOperations = new();
 
         public NodifyObservableCollection<ConnectionModel> Connections { get; } = new();
@@ -88,7 +89,16 @@ namespace VisonProcess.Core.Mvvm
         public NodifyObservableCollection<OperationModel> SelectedOperations
         {
             get => _selectedOperations;
-            set => SetProperty(ref _selectedOperations, value);
+            set 
+            { 
+                SetProperty(ref _selectedOperations, value);
+                SelectedOperation = value?.FirstOrDefault();
+            }
+        }
+        public OperationModel? SelectedOperation
+        {
+            get => _selectedOperation;
+            set => SetProperty(ref _selectedOperation, value);
         }
 
         #endregion Properties
@@ -156,7 +166,6 @@ namespace VisonProcess.Core.Mvvm
         [RelayCommand(CanExecute = nameof(CanGroupSelection))]
         private void GroupSelection()
         {
-            //var selected = SelectedOperations.ToList();
             var bounding = SelectedOperations.GetBoundingBox(50);
 
             Operations.Add(new OperationGroupModel
