@@ -11,7 +11,7 @@ using VisonProcess.Tools.Models;
 
 namespace VisonProcess.Tools.ViewModels
 {
-    [DefaultToolConnector(false, "Image", "Output.Image")]
+    [DefaultToolConnector(false, "Image", "Outputs.Image")]
     public partial class AcquireImageViewModel : OperationBase<InputsBase, AcquireImageOutput, GraphicsBase>
     {
         public AcquireImageViewModel() : base()

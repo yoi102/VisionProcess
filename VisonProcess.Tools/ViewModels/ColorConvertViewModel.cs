@@ -12,8 +12,8 @@ using VisonProcess.Tools.Models;
 
 namespace VisonProcess.Tools.ViewModels
 {
-    [DefaultToolConnector(true, "Image", "Intput.Image")]
-    [DefaultToolConnector(false, "Image", "Output.Image")]
+    [DefaultToolConnector(true, "Image", "Inputs.Image")]
+    [DefaultToolConnector(false, "Image", "Outputs.Image")]
     public class ColorConvertViewModel : OperationBase<ColorConvertInput, ColorConvertOutput, GraphicsBase>
     {
         public ColorConvertViewModel() : base() 

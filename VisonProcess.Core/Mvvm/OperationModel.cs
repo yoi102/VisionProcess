@@ -71,7 +71,8 @@ namespace VisonProcess.Core.Mvvm
                     {
                         var t = PropertyMisc.GetType(value, item.Path);
                         var v = PropertyMisc.GetValue(value, item.Path);
-                        if (t == null || v == null)
+                        //if (t == null || v == null)
+                        if (t == null )
                         {
                             throw new ArgumentException("Error, DefaultToolConnectorAttribute setting  error");
                         }

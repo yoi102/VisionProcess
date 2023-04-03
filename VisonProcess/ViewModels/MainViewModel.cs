@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VisonProcess.Core.Extentions;
 using VisonProcess.Core.Mvvm;
+using VisonProcess.Tools.ViewModels;
 
 namespace VisonProcess.ViewModels
 {
@@ -34,6 +35,13 @@ namespace VisonProcess.ViewModels
             {
                 Name = $"Editor {Editors.Count + 1}"
             });
+
+
+            //Add some things
+            Editors[0].Process.Operations.Add(new OperationModel { Operation = new AcquireImageViewModel()});
+            Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel()});
+
+
         }
 
         private void OnOpenInnerProcess(EditorViewModel parentEditor, ProcessModel process)

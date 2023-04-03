@@ -86,13 +86,13 @@
                 </Grid>
 
             </Expander>
-            <GridSplitter Width="5"
+            <!--<GridSplitter Width="5"
                           HorizontalAlignment="Right"
                           d:Background="Red" />
             <GridSplitter Grid.Column="2"
                           Width="5"
                           HorizontalAlignment="Left"
-                          d:Background="Red" />
+                          d:Background="Red" />-->
             <Expander  Grid.Column="2"
                        Style="{StaticResource MaterialDesignExpander}"
                        Margin="5 0 0 0"
