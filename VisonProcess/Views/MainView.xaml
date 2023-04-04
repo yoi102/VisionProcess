@@ -181,15 +181,23 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <GroupBox Header="{Binding Title}"
-                                  Margin="3"
+                                  Height="180"
                                   Width="200">
                             <!--<GroupBox.Header>
                                 <TextBox  Text="{Binding Title}" />
                             </GroupBox.Header>-->
-                            <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
                                 <Image Source="{Binding Operation.Records[0].DisplayImage}" />
-                                <TextBlock Text="{Binding  Operation.Records[0].Title}" />
-                            </StackPanel>
+                                <TextBlock Grid.Row="1"
+                                           Margin="3"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding  Operation.Records[0].Title}" />
+                            </Grid>
                         </GroupBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
