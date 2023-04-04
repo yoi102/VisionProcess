@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace VisonProcess.Core.Converters
 {
@@ -20,18 +21,18 @@ namespace VisonProcess.Core.Converters
             if (value is bool b)
             {
                 if (Reversed) b = !b;
-                if(b)
+                if (b)
                     return Visibility.Visible;
                 else
                     return UseHidden ? Visibility.Hidden : Visibility.Collapsed;
             }
             else
-                throw new ArgumentException(nameof(value));
+                return Binding.DoNothing;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return Binding.DoNothing;
         }
     }
 }

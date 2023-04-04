@@ -28,7 +28,7 @@ namespace VisonProcess.Views
         {
             InitializeComponent();
 
-            App.Current.Services.GetService<MainViewModel>();
+            this.DataContext = App.Current.Services.GetService<MainViewModel>();
 
 
 
