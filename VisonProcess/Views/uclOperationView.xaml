@@ -56,7 +56,7 @@
         <controls:uclRecord Grid.Row="1"
                             RecordSource="{Binding  Operation.Records, Mode=OneWay}" />
         <ContentControl Grid.Row="2"
-                        DataContext="{Binding Operation}" />
+                        Content="{Binding Operation}" />
 
         <TextBlock Grid.Row="3"
                    Margin=" 3"

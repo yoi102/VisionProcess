@@ -180,7 +180,12 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <GroupBox Header="{Binding Title}">
+                        <GroupBox Header="{Binding Title}"
+                                  Margin="3"
+                                  Width="200">
+                            <!--<GroupBox.Header>
+                                <TextBox  Text="{Binding Title}" />
+                            </GroupBox.Header>-->
                             <StackPanel>
                                 <Image Source="{Binding Operation.Records[0].DisplayImage}" />
                                 <TextBlock Text="{Binding  Operation.Records[0].Title}" />

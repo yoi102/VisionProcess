@@ -4,6 +4,7 @@ using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
 using VisonProcess.Core.ToolBase;
@@ -39,6 +40,9 @@ namespace VisonProcess.Tools.ViewModels
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
             currentIndex++;
+            ////延时
+            //Thread.Sleep(1000);
+
             return true;
         }
 
