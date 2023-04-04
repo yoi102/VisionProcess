@@ -1,10 +1,12 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
+using System.Security.Cryptography.Xml;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Point = System.Windows.Point;
 
 namespace VisonProcess.Core.Controls
@@ -41,11 +43,11 @@ namespace VisonProcess.Core.Controls
         private static void OnImageSourceChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
 
-            var uclImage = (uclImage)depObj ;
+            var uclImage = (uclImage)depObj;
             if (e.NewValue != null)
             {
 
-                uclImage!.ImageSource = e.NewValue as ImageSource;
+                uclImage!.ImageSource = (ImageSource)e.NewValue;
                 uclImage.GetImageSourceData();
             }
         }
@@ -63,7 +65,7 @@ namespace VisonProcess.Core.Controls
                         mat.GetRectangularArray<Vec3b>(out Vec3b[,] vec3Ds);
                         _ImageData3b = vec3Ds;
                         _ImageDatab = null;
-             
+
                         GrayPanel.Visibility = Visibility.Collapsed;
                         RGBPanel.Visibility = Visibility.Visible;
 
@@ -117,10 +119,11 @@ namespace VisonProcess.Core.Controls
 
             //当中键按下，移动图片
             if (e.MiddleButton == MouseButtonState.Pressed)
+            //e.RightButton == MouseButtonState.Pressed)
             {
-                Image im = sender as Image;
-                var group = im.RenderTransform as TransformGroup;
-                var ttf = group.Children[1] as TranslateTransform;//对应Xaml位置    这样搞，放大缩小有点奇怪
+                Image im = (Image)sender;
+                var group = (TransformGroup)im.RenderTransform;
+                var ttf = (TranslateTransform)group.Children[1];//对应Xaml位置    这样搞，放大缩小有点奇怪
 
                 ttf.X += cursorPosition.X - _MiddleButtonClickedPosition.X;
                 ttf.Y += cursorPosition.Y - _MiddleButtonClickedPosition.Y;
@@ -129,47 +132,121 @@ namespace VisonProcess.Core.Controls
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-         
+
         }
+
+        //int mouseDownCount = 0;
+
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.MiddleButton == MouseButtonState.Pressed)
+            //e.RightButton == MouseButtonState.Pressed)
+            {
                 _MiddleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
+
+
+
+
+                //mouseDownCount += 1;
+                //DispatcherTimer timer = new DispatcherTimer();
+                //timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                //timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
+                //timer.IsEnabled = true;
+                //if (mouseDownCount % 2 == 0)
+                //{
+                //    timer.IsEnabled = false;
+                //    mouseDownCount = 0;
+
+                //    var group = (TransformGroup)image.RenderTransform;
+                //    group.Children[0] = new ScaleTransform();
+                //    group.Children[1] = new TranslateTransform();
+
+
+                //}
+
+
+
+
+
+
+
+            }
+
         }
 
         private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Image sf = sender as Image;
-            var group = sf.RenderTransform as TransformGroup;
-            var sc = group.Children[0] as ScaleTransform;//对应Xaml位置    这样搞，放大缩小有点奇怪
+            Image sf = (Image)sender;
+            var group = (TransformGroup)sf.RenderTransform;
+            var sc = (ScaleTransform)group.Children[0];//对应Xaml位置    这样搞，放大缩小有点奇怪
             var cursorPosition = e.GetPosition((IInputElement)e.Source);
             sc.CenterX = cursorPosition.X;
             sc.CenterY = cursorPosition.Y;
+            //sc.ScaleX += e.Delta * 0.001;
+            //sc.ScaleY += e.Delta * 0.001;
+
+
             if (e.Delta > 0)
             {
-                sc.ScaleX += 0.02;
-                sc.ScaleY += 0.02;
+                sc.ScaleX += 0.05;
+                sc.ScaleY += 0.05;
             }
             else
             {
                 if (sc.ScaleX > 0.55)
                 {
-                    sc.ScaleX -= 0.02;
-                    sc.ScaleY -= 0.02;
+                    sc.ScaleX -= 0.05;
+                    sc.ScaleY -= 0.05;
                 }
             }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var scr = ContextMenuService.GetPlacementTarget(LogicalTreeHelper.GetParent((DependencyObject)e.Source)) as ScrollViewer;
+            var scr = (ScrollViewer)ContextMenuService.GetPlacementTarget(LogicalTreeHelper.GetParent((DependencyObject)e.Source));
 
-            var im = scr.Content as Image;
+            var im = (Image)scr.Content;
 
-            var group = im.RenderTransform as TransformGroup;
+            var group = (TransformGroup)im.RenderTransform;
             group.Children[0] = new ScaleTransform();
             group.Children[1] = new TranslateTransform();
+        }
+
+
+        int mouseDownCount = 0;
+
+        private void BackFrame_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            //e.RightButton == MouseButtonState.Pressed)
+            {
+
+
+                mouseDownCount += 1;
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
+                timer.IsEnabled = true;
+                if (mouseDownCount % 2 == 0)
+                {
+                    timer.IsEnabled = false;
+                    mouseDownCount = 0;
+
+                    var group = (TransformGroup)image.RenderTransform;
+                    group.Children[0] = new ScaleTransform();
+                    group.Children[1] = new TranslateTransform();
+
+
+                }
+
+
+
+
+
+
+
+            }
         }
     }
 }

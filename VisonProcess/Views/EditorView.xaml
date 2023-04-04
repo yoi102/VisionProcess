@@ -68,9 +68,11 @@
 
     </UserControl.Resources>
     <Grid>
+        <Grid Background="{StaticResource LargeGridLinesDrawingBrush}"
+              Panel.ZIndex="-2" />
 
-        <nodify:NodifyEditor DataContext="{Binding Process}"
-                             x:Name="Editor"
+        <nodify:NodifyEditor x:Name="Editor"
+                             DataContext="{Binding Process}"
                              ItemsSource="{Binding Operations}"
                              SelectedItems="{Binding SelectedOperations}"
                              DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}"
@@ -79,7 +81,7 @@
                              ConnectionTemplate="{StaticResource ConnectionTemplate}"
                              Background="{StaticResource SmallGridLinesDrawingBrush}"
                              ItemContainerStyle="{StaticResource ItemContainerStyle}"
-                             GridCellSize="5">
+                             GridCellSize="15">
 
             <nodify:NodifyEditor.Resources>
 
@@ -94,9 +96,13 @@
                         <Setter.Value>
                             <DataTemplate DataType="{x:Type mvvm:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Title}"
-                                               VerticalAlignment="Center"
-                                               Margin="0 0 5 0" />
+                                    <TextBlock Text=" In-"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Text="{Binding Title}"
+                                             Style="{StaticResource MaterialDesignTextBox}"
+                                             AcceptsTab="True"
+                                             VerticalAlignment="Center"
+                                             Margin="2 0" />
                                     <!--<TextBox Text="{Binding Value}" />-->
                                     <!--Visibility="{Binding IsConnected, Converter={StaticResource Bool2Visibility}}" />-->
                                 </StackPanel>
@@ -106,11 +112,11 @@
                     <Setter Property="ToolTip">
                         <Setter.Value>
                             <StackPanel d:DataContext="{d:DesignInstance mvvm:ConnectorModel}">
-                                <TextBlock Text="{Binding Title,StringFormat= {}{x:Static strings:Strings.Title} ：{0}}"
+                                <TextBlock Text="{Binding Title,StringFormat= Title：{0}}"
                                            Margin="0 0 5 0" />
-                                <TextBlock Text="{Binding ValueType,StringFormat= {}{x:Static strings:Strings.Type} ：{0}}"
+                                <TextBlock Text="{Binding ValueType,StringFormat= Type：{0}}"
                                            Margin="0 0 5 0" />
-                                <TextBlock Text="{Binding Value,StringFormat= {}{x:Static strings:Strings.Value} ：{0}}" />
+                                <TextBlock Text="{Binding Value,StringFormat= Value：{0}}" />
                             </StackPanel>
                         </Setter.Value>
                     </Setter>
@@ -128,11 +134,12 @@
                         <Setter.Value>
                             <DataTemplate DataType="{x:Type mvvm:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Title}"
-                                               VerticalAlignment="Center"
-                                               Margin="0 0 5 0" />
-                                    <TextBlock Text="{Binding Value}"
-                                               IsEnabled="False" />
+                                    <TextBlock Text=" In-"
+                                               VerticalAlignment="Center" />
+                                    <TextBox Text="{Binding Title}"
+                                             Style="{StaticResource MaterialDesignTextBox}"
+                                             VerticalAlignment="Center"
+                                             Margin="2 0" />
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
@@ -140,11 +147,11 @@
                     <Setter Property="ToolTip">
                         <Setter.Value>
                             <StackPanel d:DataContext="{d:DesignInstance mvvm:ConnectorModel}">
-                                <TextBlock Text="{Binding Title,StringFormat= 名称：{0}}"
+                                <TextBlock Text="{Binding Title,StringFormat= Title：{0}}"
                                            Margin="0 0 5 0" />
-                                <TextBlock Text="{Binding ValueType,StringFormat= 类型：{0}}"
+                                <TextBlock Text="{Binding ValueType,StringFormat= Type：{0}}"
                                            Margin="0 0 5 0" />
-                                <TextBlock Text="{Binding Value,StringFormat= 值：{0}}" />
+                                <TextBlock Text="{Binding Value,StringFormat= Value：{0}}" />
                             </StackPanel>
                         </Setter.Value>
                     </Setter>

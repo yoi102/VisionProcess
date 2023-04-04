@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,6 +51,8 @@ namespace VisonProcess.Core.Controls
             if (e.NewValue is not null)
             {
                 uclRecord.SelectedRecord = ((ICollection<Record>)e.NewValue).FirstOrDefault()!;
+                
+                //这里需要通知前台
             }
 
         }
@@ -72,9 +75,10 @@ namespace VisonProcess.Core.Controls
 
         private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
+   
 
 
         }
+
     }
 }

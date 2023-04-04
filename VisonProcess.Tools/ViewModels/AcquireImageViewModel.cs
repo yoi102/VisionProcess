@@ -62,10 +62,13 @@ namespace VisonProcess.Tools.ViewModels
             if (result == true)
             {
                 // Open document
-                string filename = dialog.FileName;
+                //string filename = dialog.FileName;
                 imagePaths = dialog.FileNames.ToList();
                 currentIndex = 0;
             }
+
+
+            Execute();
         }
 
         private void Init()

@@ -23,7 +23,7 @@ namespace VisonProcess.Tools.ViewModels
 
         private void Init()
         {
-            Records.Add(new() { Title = Strings.OutputImage });
+            Records.Add(new() { Title = Strings.OutputImage +111});
         }
 
 

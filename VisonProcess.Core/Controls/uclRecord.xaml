@@ -18,6 +18,7 @@
                        SelectedItem="{Binding ElementName=Record,Path=SelectedRecord}"
                        DisplayMemberPath="Title" />
             <local:uclImage ImageSource="{Binding ElementName=Record,Path=SelectedRecord.DisplayImage}" />
+            <!--<local:uclImage x:Name="image" />-->
         </DockPanel>
     </Grid>
 </UserControl>

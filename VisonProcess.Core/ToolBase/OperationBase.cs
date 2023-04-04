@@ -15,7 +15,7 @@ namespace VisonProcess.Core.ToolBase
 
 
             //如果，，将被运行两次!!!!!!!
-            //Inputs.PropertyChanged += Inputs_PropertyChanged;
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
 
         private Stopwatch? sw;

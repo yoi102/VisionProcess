@@ -23,7 +23,9 @@
                               VerticalScrollBarVisibility="Disabled"
                               Cursor="Arrow"
                               Focusable="False"
-                              x:Name="BackFrame">
+                              
+                              x:Name="BackFrame"
+                              MouseDown="BackFrame_MouseDown">
                     <ScrollViewer.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static strings:Strings.AdaptiveForm}"
@@ -32,6 +34,7 @@
                         </ContextMenu>
                     </ScrollViewer.ContextMenu>
                     <Image Source="{Binding Path=ImageSource, ElementName=IM}"
+                           x:Name="image"
                            Width="Auto"
                            Height="Auto"
                            Stretch="Uniform"
