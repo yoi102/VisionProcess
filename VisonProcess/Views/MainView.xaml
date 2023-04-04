@@ -20,6 +20,11 @@
                  Height="850"
                  Width="1400">
     <Window.Resources>
+
+        <md:NullableToVisibilityConverter NotNullValue="Visible"
+                                          NullValue="Collapsed"
+                                          x:Key="NotNullValueToVisibility" />
+
         <core:BindingProxy x:Key="Proxy"
                            DataContext="{Binding}" />
 
@@ -110,7 +115,9 @@
                     </TextBlock>
                 </Expander.Header>
 
-                <local:uclOperationView HorizontalContentAlignment="Left" />
+                <local:uclOperationView HorizontalAlignment="Left"
+                                        DataContext="{Binding SelectedEditor.Process.SelectedOperation}"
+                                        Visibility="{Binding Converter={StaticResource NotNullValueToVisibility}}" />
 
             </Expander>
 
@@ -135,7 +142,7 @@
 
                 </coreControls:TabControlEx>
 
-                <local:EditorView />
+                <!--<local:EditorView />-->
 
                 <!--<GridSplitter Width="5"
                               HorizontalAlignment="Right"
@@ -164,7 +171,8 @@
                 </md:ColorZone.Content>
             </md:ColorZone>
             <ListBox SelectionMode="Single"
-                     ItemsSource="{Binding SelectedEditor.Process.Operations}">
+                     ItemsSource="{Binding SelectedEditor.Process.Operations}"
+                     SelectedItem="{Binding SelectedEditor.Process.SelectedOperation}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal" />

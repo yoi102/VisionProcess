@@ -31,12 +31,11 @@ namespace VisonProcess.ViewModels
            childEditors.ForEach(ed => Editors.Remove(ed));
        });
 
+
             Editors.Add(new EditorViewModel
             {
                 Name = $"Editor {Editors.Count + 1}"
             });
-
-
             //Add some things
             Editors[0].Process.Operations.Add(new OperationModel { Operation = new AcquireImageViewModel()});
             Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel()});

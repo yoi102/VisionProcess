@@ -484,6 +484,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Title 的本地化字符串。
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Toolbox 的本地化字符串。
         /// </summary>
         public static string Toolbox {
@@ -493,11 +502,29 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Type 的本地化字符串。
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 User 的本地化字符串。
         /// </summary>
         public static string User {
             get {
                 return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Value 的本地化字符串。
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
         

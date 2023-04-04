@@ -7,11 +7,13 @@
              mc:Ignorable="d"
              x:Name="Record"
              d:Background="Wheat"
+             Width="444"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <Grid>
         <DockPanel>
             <ComboBox  DockPanel.Dock="Top"
+                       Style="{StaticResource MahApps.Styles.ComboBox}"
                        ItemsSource="{Binding ElementName=Record,Path=RecordSource}"
                        SelectedItem="{Binding ElementName=Record,Path=SelectedRecord}"
                        DisplayMemberPath="Title" />
