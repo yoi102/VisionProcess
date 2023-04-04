@@ -3,15 +3,11 @@ ing
 
 Package :
 
-Nodify
-
-CommunityToolkit.Mvvm
-
-MaterialDesignThemes.MahApps
-
-MahApps.Metro.IconPacks
-
-OpenCvSharp4
+Nodify 
+CommunityToolkit.Mvvm 
+MaterialDesignThemes.MahApps 
+MahApps.Metro.IconPacks 
+OpenCvSharp4 
 
 
 
