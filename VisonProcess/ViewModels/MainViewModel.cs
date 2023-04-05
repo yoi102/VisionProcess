@@ -33,7 +33,7 @@ namespace VisonProcess.ViewModels
             });
             //Add some things
             Editors[0].Process.Operations.Add(new OperationModel { Operation = new AcquireImageViewModel() });
-            Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel() });
+            Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel(), Location = new System.Windows.Point(200,200) });
         }
 
         private void OnOpenInnerProcess(EditorViewModel parentEditor, ProcessModel process)
