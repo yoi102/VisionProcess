@@ -53,6 +53,16 @@ namespace VisonProcess.Core.Controls
 
         private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            //uclRecord uclRecord = (uclRecord)d;
+            //if (e.NewValue is not null)
+            //{
+            //    uclRecord.image.ImageSource = ((Record)e.NewValue).DisplayImage;
+            //}
+            //else
+            //{
+            //    uclRecord.image.ImageSource = null;
+            //}
+
         }
     }
 }

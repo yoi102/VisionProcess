@@ -24,7 +24,12 @@ namespace VisonProcess.Core.ToolBase
                 {
                     _displayImage = value;
                     _displayImage?.Freeze();
-                    OnPropertyChanged();
+                    //只能这样更新？
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+
+                        OnPropertyChanged();
+                    });
                 }
             }
         }

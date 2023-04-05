@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp.WpfExtensions;
+using System.Windows.Threading;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
 using VisonProcess.Core.ToolBase;
@@ -31,7 +32,11 @@ namespace VisonProcess.Tools.ViewModels
             }
             //Cv2.CvtColor(Inputs.Image, Outputs.Image, ColorConversionCodes.RGB2BGRA);//RGB2BGRA? BRG2BGRA?
             Outputs.Image = Inputs.Image.CvtColor(Inputs.ColorConversionCodes);
-            Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
+
+           
+                Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
+
+
             //to one channel ?
             //R*Weight
             //G*Weight

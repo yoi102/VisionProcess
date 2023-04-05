@@ -68,6 +68,8 @@
 
         <controls:uclRecord Grid.Row="1"
                             RecordSource="{Binding  Operation.Records, Mode=OneWay}" />
+        <!--<controls:uclImage Grid.Row="1"
+                           ImageSource="{Binding Operation.Records[0].DisplayImage}" />-->
         <ContentControl Grid.Row="2"
                         Content="{Binding Operation}" />
 
