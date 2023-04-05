@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using VisonProcess.ViewModels;
 using static ControlzEx.Standard.NativeMethods;
@@ -21,10 +16,8 @@ namespace VisonProcess
     {
         private static Mutex? appMutex;
 
-
         public App()
         {
-
             string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
             //string lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
@@ -32,24 +25,13 @@ namespace VisonProcess
 
             Services = ConfigureServices();
             this.InitializeComponent();
-
-
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-
-
-
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             CheckMutex(e);
         }
-
-
-
-
-
-
 
         /// <summary>
         /// Gets the current <see cref="App"/> instance in use
@@ -72,27 +54,8 @@ namespace VisonProcess
             services.AddTransient<EditorViewModel>();
             //services.AddSingleton<IFilesService, FilesService>();
 
-
-
             return services.BuildServiceProvider();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private void CheckMutex(StartupEventArgs e)
         {
@@ -146,10 +109,5 @@ namespace VisonProcess
 
         [DllImport("User32.dll", CharSet = CharSet.Unicode, EntryPoint = "FlashWindow")]
         public static extern void FlashWindow(IntPtr hwnd, bool bInvert);
-
-
-
-
-
     }
 }

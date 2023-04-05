@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace VisonProcess.Core.ToolBase
 {
@@ -14,7 +13,9 @@ namespace VisonProcess.Core.ToolBase
         //IInputs Inputs { get; }
         //IOutputs Outputs { get; }
         RunStatus RunStatus { get; }
+
         ObservableCollection<Record> Records { get; }
+
         void Execute();
 
         IAsyncRelayCommand? ExecuteCommand { get; }

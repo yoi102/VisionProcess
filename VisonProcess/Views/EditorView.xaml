@@ -91,12 +91,10 @@
                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ContextMenu} }, Path=PlacementTarget.DataContext}"
                                    Command="{Binding DataContext.DisconnectCommand,Source={StaticResource Proxy}}" />
                         <!--Command="{Binding DeletLineConnectionCommand}" />-->
-
                     </ContextMenu>
                 </nodify:Connection.ContextMenu>
             </nodify:Connection>
         </DataTemplate>
-
     </UserControl.Resources>
     <Grid>
         <Grid Background="{StaticResource LargeGridLinesDrawingBrush}"
@@ -235,8 +233,6 @@
                     </nodify:Node>
                 </DataTemplate>
             </nodify:NodifyEditor.Resources>
-
         </nodify:NodifyEditor>
-
     </Grid>
 </UserControl>

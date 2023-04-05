@@ -1,9 +1,4 @@
 ﻿using OpenCvSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VisonProcess.Core.ToolBase;
 
 namespace VisonProcess.Tools.Models
@@ -15,8 +10,8 @@ namespace VisonProcess.Tools.Models
         public Mat? Image
         {
             get { return _image; }
-            internal set 
-            { 
+            internal set
+            {
                 if (_image != value)
                 {
                     _image?.Dispose();
@@ -24,9 +19,5 @@ namespace VisonProcess.Tools.Models
                 }
             }
         }
-
-
-
     }
-
 }

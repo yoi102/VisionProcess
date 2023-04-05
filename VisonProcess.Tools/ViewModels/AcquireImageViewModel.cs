@@ -4,7 +4,6 @@ using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
 using VisonProcess.Core.ToolBase;
@@ -22,6 +21,7 @@ namespace VisonProcess.Tools.ViewModels
 
         private int currentIndex = 0;
         private List<string>? imagePaths;
+
         protected override bool InternalExecute(out string message)
         {
             message = "";
@@ -66,7 +66,6 @@ namespace VisonProcess.Tools.ViewModels
                 imagePaths = dialog.FileNames.ToList();
                 currentIndex = 0;
             }
-
 
             Execute();
         }

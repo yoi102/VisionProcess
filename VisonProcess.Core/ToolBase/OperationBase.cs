@@ -13,7 +13,6 @@ namespace VisonProcess.Core.ToolBase
             Outputs = new T2();
             Graphic = new T3();
 
-
             //如果，，将被运行两次!!!!!!!
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
@@ -39,8 +38,6 @@ namespace VisonProcess.Core.ToolBase
         {
             await Task.Run(() => Execute());
         }
-
-
 
         public void Execute()
         {

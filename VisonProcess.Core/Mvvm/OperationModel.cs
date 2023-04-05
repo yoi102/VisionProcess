@@ -65,14 +65,14 @@ namespace VisonProcess.Core.Mvvm
             {
                 if (value is not null)
                 {
-                    Title = value.GetType().Name.Replace("ViewModel","");
+                    Title = value.GetType().Name.Replace("ViewModel", "");
                     var attributes = (DefaultToolConnectorAttribute[])value.GetType().GetCustomAttributes(typeof(DefaultToolConnectorAttribute), false);
                     foreach (var item in attributes)
                     {
                         var t = PropertyMisc.GetType(value, item.Path);
                         var v = PropertyMisc.GetValue(value, item.Path);
                         //if (t == null || v == null)
-                        if (t == null )
+                        if (t == null)
                         {
                             throw new ArgumentException("Error, DefaultToolConnectorAttribute setting  error");
                         }

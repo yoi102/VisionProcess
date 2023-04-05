@@ -23,7 +23,7 @@
                               VerticalScrollBarVisibility="Disabled"
                               Cursor="Arrow"
                               Focusable="False"
-                              
+
                               x:Name="BackFrame"
                               MouseDown="BackFrame_MouseDown">
                     <ScrollViewer.ContextMenu>
@@ -75,7 +75,6 @@
                                    Foreground="White" />
                         <TextBlock Name="Path_Gray"
                                    Foreground="White" />
-
                     </StackPanel>
 
                     <StackPanel x:Name="RGBPanel"
@@ -100,9 +99,7 @@
                                    Foreground="White" />
                         <TextBlock Name="Path_B"
                                    Foreground="White" />
-
                     </StackPanel>
-
                 </StackPanel>
             </Grid>
         </Border>

@@ -24,7 +24,6 @@
         <DataTemplate DataType="{x:Type tvm:ColorConvertViewModel}">
             <tv:ColorConvertView />
         </DataTemplate>
-
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -65,7 +64,6 @@
                                Text="{Binding Operation.RunStatus.Message,StringFormat={}Message: {0}}" />
                 </StackPanel>
             </DockPanel.ToolTip>
-
         </DockPanel>
 
         <controls:uclRecord Grid.Row="1"
@@ -78,7 +76,6 @@
                    Text="{Binding Operation.RunStatus.Message}"
                    ToolTip="{Binding Operation.RunStatus.Message}"
                    TextWrapping="Wrap">
-
         </TextBlock>
     </Grid>
 </UserControl>

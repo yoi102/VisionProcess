@@ -1,5 +1,4 @@
-﻿using Nodify;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -18,6 +17,7 @@ namespace VisonProcess.Core.Controls
             get { return (ICommand)GetValue(AddTabCommandProperty); }
             set { SetValue(AddTabCommandProperty, value); }
         }
+
         public bool AutoScrollToEnd
         {
             get { return (bool)GetValue(AutoScrollToEndProperty); }

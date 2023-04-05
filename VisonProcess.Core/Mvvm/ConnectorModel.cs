@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 using System.Windows;
 using VisonProcess.Core.Extentions;
 
@@ -22,7 +21,6 @@ namespace VisonProcess.Core.Mvvm
             _valueType = valueType;
             _valuePath = valuePath;
         }
-
 
         private Point _anchor = default;
         private bool _isConnected = false;
@@ -68,6 +66,7 @@ namespace VisonProcess.Core.Mvvm
             get => _title;
             set => SetProperty(ref _title, value);
         }
+
         public object? Value
         {
             get => _value;
@@ -82,9 +81,9 @@ namespace VisonProcess.Core.Mvvm
                     }
                 }
                 SetProperty(ref _value, value).Then(() => ValueObservers.ForEach(o => o.Value = value));
-
             }
         }
+
         public List<ConnectorModel> ValueObservers { get; } = new List<ConnectorModel>();
 
         public Type ValueType

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace VisonProcess.Core.Extentions
+﻿namespace VisonProcess.Core.Extentions
 {
     public static class FluentSyntax
     {

@@ -89,7 +89,6 @@
                                   HorizontalAlignment="Right"
                                   d:Background="Red" />-->
                 </Grid>
-
             </Expander>
             <!--<GridSplitter Width="5"
                           HorizontalAlignment="Right"
@@ -118,7 +117,6 @@
                 <local:uclOperationView HorizontalAlignment="Left"
                                         DataContext="{Binding SelectedEditor.Process.SelectedOperation}"
                                         Visibility="{Binding Converter={StaticResource NotNullValueToVisibility}}" />
-
             </Expander>
 
             <Grid Grid.Column="1"
@@ -139,7 +137,6 @@
                                     Value="{Binding Id}" />
                         </Style>
                     </coreControls:TabControlEx.ItemContainerStyle>
-
                 </coreControls:TabControlEx>
 
                 <!--<local:EditorView />-->
@@ -149,12 +146,10 @@
                               Background="Red" />-->
 
                 <!--<GridSplitter Width="5"
-                    
+
                               HorizontalAlignment="Left"
                               Background="Red" />-->
-
             </Grid>
-
         </Grid>
 
         <GridSplitter Grid.Row="1"

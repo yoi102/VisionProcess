@@ -1,16 +1,10 @@
 ﻿using OpenCvSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VisonProcess.Core.ToolBase;
 
 namespace VisonProcess.Tools.Models
 {
-    public class ColorConvertInput: InputsBase
+    public class ColorConvertInput : InputsBase
     {
-
         private Mat? _image;
 
         public Mat? Image
@@ -27,20 +21,12 @@ namespace VisonProcess.Tools.Models
             }
         }
 
-
         private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.RGB2GRAY;
+
         public ColorConversionCodes ColorConversionCodes
         {
             get { return _colorConversionCodes; }
             set { SetProperty(ref _colorConversionCodes, value); }
         }
-
-
-
-
-
-
-
-
     }
 }

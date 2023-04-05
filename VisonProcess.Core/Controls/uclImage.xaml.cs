@@ -1,6 +1,5 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System.Security.Cryptography.Xml;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -42,11 +41,9 @@ namespace VisonProcess.Core.Controls
 
         private static void OnImageSourceChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
-
             var uclImage = (uclImage)depObj;
             if (e.NewValue != null)
             {
-
                 uclImage!.ImageSource = (ImageSource)e.NewValue;
                 uclImage.GetImageSourceData();
             }
@@ -54,7 +51,6 @@ namespace VisonProcess.Core.Controls
 
         private void GetImageSourceData()
         {
-
             var image = ImageSource as BitmapSource;
             if (image != null)
             {
@@ -68,7 +64,6 @@ namespace VisonProcess.Core.Controls
 
                         GrayPanel.Visibility = Visibility.Collapsed;
                         RGBPanel.Visibility = Visibility.Visible;
-
                     }
                     else
                     {
@@ -77,14 +72,10 @@ namespace VisonProcess.Core.Controls
                         _ImageData3b = null;
                         GrayPanel.Visibility = Visibility.Visible;
                         RGBPanel.Visibility = Visibility.Collapsed;
-
                     }
                 }
             }
-
         }
-
-
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
@@ -132,11 +123,9 @@ namespace VisonProcess.Core.Controls
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
         }
 
         //int mouseDownCount = 0;
-
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -144,9 +133,6 @@ namespace VisonProcess.Core.Controls
             //e.RightButton == MouseButtonState.Pressed)
             {
                 _MiddleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
-
-
-
 
                 //mouseDownCount += 1;
                 //DispatcherTimer timer = new DispatcherTimer();
@@ -162,17 +148,8 @@ namespace VisonProcess.Core.Controls
                 //    group.Children[0] = new ScaleTransform();
                 //    group.Children[1] = new TranslateTransform();
 
-
                 //}
-
-
-
-
-
-
-
             }
-
         }
 
         private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -185,7 +162,6 @@ namespace VisonProcess.Core.Controls
             sc.CenterY = cursorPosition.Y;
             //sc.ScaleX += e.Delta * 0.001;
             //sc.ScaleY += e.Delta * 0.001;
-
 
             if (e.Delta > 0)
             {
@@ -213,16 +189,13 @@ namespace VisonProcess.Core.Controls
             group.Children[1] = new TranslateTransform();
         }
 
-
-        int mouseDownCount = 0;
+        private int mouseDownCount = 0;
 
         private void BackFrame_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.MiddleButton == MouseButtonState.Pressed)
             //e.RightButton == MouseButtonState.Pressed)
             {
-
-
                 mouseDownCount += 1;
                 DispatcherTimer timer = new DispatcherTimer();
                 timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
@@ -236,16 +209,7 @@ namespace VisonProcess.Core.Controls
                     var group = (TransformGroup)image.RenderTransform;
                     group.Children[0] = new ScaleTransform();
                     group.Children[1] = new TranslateTransform();
-
-
                 }
-
-
-
-
-
-
-
             }
         }
     }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VisonProcess.Core.Extentions
 {
-
     public class PropertyMisc
     {
         private static List<string> SplitFullPath(string fullPath, params char[] spiltChars)
@@ -78,7 +72,6 @@ namespace VisonProcess.Core.Extentions
                 else//如果是属性
                 {
                     o = GetPropertyValue(ob, list[i]);
-
                 }
             }
 
@@ -123,10 +116,6 @@ namespace VisonProcess.Core.Extentions
             }
         }
 
-
-
-
-
         public static Type? GetType(object ob, string fullPath, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);//默认为 "."
@@ -156,7 +145,6 @@ namespace VisonProcess.Core.Extentions
                             break;
                         }
                     }
-
                 }
                 else//如没有（）则为属性
                 {
@@ -311,11 +299,6 @@ namespace VisonProcess.Core.Extentions
             return result;
         }
 
-
-
-
-
-
         public static object? GetPropertyValue(object ob, string propertyName)
         {
             PropertyInfo? propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
@@ -383,7 +366,6 @@ namespace VisonProcess.Core.Extentions
             {
                 //throw ex.InnerException;
                 return null;
-
             }
         }
 
@@ -400,5 +382,4 @@ namespace VisonProcess.Core.Extentions
             }
         }
     }
-
 }

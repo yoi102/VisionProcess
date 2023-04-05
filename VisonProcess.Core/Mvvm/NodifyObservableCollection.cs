@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -43,6 +41,7 @@ namespace VisonProcess.Core.Mvvm
         private readonly List<Action<IList<T>>> _cleared = new List<Action<IList<T>>>();
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public NodifyObservableCollection()
@@ -107,7 +106,7 @@ namespace VisonProcess.Core.Mvvm
             }
         }
 
-        #endregion
+        #endregion Collection Events
 
         #region Collection Handlers
 
@@ -188,6 +187,6 @@ namespace VisonProcess.Core.Mvvm
         private void OnCollectionChanged(NotifyCollectionChangedAction action, object? oldItem, object? newItem, int index)
             => OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
 
-        #endregion
+        #endregion Collection Handlers
     }
 }

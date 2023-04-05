@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace VisonProcess.Core.Attributes
+﻿namespace VisonProcess.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public class DefaultToolConnectorAttribute : Attribute
@@ -20,15 +13,5 @@ namespace VisonProcess.Core.Attributes
         public bool IsInput { get; }
         public string Title { get; }
         public string Path { get; }
-
-
-
     }
-
-
-
-
-
-
-
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
@@ -13,8 +8,6 @@ namespace VisonProcess.Core.Converters
     {
         public bool UseHidden { get; set; }
         public bool Reversed { get; set; }
-
-
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -5,6 +5,7 @@ namespace VisonProcess.Core.Mvvm
     public class ConnectionModel : ObservableObject
     {
         private ConnectorModel _input = default!;
+
         public ConnectorModel Input
         {
             get => _input;
@@ -12,6 +13,7 @@ namespace VisonProcess.Core.Mvvm
         }
 
         private ConnectorModel _output = default!;
+
         public ConnectorModel Output
         {
             get => _output;

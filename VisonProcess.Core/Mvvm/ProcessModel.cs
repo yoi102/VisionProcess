@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Reflection.Metadata;
 using System.Windows;
 using VisonProcess.Core.Extentions;
 
@@ -96,6 +95,7 @@ namespace VisonProcess.Core.Mvvm
                 SelectedOperation = value?.FirstOrDefault();
             }
         }
+
         public OperationModel? SelectedOperation
         {
             get => _selectedOperation;
@@ -114,6 +114,7 @@ namespace VisonProcess.Core.Mvvm
         {
             return IsCanCreateConnection(PendingConnection.Source, PendingConnection.Target);
         }
+
         private bool CanGroupSelection()
         {
             return SelectedOperations.Count > 0;
@@ -164,7 +165,6 @@ namespace VisonProcess.Core.Mvvm
             connections.ForEach(c => Connections.Remove(c));
         }
 
-
         //[RelayCommand]
         //private void DeletLineConnection(ConnectionModel connection)
         //{
@@ -172,7 +172,6 @@ namespace VisonProcess.Core.Mvvm
         //    connection.Output.IsConnected = false;
         //    Connections.Remove(connection);
         //}
-
 
         [RelayCommand(CanExecute = nameof(CanGroupSelection))]
         private void GroupSelection()

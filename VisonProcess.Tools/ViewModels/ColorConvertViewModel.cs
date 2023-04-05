@@ -1,10 +1,4 @@
-﻿using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenCvSharp.WpfExtensions;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
 using VisonProcess.Core.ToolBase;
@@ -16,18 +10,15 @@ namespace VisonProcess.Tools.ViewModels
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
     public class ColorConvertViewModel : OperationBase<ColorConvertInput, ColorConvertOutput, GraphicsBase>
     {
-        public ColorConvertViewModel() : base() 
+        public ColorConvertViewModel() : base()
         {
             Init();
         }
 
         private void Init()
         {
-            Records.Add(new() { Title = Strings.OutputImage +111});
+            Records.Add(new() { Title = Strings.OutputImage + 111 });
         }
-
-
-
 
         protected override bool InternalExecute(out string message)
         {
@@ -39,23 +30,15 @@ namespace VisonProcess.Tools.ViewModels
                 return false;
             }
             //Cv2.CvtColor(Inputs.Image, Outputs.Image, ColorConversionCodes.RGB2BGRA);//RGB2BGRA? BRG2BGRA?
-            Outputs.Image= Inputs.Image.CvtColor(Inputs.ColorConversionCodes);   
+            Outputs.Image = Inputs.Image.CvtColor(Inputs.ColorConversionCodes);
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
-            //to one channel ? 
+            //to one channel ?
             //R*Weight
             //G*Weight
             //B*Weight
             //...............................................................
 
             return true;
-
         }
-
-
-
-
-
-
-
     }
 }

@@ -1,9 +1,8 @@
-﻿using System.Windows;
+﻿using Nodify;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using Nodify;
-using VisonProcess.Core;
 
 namespace VisonProcess.Core.Controls
 {
@@ -22,7 +21,8 @@ namespace VisonProcess.Core.Controls
         public static readonly DependencyProperty MaxLinesProperty = TextBox.MaxLinesProperty.AddOwner(typeof(EditableTextBlock));
         public static readonly DependencyProperty MaxLengthProperty = TextBox.MaxLengthProperty.AddOwner(typeof(EditableTextBlock));
 
-        private static void OnIsEditingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
+        private static void OnIsEditingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        { }
 
         private static object CoerceIsEditing(DependencyObject d, object value)
         {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Globalization;
-using System.Windows.Data;
 
 namespace VisonProcess.Core.Converters
 {
@@ -23,13 +20,9 @@ namespace VisonProcess.Core.Converters
             return value;
         }
 
-
-
         public override object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }
-
-
     }
 }

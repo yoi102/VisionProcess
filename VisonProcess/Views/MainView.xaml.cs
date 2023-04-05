@@ -1,20 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using VisonProcess.ViewModels;
 
 namespace VisonProcess.Views
@@ -30,9 +16,6 @@ namespace VisonProcess.Views
 
             this.DataContext = App.Current.Services.GetService<MainViewModel>();
 
-
-
-
             //虽然圆角，但影响发光边框。。。。。
             //https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-rounded-corners
 
@@ -43,11 +26,7 @@ namespace VisonProcess.Views
 
             //还有云母布局。。。
             //https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-snap-layout-menu
-
         }
-
-
-
 
         // The enum flag for DwmSetWindowAttribute's second parameter, which tells the function what attribute to set.
         // Copied from dwmapi.h
@@ -73,16 +52,5 @@ namespace VisonProcess.Views
                                                          DWMWINDOWATTRIBUTE attribute,
                                                          ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute,
                                                          uint cbAttribute);
-
-
-
-
-
-
-
-
-
-
-
     }
 }

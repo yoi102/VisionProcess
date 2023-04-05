@@ -6,6 +6,7 @@ namespace VisonProcess.Core.Mvvm
     public class PendingConnectionModel : ObservableObject
     {
         private ConnectorModel _source = default!;
+
         public ConnectorModel Source
         {
             get => _source;
@@ -13,6 +14,7 @@ namespace VisonProcess.Core.Mvvm
         }
 
         private ConnectorModel? _target;
+
         public ConnectorModel? Target
         {
             get => _target;
@@ -20,6 +22,7 @@ namespace VisonProcess.Core.Mvvm
         }
 
         private bool _isVisible;
+
         public bool IsVisible
         {
             get => _isVisible;
