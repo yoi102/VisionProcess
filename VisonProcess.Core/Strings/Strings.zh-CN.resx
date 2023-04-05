@@ -279,4 +279,10 @@
   <data name="Value" xml:space="preserve">
     <value>值</value>
   </data>
+  <data name="Delet" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>取消连线</value>
+  </data>
 </root>

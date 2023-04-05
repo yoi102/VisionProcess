@@ -39,18 +39,33 @@
                     Style="{StaticResource MaterialDesignToolForegroundButton}"
                     Content="{md:PackIcon Kind=ArrowRightDropCircleOutline, Size=25}"
                     Command="{Binding Operation.ExecuteCommand}" />
-      
+
             <Ellipse DockPanel.Dock="Right"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Right"
                      Width="10"
                      Height="10"
                      Fill="{Binding Operation.RunStatus.Result, Converter= {converter:BooleanToBrush}}" />
-            <TextBlock Margin="10 0 " DockPanel.Dock="Right"
+            <TextBlock Margin="10 0 "
+                       DockPanel.Dock="Right"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Right"
                        Text="{Binding Operation.RunStatus.ProcessingTime,StringFormat={}{0} ms}" />
             <!--Fill="{Binding SpinCtrl.IsCamAvailable, Converter={StaticResource ConnectionColorConverter}}" />-->
+
+            <DockPanel.ToolTip>
+                <StackPanel>
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Operation.RunStatus.ProcessingTime,StringFormat={}ProcessingTime: {0} ms}" />
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Operation.RunStatus.LastTime,StringFormat={}LastTime: {0} }" />
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Operation.RunStatus.Result,StringFormat={}Result: {0}}" />
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Operation.RunStatus.Message,StringFormat={}Message: {0}}" />
+                </StackPanel>
+            </DockPanel.ToolTip>
+
         </DockPanel>
 
         <controls:uclRecord Grid.Row="1"

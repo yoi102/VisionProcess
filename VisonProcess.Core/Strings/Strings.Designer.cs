@@ -115,6 +115,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Delet 的本地化字符串。
+        /// </summary>
+        public static string Delet {
+            get {
+                return ResourceManager.GetString("Delet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Desktop 的本地化字符串。
         /// </summary>
         public static string Desktop {
@@ -138,6 +147,15 @@ namespace VisonProcess.Core.Strings {
         public static string DirectoryXNotFound {
             get {
                 return ResourceManager.GetString("DirectoryXNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似  的本地化字符串。
+        /// </summary>
+        public static string Disconnect {
+            get {
+                return ResourceManager.GetString("Disconnect", resourceCulture);
             }
         }
         

@@ -279,4 +279,10 @@
   <data name="Value" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="Delet" xml:space="preserve">
+    <value>Delet</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

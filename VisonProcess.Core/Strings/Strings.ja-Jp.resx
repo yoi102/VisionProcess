@@ -273,4 +273,7 @@
   <data name="Type" xml:space="preserve">
     <value>タイプ</value>
   </data>
+  <data name="Delet" xml:space="preserve">
+    <value>削除</value>
+  </data>
 </root>

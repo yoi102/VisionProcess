@@ -47,7 +47,13 @@ namespace VisonProcess.ViewModels
         }
 
 
-
+        [RelayCommand]
+        private void Disconnect(ConnectionModel connection)
+        {
+            connection.Input.IsConnected = false;
+            connection.Output.IsConnected = false;
+            Process.Connections.Remove(connection);
+        }
 
 
 

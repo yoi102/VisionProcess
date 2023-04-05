@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Reflection.Metadata;
 using System.Windows;
 using VisonProcess.Core.Extentions;
 
@@ -73,7 +74,7 @@ namespace VisonProcess.Core.Mvvm
         #region Properties
 
         private NodifyObservableCollection<OperationModel> _operations = new();
-        private OperationModel? _selectedOperation ;
+        private OperationModel? _selectedOperation;
         private NodifyObservableCollection<OperationModel> _selectedOperations = new();
 
         public NodifyObservableCollection<ConnectionModel> Connections { get; } = new();
@@ -89,8 +90,8 @@ namespace VisonProcess.Core.Mvvm
         public NodifyObservableCollection<OperationModel> SelectedOperations
         {
             get => _selectedOperations;
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _selectedOperations, value);
                 SelectedOperation = value?.FirstOrDefault();
             }
@@ -128,7 +129,7 @@ namespace VisonProcess.Core.Mvvm
         {
             if (target == null)
             {
-                PendingConnection.IsVisible = true;
+                PendingConnection.IsVisible = false;
                 //OperationsMenu.OpenAt(PendingConnection.TargetLocation);
                 //OperationsMenu.Closed += OnOperationsMenuClosed;
                 return;
@@ -162,6 +163,16 @@ namespace VisonProcess.Core.Mvvm
             var connections = Connections.Where(c => c.Input == connector || c.Output == connector);
             connections.ForEach(c => Connections.Remove(c));
         }
+
+
+        //[RelayCommand]
+        //private void DeletLineConnection(ConnectionModel connection)
+        //{
+        //    connection.Input.IsConnected = false;
+        //    connection.Output.IsConnected = false;
+        //    Connections.Remove(connection);
+        //}
+
 
         [RelayCommand(CanExecute = nameof(CanGroupSelection))]
         private void GroupSelection()
