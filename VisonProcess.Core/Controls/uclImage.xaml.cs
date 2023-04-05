@@ -3,10 +3,8 @@ using OpenCvSharp.WpfExtensions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Threading;
 using Point = System.Windows.Point;
 
@@ -22,18 +20,6 @@ namespace VisonProcess.Core.Controls
             InitializeComponent();
         }
 
-        private double _X;
-        private double _Y;
-        private Vec3b[,]? _ImageData3b;
-        private byte[,]? _ImageDatab;
-        private Point _MiddleButtonClickedPosition;//记录中键点击的位置。。。。。鼠标中键拖拉移动用
-
-        public ImageSource ImageSource
-        {
-            get { return (ImageSource)GetValue(ImageSourceProperty); }
-            set { SetValue(ImageSourceProperty, value); }
-        }
-
         // Using a DependencyProperty as the backing store for ImageSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource",
@@ -45,11 +31,23 @@ namespace VisonProcess.Core.Controls
                                 null),
                         null);
 
+        private Vec3b[,]? _ImageData3b;
+        private byte[,]? _ImageDatab;
+        private Point _MiddleButtonClickedPosition;
+        private double _X;
+        private double _Y;
+        //记录中键点击的位置。。。。。鼠标中键拖拉移动用
+
+        private int mouseDownCount = 0;
+
+        public ImageSource ImageSource
+        {
+            get { return (ImageSource)GetValue(ImageSourceProperty); }
+            set { SetValue(ImageSourceProperty, value); }
+        }
+
         private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
-
-            //没通知到这。。。。。。应该这里问题。。不会通知到这里
             var uclImage = (uclImage)d;
             if (e.NewValue != null)
             {
@@ -62,11 +60,29 @@ namespace VisonProcess.Core.Controls
                 uclImage.image.Source = null;
                 //uclImage!.ImageSource = null;
             }
-
         }
 
+        private void BackFrame_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            //e.RightButton == MouseButtonState.Pressed)
+            {
+                mouseDownCount += 1;
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
+                timer.IsEnabled = true;
+                if (mouseDownCount % 2 == 0)
+                {
+                    timer.IsEnabled = false;
+                    mouseDownCount = 0;
 
-
+                    var group = (TransformGroup)image.RenderTransform;
+                    group.Children[0] = new ScaleTransform();
+                    group.Children[1] = new TranslateTransform();
+                }
+            }
+        }
 
         private void GetImageSourceData()
         {
@@ -94,6 +110,35 @@ namespace VisonProcess.Core.Controls
                     }
                 }
             }
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.MiddleButton == MouseButtonState.Pressed)
+            //e.RightButton == MouseButtonState.Pressed)
+            {
+                _MiddleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
+
+                //mouseDownCount += 1;
+                //DispatcherTimer timer = new DispatcherTimer();
+                //timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                //timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
+                //timer.IsEnabled = true;
+                //if (mouseDownCount % 2 == 0)
+                //{
+                //    timer.IsEnabled = false;
+                //    mouseDownCount = 0;
+
+                //    var group = (TransformGroup)image.RenderTransform;
+                //    group.Children[0] = new ScaleTransform();
+                //    group.Children[1] = new TranslateTransform();
+
+                //}
+            }
+        }
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
         }
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
@@ -140,37 +185,7 @@ namespace VisonProcess.Core.Controls
             }
         }
 
-        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-        }
-
         //int mouseDownCount = 0;
-
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.MiddleButton == MouseButtonState.Pressed)
-            //e.RightButton == MouseButtonState.Pressed)
-            {
-                _MiddleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
-
-                //mouseDownCount += 1;
-                //DispatcherTimer timer = new DispatcherTimer();
-                //timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
-                //timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
-                //timer.IsEnabled = true;
-                //if (mouseDownCount % 2 == 0)
-                //{
-                //    timer.IsEnabled = false;
-                //    mouseDownCount = 0;
-
-                //    var group = (TransformGroup)image.RenderTransform;
-                //    group.Children[0] = new ScaleTransform();
-                //    group.Children[1] = new TranslateTransform();
-
-                //}
-            }
-        }
-
         private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             Image sf = (Image)sender;
@@ -206,30 +221,6 @@ namespace VisonProcess.Core.Controls
             var group = (TransformGroup)im.RenderTransform;
             group.Children[0] = new ScaleTransform();
             group.Children[1] = new TranslateTransform();
-        }
-
-        private int mouseDownCount = 0;
-
-        private void BackFrame_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.MiddleButton == MouseButtonState.Pressed)
-            //e.RightButton == MouseButtonState.Pressed)
-            {
-                mouseDownCount += 1;
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
-                timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
-                timer.IsEnabled = true;
-                if (mouseDownCount % 2 == 0)
-                {
-                    timer.IsEnabled = false;
-                    mouseDownCount = 0;
-
-                    var group = (TransformGroup)image.RenderTransform;
-                    group.Children[0] = new ScaleTransform();
-                    group.Children[1] = new TranslateTransform();
-                }
-            }
         }
     }
 }
