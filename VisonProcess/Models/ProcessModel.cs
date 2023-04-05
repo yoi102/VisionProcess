@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Linq;
 using System.Windows;
 using VisonProcess.Core.Extentions;
+using VisonProcess.Core.Mvvm;
+using VisonProcess.Extentions;
 
-namespace VisonProcess.Core.Mvvm
+namespace VisonProcess.Models
 {
     public partial class ProcessModel : ObservableObject
     {
@@ -84,6 +87,12 @@ namespace VisonProcess.Core.Mvvm
 
         public PendingConnectionModel PendingConnection { get; set; } = new();
 
+        public OperationModel? SelectedOperation
+        {
+            get => _selectedOperation;
+            set => SetProperty(ref _selectedOperation, value);
+        }
+
         public NodifyObservableCollection<OperationModel> SelectedOperations
         {
             get => _selectedOperations;
@@ -92,12 +101,6 @@ namespace VisonProcess.Core.Mvvm
                 SetProperty(ref _selectedOperations, value);
                 SelectedOperation = value?.FirstOrDefault();
             }
-        }
-
-        public OperationModel? SelectedOperation
-        {
-            get => _selectedOperation;
-            set => SetProperty(ref _selectedOperation, value);
         }
 
         #endregion Properties

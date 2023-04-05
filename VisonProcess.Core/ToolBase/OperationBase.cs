@@ -85,6 +85,7 @@ namespace VisonProcess.Core.ToolBase
         private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Execute();
+            //ExecuteCommand.Execute();
         }
     }
 }

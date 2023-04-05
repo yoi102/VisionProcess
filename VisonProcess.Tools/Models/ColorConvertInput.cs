@@ -21,7 +21,7 @@ namespace VisonProcess.Tools.Models
             }
         }
 
-        private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.RGB2GRAY;
+        private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.BGR2GRAY;
 
         public ColorConversionCodes ColorConversionCodes
         {

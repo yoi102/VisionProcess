@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using VisonProcess.Core.Extentions;
+using VisonProcess.Core.Strings;
 
-namespace VisonProcess.Core.Mvvm
+namespace VisonProcess.Models
 {
     public class ConnectorModel : ObservableObject
     {
@@ -77,7 +80,7 @@ namespace VisonProcess.Core.Mvvm
                     Type type = value.GetType();
                     if (type.Name != ValueType.Name && type.GetInterface(ValueType.Name) == null && ValueType.GetInterface(type.Name) == null)
                     {
-                        throw new ArgumentException($"{Strings.Strings.ValueTypeMustBeX} ", ValueType.Name);
+                        throw new ArgumentException($"{Strings.ValueTypeMustBeX} ", ValueType.Name);
                     }
                 }
                 SetProperty(ref _value, value).Then(() => ValueObservers.ForEach(o => o.Value = value));

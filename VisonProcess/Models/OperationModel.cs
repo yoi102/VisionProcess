@@ -1,13 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Extentions;
+using VisonProcess.Core.Mvvm;
 using VisonProcess.Core.ToolBase;
 
-namespace VisonProcess.Core.Mvvm
+namespace VisonProcess.Models
 {
-    public class OperationModel : ObservableObject
+    public partial class OperationModel : ObservableObject
     {
         public OperationModel()
         {
@@ -169,5 +172,18 @@ namespace VisonProcess.Core.Mvvm
                 OnOutputValueChanged();
             }
         }
+
+        [RelayCommand]
+        private void AddIO()
+        {
+
+        }
+        [RelayCommand]
+        private void RemoveIO()
+        {
+
+        }
+
+
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using VisonProcess.Core.Mvvm;
+using VisonProcess.Models;
 
-namespace VisonProcess.Core.Extentions
+namespace VisonProcess.Extentions
 {
     public static class OperationsExtensions
     {

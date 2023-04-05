@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace VisonProcess.Core.Mvvm
+namespace VisonProcess.Models
 {
     public class ConnectionModel : ObservableObject
     {

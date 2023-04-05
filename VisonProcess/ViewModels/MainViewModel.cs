@@ -5,6 +5,7 @@ using System.Linq;
 using VisonProcess.Core.Extentions;
 using VisonProcess.Core.Mvvm;
 using VisonProcess.Tools.ViewModels;
+using VisonProcess.Models;
 
 namespace VisonProcess.ViewModels
 {

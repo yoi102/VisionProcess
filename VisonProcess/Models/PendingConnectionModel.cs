@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
 
-namespace VisonProcess.Core.Mvvm
+namespace VisonProcess.Models
 {
     public class PendingConnectionModel : ObservableObject
     {

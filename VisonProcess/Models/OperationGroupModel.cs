@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace VisonProcess.Core.Mvvm
+namespace VisonProcess.Models
 {
     public class OperationGroupModel : OperationModel
     {

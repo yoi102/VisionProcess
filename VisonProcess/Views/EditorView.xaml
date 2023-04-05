@@ -6,7 +6,7 @@
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:nodify="https://miroiu.github.io/nodify"
              xmlns:local="clr-namespace:VisonProcess.Views"
-             xmlns:mvvm="clr-namespace:VisonProcess.Core.Mvvm;assembly=VisonProcess.Core"
+             xmlns:models="clr-namespace:VisonProcess.Models"
              xmlns:converter="clr-namespace:VisonProcess.Core.Converters;assembly=VisonProcess.Core"
              xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
              xmlns:core="clr-namespace:VisonProcess.Core;assembly=VisonProcess.Core"
@@ -54,13 +54,13 @@
         <!--<converter:ItemToListConverter x:Key="ItemToListConverter" />-->
 
         <!--<DataTemplate x:Key="ConnectionTemplate"
-                      DataType="{x:Type mvvm:ConnectionModel}">
+                      DataType="{x:Type models:ConnectionModel}">
             <nodify:CircuitConnection Source="{Binding Output.Anchor}"
                                       Target="{Binding Input.Anchor}" />
         </DataTemplate>-->
 
         <DataTemplate x:Key="PendingConnectionTemplate"
-                      DataType="{x:Type mvvm:PendingConnectionModel}">
+                      DataType="{x:Type models:PendingConnectionModel}">
             <nodify:PendingConnection IsVisible="{Binding IsVisible}"
                                       Source="{Binding Source, Mode=OneWayToSource}"
                                       Target="{Binding Target, Mode=OneWayToSource}"
@@ -81,7 +81,7 @@
         </Style>
 
         <DataTemplate x:Key="ConnectionTemplate"
-                      DataType="{x:Type mvvm:ConnectionModel}">
+                      DataType="{x:Type models:ConnectionModel}">
             <nodify:Connection Source="{Binding Output.Anchor}"
                                Target="{Binding Input.Anchor}"
                                SourceOffset="10 0"
@@ -89,9 +89,9 @@
                 <nodify:Connection.ContextMenu>
                     <ContextMenu>
                         <MenuItem  Header="{x:Static strings:Strings.Disconnect}"
+                                   Icon="{md:PackIcon Kind=PipeDisconnected}"
                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ContextMenu} }, Path=PlacementTarget.DataContext}"
                                    Command="{Binding DataContext.DisconnectCommand,Source={StaticResource Proxy}}" />
-                        <!--Command="{Binding DeletLineConnectionCommand}" />-->
                     </ContextMenu>
                 </nodify:Connection.ContextMenu>
             </nodify:Connection>
@@ -133,11 +133,11 @@
                             Value="{Binding Anchor, Mode=OneWayToSource}" />
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
-                            <DataTemplate DataType="{x:Type mvvm:ConnectorModel}">
+                            <DataTemplate DataType="{x:Type models:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="DeletInput"
+                                            <MenuItem Header="DeleteInput"
                                                       Icon="{md:PackIcon Kind=Dead}" />
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
@@ -156,7 +156,7 @@
                     </Setter>
                     <Setter Property="ToolTip">
                         <Setter.Value>
-                            <StackPanel d:DataContext="{d:DesignInstance mvvm:ConnectorModel}">
+                            <StackPanel d:DataContext="{d:DesignInstance models:ConnectorModel}">
                                 <TextBlock Text="{Binding Title,StringFormat= Title：{0}}"
                                            Margin="0 0 5 0" />
                                 <TextBlock Text="{Binding ValueType,StringFormat= Type：{0}}"
@@ -177,11 +177,12 @@
                             Value="{Binding Anchor, Mode=OneWayToSource}" />
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
-                            <DataTemplate DataType="{x:Type mvvm:ConnectorModel}">
+                            <DataTemplate DataType="{x:Type models:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="DeletOutput" Icon="{md:PackIcon Kind=Dead}"/>
+                                            <MenuItem Header="DeleteOutput"
+                                                      Icon="{md:PackIcon Kind=Dead}" />
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <TextBlock Text=" O-"
@@ -196,7 +197,7 @@
                     </Setter>
                     <Setter Property="ToolTip">
                         <Setter.Value>
-                            <StackPanel d:DataContext="{d:DesignInstance mvvm:ConnectorModel}">
+                            <StackPanel d:DataContext="{d:DesignInstance models:ConnectorModel}">
                                 <TextBlock Text="{Binding Title,StringFormat= Title：{0}}"
                                            Margin="0 0 5 0" />
                                 <TextBlock Text="{Binding ValueType,StringFormat= Type：{0}}"
@@ -207,7 +208,7 @@
                     </Setter>
                 </Style>
 
-                <DataTemplate DataType="{x:Type mvvm:OperationModel}">
+                <DataTemplate DataType="{x:Type models:OperationModel}">
                     <nodify:Node HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  Header="{Binding Title}"
@@ -216,10 +217,15 @@
                                  Padding="5 0 0 0">
                         <nodify:Node.ContextMenu>
                             <ContextMenu>
-                                <MenuItem  Header="Delet"
-                                           Icon="{md:PackIcon Kind=Delete}" />
-                                <MenuItem  Header="AddI/O"
-                                           Icon="{md:PackIcon Kind=Add}" />
+                                <MenuItem  Header="Delete"
+                                           Icon="{md:PackIcon Kind=Delete}"
+                                           Command="{Binding DataContext.Process.DeleteSelectionCommand,Source={StaticResource Proxy}}" />
+                                <MenuItem  Header="Add I/O"
+                                           Icon="{md:PackIcon Kind=Add}"
+                                           Command="{Binding AddIOCommand}" />
+                                <MenuItem  Header="Remove I/O"
+                                           Icon="{md:PackIcon Kind=Remove}"
+                                           Command="{Binding RemoveIOCommand}" />
                             </ContextMenu>
                         </nodify:Node.ContextMenu>
                         <nodify:Node.Footer>
