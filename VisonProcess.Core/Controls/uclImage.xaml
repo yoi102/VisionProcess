@@ -23,7 +23,6 @@
                               VerticalScrollBarVisibility="Disabled"
                               Cursor="Arrow"
                               Focusable="False"
-
                               x:Name="BackFrame"
                               MouseDown="BackFrame_MouseDown">
                     <ScrollViewer.ContextMenu>
@@ -33,8 +32,8 @@
                                       Click="MenuItem_Click" />
                         </ContextMenu>
                     </ScrollViewer.ContextMenu>
-                    <Image Source="{Binding Path=ImageSource, ElementName=IM}"
-                           x:Name="image"
+                    <!--<Image Source="{Binding Path=ImageSource, ElementName=IM}"-->
+                    <Image x:Name="image"
                            Width="Auto"
                            Height="Auto"
                            Stretch="Uniform"

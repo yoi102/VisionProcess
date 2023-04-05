@@ -26,7 +26,7 @@ namespace VisonProcess.Core.Controls
         private double _Y;
         private Vec3b[,]? _ImageData3b;
         private byte[,]? _ImageDatab;
-        private Point _MiddleButtonClickedPosition;//记录中键点击的位置。。。。。中间拖拉移动
+        private Point _MiddleButtonClickedPosition;//记录中键点击的位置。。。。。鼠标中键拖拉移动用
 
         public ImageSource ImageSource
         {
@@ -49,16 +49,18 @@ namespace VisonProcess.Core.Controls
         {
 
 
-            //没通知到这。。。。。。
+            //没通知到这。。。。。。应该这里问题。。不会通知到这里
             var uclImage = (uclImage)d;
             if (e.NewValue != null)
             {
-                uclImage!.ImageSource = (ImageSource)e.NewValue;
+                //uclImage!.ImageSource = (ImageSource)e.NewValue;
+                uclImage.image.Source = (ImageSource)e.NewValue;
                 uclImage.GetImageSourceData();
             }
             else
             {
-                uclImage!.ImageSource = null;
+                uclImage.image.Source = null;
+                //uclImage!.ImageSource = null;
             }
 
         }
