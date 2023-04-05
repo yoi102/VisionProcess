@@ -13,3 +13,12 @@ OpenCvSharp4
 
 待.....
 ![image](https://user-images.githubusercontent.com/77535233/230025611-1963a135-8889-496b-8e89-7a6dfefefc44.png)
+
+
+待完善：
+
+*菜单添加工具
+
+*刷新问题
+
+*添加更多工具
