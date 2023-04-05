@@ -25,6 +25,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Nodify;component/Themes/Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/VisonProcess.Core;component/Themes/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/VisonProcess.Core;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/VisonProcess.Core;component/Themes/Brushes.xaml" />
                 <!--<ResourceDictionary Source="pack://application:,,,/VisonProcess.Core;component/Themes/Dark.xaml" />-->
 
             </ResourceDictionary.MergedDictionaries>

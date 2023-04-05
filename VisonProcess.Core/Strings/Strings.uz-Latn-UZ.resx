@@ -202,6 +202,6 @@
     <value>値</value>
   </data>
   <data name="Disconnect" xml:space="preserve">
-    <value>連結を取り消す</value>
+    <value>接続を解除</value>
   </data>
 </root>

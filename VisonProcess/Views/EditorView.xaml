@@ -12,18 +12,28 @@
              xmlns:viewmodels="clr-namespace:VisonProcess.ViewModels"
              d:DataContext="{d:DesignInstance Type=viewmodels:EditorViewModel}"
              mc:Ignorable="d"
+             d:Background="Wheat"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <UserControl.Resources>
         <core:BindingProxy x:Key="Proxy"
                            DataContext="{Binding}" />
+        <!--<GeometryDrawing x:Key="SmallGridGeometry"
+                         Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
+                         Brush="{DynamicResource GridLinesBrush}" />-->
         <GeometryDrawing x:Key="SmallGridGeometry"
                          Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
-                         Brush="{DynamicResource GridLinesBrush}" />
+                         Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}" />
+
+        <!--Brush="{DynamicResource GridLinesBrush}" />-->
+        <!--Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}" />-->
 
         <GeometryDrawing x:Key="LargeGridGeometry"
                          Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z"
-                         Brush="{DynamicResource GridLinesBrush}" />
+                         Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}" />
+
+        <!--Brush="{DynamicResource GridLinesBrush}" />-->
+        <!--Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}" />-->
 
         <DrawingBrush x:Key="SmallGridLinesDrawingBrush"
                       TileMode="Tile"
@@ -98,6 +108,7 @@
                              DataContext="{Binding Process}"
                              ItemsSource="{Binding Operations}"
                              SelectedItems="{Binding SelectedOperations}"
+                             SelectedItem="{Binding SelectedOperation}"
                              Connections="{Binding Connections}"
                              DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}"
                              PendingConnection="{Binding PendingConnection}"
@@ -109,6 +120,8 @@
             <nodify:NodifyEditor.InputBindings>
                 <KeyBinding Key="Delete"
                             Command="{Binding DeleteSelectionCommand}" />
+                <!--<KeyBinding Key="C"
+                            Command="{Binding GroupSelectionCommand}" />-->
             </nodify:NodifyEditor.InputBindings>
             <nodify:NodifyEditor.Resources>
 
