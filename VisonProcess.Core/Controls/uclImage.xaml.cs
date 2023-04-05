@@ -47,7 +47,7 @@ namespace VisonProcess.Core.Controls
 
         private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
+            //没通知到这。。。。。。
             var uclImage = (uclImage)d;
             if (e.NewValue != null)
             {
