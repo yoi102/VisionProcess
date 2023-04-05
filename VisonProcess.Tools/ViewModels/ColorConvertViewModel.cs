@@ -18,7 +18,7 @@ namespace VisonProcess.Tools.ViewModels
 
         private void Init()
         {
-            Records.Add(new() { Title = Strings.OutputImage + 111 });
+            Records.Add(new() { Title = Strings.OutputImage });
         }
 
         protected override bool InternalExecute(out string message)
@@ -32,9 +32,7 @@ namespace VisonProcess.Tools.ViewModels
             }
             //Cv2.CvtColor(Inputs.Image, Outputs.Image, ColorConversionCodes.RGB2BGRA);//RGB2BGRA? BRG2BGRA?
             Outputs.Image = Inputs.Image.CvtColor(Inputs.ColorConversionCodes);
-
-           
-                Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
+            Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
 
             //to one channel ?

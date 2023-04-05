@@ -3,8 +3,10 @@ using OpenCvSharp.WpfExtensions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Threading;
 using Point = System.Windows.Point;
 
@@ -36,18 +38,31 @@ namespace VisonProcess.Core.Controls
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource",
                 typeof(ImageSource), typeof(uclImage),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure,
-                    new PropertyChangedCallback(OnImageSourceChanged)));
+                new FrameworkPropertyMetadata(
+                                null,
+                                FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+                                new PropertyChangedCallback(OnImageSourceChanged),
+                                null),
+                        null);
 
-        private static void OnImageSourceChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var uclImage = (uclImage)depObj;
+
+            var uclImage = (uclImage)d;
             if (e.NewValue != null)
             {
                 uclImage!.ImageSource = (ImageSource)e.NewValue;
                 uclImage.GetImageSourceData();
             }
+            else
+            {
+                uclImage!.ImageSource = null;
+            }
+
         }
+
+
+
 
         private void GetImageSourceData()
         {

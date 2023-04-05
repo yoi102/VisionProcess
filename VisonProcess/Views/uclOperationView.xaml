@@ -30,7 +30,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"
+                           MaxHeight="50" />
         </Grid.RowDefinitions>
 
         <DockPanel Margin="3">
@@ -73,11 +74,11 @@
         <ContentControl Grid.Row="2"
                         Content="{Binding Operation}" />
 
-        <TextBlock Grid.Row="3"
-                   Margin=" 3"
-                   Text="{Binding Operation.RunStatus.Message}"
-                   ToolTip="{Binding Operation.RunStatus.Message}"
-                   TextWrapping="Wrap">
-        </TextBlock>
+        <ScrollViewer Grid.Row="3">
+            <TextBlock Text="{Binding Operation.RunStatus.Message}"
+                       ToolTip="{Binding Operation.RunStatus.Message}"
+                       TextWrapping="Wrap">
+            </TextBlock>
+        </ScrollViewer>
     </Grid>
 </UserControl>

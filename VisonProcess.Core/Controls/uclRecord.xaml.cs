@@ -16,18 +16,18 @@ namespace VisonProcess.Core.Controls
 
         public ICollection<Record> RecordSource
         {
-            get { return (ICollection<Record>)GetValue(RecordsProperty); }
-            set { SetValue(RecordsProperty, value); }
+            get { return (ICollection<Record>)GetValue(RecordSourceProperty); }
+            set { SetValue(RecordSourceProperty, value); }
         }
 
-        public static readonly DependencyProperty RecordsProperty =
+        public static readonly DependencyProperty RecordSourceProperty =
             DependencyProperty.Register(
                 nameof(RecordSource),
                 typeof(ICollection<Record>),
                 typeof(uclRecord),
-                new PropertyMetadata(null, RecordsPropertyChanged));
+                new PropertyMetadata(null, RecordSourcePropertyChanged));
 
-        private static void RecordsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void RecordSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var uclRecord = (uclRecord)d;
             if (e.NewValue is not null)
@@ -53,10 +53,11 @@ namespace VisonProcess.Core.Controls
 
         private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            ////应该不是这样弄
             //uclRecord uclRecord = (uclRecord)d;
             //if (e.NewValue is not null)
             //{
-            //    uclRecord.image.ImageSource = ((Record)e.NewValue).DisplayImage;
+            //    uclRecord.image.ImageSource = ((Record)e.NewValue).DisplayImage!;
             //}
             //else
             //{
