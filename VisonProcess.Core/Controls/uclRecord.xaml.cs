@@ -53,6 +53,7 @@ namespace VisonProcess.Core.Controls
 
         private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            
             ////应该不是这样弄
             //uclRecord uclRecord = (uclRecord)d;
             //if (e.NewValue is not null)
