@@ -42,7 +42,7 @@ namespace VisonProcess.Tools.ViewModels
             currentIndex++;
             ////延时
             //Thread.Sleep(1000);
-
+            message = Strings.Success;
             return true;
         }
 
