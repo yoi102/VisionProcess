@@ -53,6 +53,7 @@ namespace VisonProcess.Core.Controls
 
         private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+               
 
             ////应该不是这样弄,这里应该需要通知一下。。。。 SelectedRecord.DisplayImage--------------uclImage ImageSource 
             //uclRecord uclRecord = (uclRecord)d;
