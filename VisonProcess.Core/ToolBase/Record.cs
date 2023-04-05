@@ -27,7 +27,6 @@ namespace VisonProcess.Core.ToolBase
                     //只能这样更新？
                     System.Windows.Application.Current.Dispatcher.Invoke(() =>
                     {
-
                         OnPropertyChanged();
                     });
                 }
