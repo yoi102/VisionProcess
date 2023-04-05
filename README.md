@@ -22,3 +22,5 @@ OpenCvSharp4
 *刷新问题
 
 *添加更多工具
+
+*添加 Shape ROI 图像局部处理
