@@ -65,6 +65,7 @@ namespace VisonProcess.Core.Mvvm
             {
                 if (value is not null)
                 {
+                    value.Executed += Value_Executed; ;
                     Title = value.GetType().Name.Replace("ViewModel", "");
                     var attributes = (DefaultToolConnectorAttribute[])value.GetType().GetCustomAttributes(typeof(DefaultToolConnectorAttribute), false);
                     foreach (var item in attributes)
@@ -88,13 +89,32 @@ namespace VisonProcess.Core.Mvvm
                 }
                 else
                 {
+                    if (_operation is not null)
+                    {
+                        _operation.Executed -= Value_Executed; ;
+                    }
                     Input.Clear();
                     Output.Clear();
                 }
 
-                SetProperty(ref _operation, value)
-                .Then(OnInputValueChanged);
+                SetProperty(ref _operation, value);
+                //.Then(OnInputValueChanged);
             }
+        }
+
+        private void Value_Executed(object? sender, EventArgs e)
+        {
+            if (_operation is not null)
+            {
+                foreach (var item in Output)
+                {
+                    //获取不到值
+                    item.Value = PropertyMisc.GetValue(_operation, item.ValuePath);
+                }
+            }
+
+
+
         }
 
         public NodifyObservableCollection<ConnectorModel> Output { get; } = new NodifyObservableCollection<ConnectorModel>();
@@ -129,18 +149,7 @@ namespace VisonProcess.Core.Mvvm
             }
         }
 
-        //private NodifyObservableCollection<ConnectorModel> _input = new NodifyObservableCollection<ConnectorModel>();
-        //public NodifyObservableCollection<ConnectorModel> Input
-        //{
-        //    get { return _input; }
-        //    private set { SetProperty(ref _input, value); }
-        //}
-        //private NodifyObservableCollection<ConnectorModel> _output = new NodifyObservableCollection<ConnectorModel>();
-        //public NodifyObservableCollection<ConnectorModel> Output
-        //{
-        //    get { return _output; }
-        //    private set { SetProperty(ref _output, value); }
-        //}
+
         protected virtual void OnOutputValueChanged()
         {
         }

@@ -19,9 +19,7 @@ namespace VisonProcess.Core.Mvvm
             {
                 c.Input.IsConnected = true;
                 c.Output.IsConnected = true;
-
                 c.Input.Value = c.Output.Value;
-
                 c.Output.ValueObservers.Add(c.Input);
             })
          .WhenRemoved(c =>

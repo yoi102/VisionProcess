@@ -23,6 +23,7 @@ namespace VisonProcess.Core.ToolBase
 
         public event EventHandler? Executing;
 
+
         public T3 Graphic { get; protected set; }
 
         public T1 Inputs { get; protected set; }

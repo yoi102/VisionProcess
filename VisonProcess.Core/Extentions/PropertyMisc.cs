@@ -47,11 +47,12 @@ namespace VisonProcess.Core.Extentions
         public static object? GetValue(object ob, string fullPath, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);
-            object? o = null;
             if (list.Count == 0)
             {
-                return o;
+                return null;
             }
+            object? o = ob;
+
             for (int i = 0; i < list.Count; i++)
             {
                 string[] array = list[i].Split('[', ']', '<', '>', '(', '=');
@@ -61,7 +62,7 @@ namespace VisonProcess.Core.Extentions
                     {
                         try
                         {
-                            o = RunMethod(ob, array[0]);
+                            o = RunMethod(o!, array[0]);
                         }
                         catch
                         {
@@ -71,7 +72,7 @@ namespace VisonProcess.Core.Extentions
                 }
                 else//如果是属性
                 {
-                    o = GetPropertyValue(ob, list[i]);
+                    o = GetPropertyValue(o!, list[i]);
                 }
             }
 
@@ -85,7 +86,7 @@ namespace VisonProcess.Core.Extentions
             {
                 return false;
             }
-            object? o = null;
+            object? o = ob;
             try
             {
                 for (int i = 0; i < list.Count; i++)
@@ -94,11 +95,11 @@ namespace VisonProcess.Core.Extentions
                     {
                         if (i == list.Count - 1)
                         {
-                            SetPropertyValue(ob, list[i], value);
+                            SetPropertyValue(o, list[i], value);
                         }
                         else
                         {
-                            o = GetPropertyValue(ob, list[i]);
+                            o = GetPropertyValue(o, list[i]);
                         }
 
                         if (o == null)
