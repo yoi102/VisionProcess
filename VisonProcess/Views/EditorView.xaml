@@ -11,6 +11,7 @@
              xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
              xmlns:core="clr-namespace:VisonProcess.Core;assembly=VisonProcess.Core"
              xmlns:viewmodels="clr-namespace:VisonProcess.ViewModels"
+             xmlns:controls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
              d:DataContext="{d:DesignInstance Type=viewmodels:EditorViewModel}"
              mc:Ignorable="d"
              d:Background="Wheat"
@@ -137,13 +138,7 @@
                                     </StackPanel.ContextMenu>
                                     <TextBlock Text=" I-"
                                                VerticalAlignment="Center" />
-                                    <TextBox Text="{Binding Title}"
-                                             Style="{StaticResource MaterialDesignTextBox}"
-                                             AcceptsTab="True"
-                                             VerticalAlignment="Center"
-                                             Margin="2 0" />
-                                    <!--<TextBox Text="{Binding Value}" />-->
-                                    <!--Visibility="{Binding IsConnected, Converter={StaticResource Bool2Visibility}}" />-->
+                                    <controls:EditableTextBlock  Text="{Binding Title}" />
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
@@ -181,10 +176,10 @@
                                     </StackPanel.ContextMenu>
                                     <TextBlock Text=" O-"
                                                VerticalAlignment="Center" />
-                                    <TextBox Text="{Binding Title}"
-                                             Style="{StaticResource MaterialDesignTextBox}"
-                                             VerticalAlignment="Center"
-                                             Margin="2 0" />
+
+                                    <controls:EditableTextBlock  Text="{Binding Title}" />
+
+                            
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
@@ -205,10 +200,12 @@
                 <DataTemplate DataType="{x:Type models:OperationModel}">
                     <nodify:Node HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
-                                 Header="{Binding Title}"
                                  Input="{Binding Input}"
-                                 Output="{Binding Output}"
-                                 Padding="5 0 0 0">
+                                 Output="{Binding Output}">
+                        <nodify:Node.Header>
+                            <controls:EditableTextBlock  Text="{Binding Title}" />
+                        </nodify:Node.Header>
+                        
                         <nodify:Node.ContextMenu>
                             <ContextMenu>
                                 <MenuItem  Header="Delete"
@@ -253,15 +250,13 @@
                     </nodify:Node>
                 </DataTemplate>
             </nodify:NodifyEditor.Resources>
-            
-            
+
             <nodify:NodifyEditor.InputBindings>
                 <KeyBinding Key="Delete"
                             Command="{Binding DeleteSelectionCommand}" />
                 <!--<KeyBinding Key="C"
                             Command="{Binding GroupSelectionCommand}" />-->
             </nodify:NodifyEditor.InputBindings>
-            
 
             <CompositeCollection>
                 <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}"
@@ -271,9 +266,6 @@
             </CompositeCollection>
 
         </nodify:NodifyEditor>
-        
-        
-        
-        
+
     </Grid>
 </UserControl>

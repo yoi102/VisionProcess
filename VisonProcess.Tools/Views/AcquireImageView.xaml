@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VisonProcess.Tools.Views"
              xmlns:viewmodels="clr-namespace:VisonProcess.Tools.ViewModels"
+             xmlns:controls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
              d:DataContext="{d:DesignInstance Type=viewmodels:AcquireImageViewModel}"
              xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
              d:Background="Wheat"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="300">
-    <GroupBox Header="AcquireImageView">
+    <GroupBox Header="AcquireImageView" Style="{StaticResource MaterialDesignCardGroupBox}">
         <StackPanel>
             <Button Margin="50"
                     Content="{x:Static strings:Strings.Select}"

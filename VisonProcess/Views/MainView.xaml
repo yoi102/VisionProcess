@@ -11,6 +11,7 @@
                  xmlns:strings="clr-namespace:VisonProcess.Core.Strings;assembly=VisonProcess.Core"
                  xmlns:core="clr-namespace:VisonProcess.Core;assembly=VisonProcess.Core"
                  xmlns:coreControls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
+                 xmlns:controls="clr-namespace:VisonProcess.Core.Controls;assembly=VisonProcess.Core"
                  d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
                  ResizeMode="CanResizeWithGrip"
                  mah:ControlsHelper.CornerRadius="22"
@@ -135,6 +136,8 @@
                                     Value="{Binding DataContext.CloseEditorCommand ,Source={StaticResource Proxy}}" />
                             <Setter Property="CloseTabCommandParameter"
                                     Value="{Binding Id}" />
+                            <Setter Property="Background"
+                                    Value="{DynamicResource ResourceKey=MaterialDesignDarkBackground}" />
                         </Style>
                     </coreControls:TabControlEx.ItemContainerStyle>
                 </coreControls:TabControlEx>
@@ -156,7 +159,11 @@
                       Height="5"
                       HorizontalAlignment="Stretch"
                       d:Background="Red" />
-        <StackPanel Grid.Row="2">
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <md:ColorZone VerticalContentAlignment="Center"
                           md:ElevationAssist.Elevation="Dp3"
                           Height="30">
@@ -165,38 +172,72 @@
                                Text="{x:Static strings:Strings.Operations}" />
                 </md:ColorZone.Content>
             </md:ColorZone>
-            <ListBox SelectionMode="Single"
+
+            <ListBox Margin="3"
+                     Grid.Row="1"
+                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}"
+                     SelectionMode="Single"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ItemsSource="{Binding SelectedEditor.Process.Operations}"
                      SelectedItem="{Binding SelectedEditor.Process.SelectedOperation}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <WrapPanel Orientation="Horizontal"
+                                   IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+                <!--<ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <StackPanel>
+                                        <Border x:Name="border"
+                                                Height="5"
+                                                Margin="5"
+                                                CornerRadius="3" />
+                                        <ContentPresenter Margin="3" />
+                                    </StackPanel>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    TargetName="border"
+                                                    Value="{DynamicResource ResourceKey=PrimaryHueDarkBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    TargetName="border"
+                                                    Value="{DynamicResource ResourceKey=PrimaryHueMidBrush}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <GroupBox Header="{Binding Title}"
+                        <GroupBox Style="{StaticResource ResourceKey=MaterialDesignCardGroupBox}"
                                   Height="180"
                                   Width="200">
-                            <!--<GroupBox.Header>
-                                <TextBox  Text="{Binding Title}" />
-                            </GroupBox.Header>-->
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
                                 <Image Source="{Binding Operation.Records[0].DisplayImage}" />
-                                <TextBlock Grid.Row="1"
-                                           Margin="3"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Text="{Binding  Operation.Records[0].Title}" />
+                                <controls:EditableTextBlock  Grid.Row="1"
+                                                             Text="{Binding Title}" />
                             </Grid>
                         </GroupBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+
+        </Grid>
     </Grid>
 </mah:MetroWindow>

@@ -276,4 +276,13 @@
   <data name="Delet" xml:space="preserve">
     <value>削除</value>
   </data>
+  <data name="ThresholdType" xml:space="preserve">
+    <value>しきい値の種類</value>
+  </data>
+  <data name="Threshold" xml:space="preserve">
+    <value>しきい値</value>
+  </data>
+  <data name="MaxThresholdValue" xml:space="preserve">
+    <value>最大しきい値</value>
+  </data>
 </root>

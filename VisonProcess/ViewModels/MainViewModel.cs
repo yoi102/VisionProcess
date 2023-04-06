@@ -27,7 +27,7 @@ namespace VisonProcess.ViewModels
        .WhenRemoved((editor) =>
        {
            editor.OnOpenInnerProcess -= OnOpenInnerProcess;
-           var childEditors = Editors.Where(ed => ed.Parent == editor);
+           var childEditors = Editors.Where(ed => ed.Parent == editor).ToArray();
            childEditors.ForEach(ed => Editors.Remove(ed));
        });
 
@@ -35,10 +35,7 @@ namespace VisonProcess.ViewModels
             {
                 Name = $"Editor {Editors.Count + 1}"
             });
-            //Add some things
-            Editors[0].Process.Operations.Add(new OperationModel { Operation = new AcquireImageViewModel() });
-            Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel(), Location = new System.Windows.Point(200, 200) });
-        }
+       }
 
         private void OnOpenInnerProcess(EditorViewModel parentEditor, ProcessModel process)
         {

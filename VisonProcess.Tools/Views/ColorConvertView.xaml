@@ -11,7 +11,7 @@
              d:Background="Wheat"
              d:DesignHeight="450"
              d:DesignWidth="300">
-    <GroupBox Header="ColorConvertView">
+    <GroupBox Header="ColorConvertView" Style="{StaticResource MaterialDesignCardGroupBox}">
         <StackPanel>
             <ComboBox Style="{StaticResource MaterialDesignComboBox}"
                 SelectedItem="{Binding Inputs.ColorConversionCodes}"

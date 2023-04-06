@@ -285,4 +285,13 @@
   <data name="Disconnect" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ThresholdType" xml:space="preserve">
+    <value>Threshold Type</value>
+  </data>
+  <data name="Threshold" xml:space="preserve">
+    <value>Threshold</value>
+  </data>
+  <data name="MaxThresholdValue" xml:space="preserve">
+    <value>Max Threshold Value</value>
+  </data>
 </root>

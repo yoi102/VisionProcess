@@ -268,6 +268,15 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Max Threshold Value 的本地化字符串。
+        /// </summary>
+        public static string MaxThresholdValue {
+            get {
+                return ResourceManager.GetString("MaxThresholdValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Minimize 的本地化字符串。
         /// </summary>
         public static string Minimize {
@@ -498,6 +507,24 @@ namespace VisonProcess.Core.Strings {
         public static string TheDirectoryXAlreadyExists {
             get {
                 return ResourceManager.GetString("TheDirectoryXAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Threshold 的本地化字符串。
+        /// </summary>
+        public static string Threshold {
+            get {
+                return ResourceManager.GetString("Threshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Threshold Type 的本地化字符串。
+        /// </summary>
+        public static string ThresholdType {
+            get {
+                return ResourceManager.GetString("ThresholdType", resourceCulture);
             }
         }
         

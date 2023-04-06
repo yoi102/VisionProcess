@@ -1,4 +1,5 @@
-﻿using OpenCvSharp.WpfExtensions;
+﻿using OpenCvSharp;
+using OpenCvSharp.WpfExtensions;
 using System.Windows.Threading;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
@@ -24,7 +25,6 @@ namespace VisonProcess.Tools.ViewModels
         protected override bool InternalExecute(out string message)
         {
             message = "";
-
             if (Inputs.Image is null)
             {
                 message = "Input image can not be null";

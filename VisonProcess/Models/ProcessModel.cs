@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using VisonProcess.Core.Extentions;
@@ -159,13 +160,15 @@ namespace VisonProcess.Models
         [RelayCommand]
         private void DeleteSelection()
         {
-            SelectedOperations.ForEach(o => Operations.Remove(o));
+            List<OperationModel>? list = SelectedOperations.ToList();
+            list.ForEach(o => Operations.Remove(o));
+        
         }
 
         [RelayCommand]
         private void DisconnectConnector(ConnectorModel connector)
         {
-            var connections = Connections.Where(c => c.Input == connector || c.Output == connector);
+            var connections = Connections.Where(c => c.Input == connector || c.Output == connector).ToArray();
             connections.ForEach(c => Connections.Remove(c));
         }
 

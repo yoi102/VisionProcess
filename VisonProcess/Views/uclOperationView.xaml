@@ -24,6 +24,13 @@
         <DataTemplate DataType="{x:Type tvm:ColorConvertViewModel}">
             <tv:ColorConvertView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type tvm:ThresholdViewModel}">
+            <tv:ThresholdView />
+        </DataTemplate>
+        
+        
+        
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -74,9 +81,10 @@
         <ContentControl Grid.Row="2"
                         Content="{Binding Operation}" />
 
-        <ScrollViewer Grid.Row="3">
-            <TextBlock Text="{Binding Operation.RunStatus.Message}"
-                       ToolTip="{Binding Operation.RunStatus.Message}"
+        <ScrollViewer Grid.Row="3"
+                      ToolTip="{Binding ElementName=textblock, Path=Text}">
+            <TextBlock x:Name="textblock"
+                       Text="{Binding Operation.RunStatus.Message}"
                        TextWrapping="Wrap">
             </TextBlock>
         </ScrollViewer>

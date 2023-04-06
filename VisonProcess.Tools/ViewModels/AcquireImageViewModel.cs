@@ -24,11 +24,10 @@ namespace VisonProcess.Tools.ViewModels
 
         protected override bool InternalExecute(out string message)
         {
-            message = "";
-
             if (imagePaths == null || imagePaths.Count < 1)
             {
-                message = "";
+                message = Strings.PleaseSelectFiles;
+                //message = "Please select image files";
                 return false;
             }
 

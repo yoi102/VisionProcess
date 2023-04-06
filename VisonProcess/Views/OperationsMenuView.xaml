@@ -45,7 +45,7 @@
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Foreground="{DynamicResource MaterialDesignDarkForeground}"
-                            Padding="3"
+                            Padding="8"
                             Cursor="Hand"
                             HorizontalContentAlignment="Left">
                         <Button.Style>
