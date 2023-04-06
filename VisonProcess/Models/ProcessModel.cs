@@ -5,6 +5,7 @@ using System.Windows;
 using VisonProcess.Core.Extentions;
 using VisonProcess.Core.Mvvm;
 using VisonProcess.Extentions;
+using VisonProcess.ViewModels;
 
 namespace VisonProcess.Models
 {
@@ -13,7 +14,7 @@ namespace VisonProcess.Models
         public ProcessModel()
         {
             Init();
-            //OperationsMenu = new OperationsMenuViewModel(this);
+            OperationsMenu = new OperationsMenuViewModel(this);
         }
 
         private void Init()
@@ -85,6 +86,7 @@ namespace VisonProcess.Models
             set => SetProperty(ref _operations, value);
         }
 
+        public OperationsMenuViewModel OperationsMenu { get; set; }
         public PendingConnectionModel PendingConnection { get; set; } = new();
 
         public OperationModel? SelectedOperation
@@ -142,17 +144,18 @@ namespace VisonProcess.Models
             PendingConnection.IsVisible = false;
             DisconnectConnector(input);
 
-            //ValueType 相等时才连接，才可赋值
-            //if (input.ValueType == output.ValueType)
-            //{
             Connections.Add(new ConnectionModel
             {
                 Input = input,
                 Output = output
             });
-            //}
         }
 
+        //private void OnOperationsMenuClosed()
+        //{
+        //    PendingConnection.IsVisible = false;
+        //    OperationsMenu.Closed -= OnOperationsMenuClosed;
+        //}
         [RelayCommand]
         private void DeleteSelection()
         {
