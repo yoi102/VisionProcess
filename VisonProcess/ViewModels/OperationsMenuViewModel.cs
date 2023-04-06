@@ -69,6 +69,7 @@ namespace VisonProcess.ViewModels
             var type = assembly.GetType("VisonProcess.Tools.ViewModels." + operationName + "ViewModel");
             var instance = Activator.CreateInstance(type!);
             processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location ,Title = operationName });
+            IsVisible = false;
         }
 
 

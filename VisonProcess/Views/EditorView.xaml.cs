@@ -20,10 +20,10 @@ namespace VisonProcess.Views
         }
         private void OpenOperationsMenu(object sender, MouseButtonEventArgs e)
         {
-            if (!e.Handled && e.OriginalSource is NodifyEditor editor && !editor.IsPanning && editor.DataContext is CalculatorViewModel calculator)
+            if (!e.Handled && e.OriginalSource is NodifyEditor editor && !editor.IsPanning && editor.DataContext is ProcessModel process)
             {
                 e.Handled = true;
-                calculator.OperationsMenu.OpenAt(editor.MouseLocation);
+                process.OperationsMenu.OpenAt(editor.MouseLocation);
             }
         }
 
@@ -32,9 +32,9 @@ namespace VisonProcess.Views
             ItemContainer? itemContainer = sender as ItemContainer;
             NodifyEditor? editor = sender as NodifyEditor ?? itemContainer?.Editor;
 
-            if (!e.Handled && editor?.DataContext is ProcessModel calculator)
+            if (!e.Handled && editor?.DataContext is ProcessModel process)
             {
-                calculator.OperationsMenu.Close();
+                process.OperationsMenu.Close();
             }
         }
     }

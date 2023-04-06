@@ -116,12 +116,6 @@
                              Background="{StaticResource SmallGridLinesDrawingBrush}"
                              ItemContainerStyle="{StaticResource ItemContainerStyle}"
                              GridCellSize="15">
-            <nodify:NodifyEditor.InputBindings>
-                <KeyBinding Key="Delete"
-                            Command="{Binding DeleteSelectionCommand}" />
-                <!--<KeyBinding Key="C"
-                            Command="{Binding GroupSelectionCommand}" />-->
-            </nodify:NodifyEditor.InputBindings>
             <nodify:NodifyEditor.Resources>
 
                 <Style TargetType="{x:Type nodify:NodeInput}">
@@ -259,6 +253,27 @@
                     </nodify:Node>
                 </DataTemplate>
             </nodify:NodifyEditor.Resources>
+            
+            
+            <nodify:NodifyEditor.InputBindings>
+                <KeyBinding Key="Delete"
+                            Command="{Binding DeleteSelectionCommand}" />
+                <!--<KeyBinding Key="C"
+                            Command="{Binding GroupSelectionCommand}" />-->
+            </nodify:NodifyEditor.InputBindings>
+            
+
+            <CompositeCollection>
+                <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}"
+                                           Location="{Binding Location}">
+                    <local:OperationsMenuView />
+                </nodify:DecoratorContainer>
+            </CompositeCollection>
+
         </nodify:NodifyEditor>
+        
+        
+        
+        
     </Grid>
 </UserControl>
