@@ -2,7 +2,7 @@
 
 .Net 7
 
-Package :
+Package :     
 *Nodify  
 *CommunityToolkit.Mvvm   
 *MaterialDesignThemes.MahApps   
@@ -18,7 +18,8 @@ Package :
 待完善：
 
 *菜单添加工具   
-*刷新问题    
 *添加更多工具    
 *添加 Shape ROI 图像局部处理    
 *自定义给运行模块添加输入输出端口   
+*工具箱拖拽添加模块    
+*序列化

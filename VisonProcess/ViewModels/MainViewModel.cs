@@ -6,6 +6,8 @@ using VisonProcess.Core.Extentions;
 using VisonProcess.Core.Mvvm;
 using VisonProcess.Tools.ViewModels;
 using VisonProcess.Models;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace VisonProcess.ViewModels
 {
@@ -13,6 +15,9 @@ namespace VisonProcess.ViewModels
     {
         public MainViewModel()
         {
+            //Assembly d = typeof(AcquireImageViewModel).Assembly;
+            //var dddd=d.GetType("VisonProcess.Tools.ViewModels.AcquireImageViewModel");
+            //var instance = Activator.CreateInstance(dddd!);
             Editors.WhenAdded((editor) =>
             {
                 if (AutoSelectNewEditor || Editors.Count == 1)
@@ -34,7 +39,7 @@ namespace VisonProcess.ViewModels
             });
             //Add some things
             Editors[0].Process.Operations.Add(new OperationModel { Operation = new AcquireImageViewModel() });
-            Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel(), Location = new System.Windows.Point(200,200) });
+            Editors[0].Process.Operations.Add(new OperationModel { Operation = new ColorConvertViewModel(), Location = new System.Windows.Point(200, 200) });
         }
 
         private void OnOpenInnerProcess(EditorViewModel parentEditor, ProcessModel process)
