@@ -62,15 +62,13 @@ namespace VisonProcess.ViewModels
         }
 
         [RelayCommand]
-        private void CreateOperation(string className)
+        private void CreateOperation(string operationName)
         {
             //前提，需要规范命名
             Assembly assembly = typeof(AcquireImageViewModel).Assembly;
-            var type = assembly.GetType("VisonProcess.Tools.ViewModels." + className + "ViewModel");
+            var type = assembly.GetType("VisonProcess.Tools.ViewModels." + operationName + "ViewModel");
             var instance = Activator.CreateInstance(type!);
-            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location });
-
-
+            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location ,Title = operationName });
         }
 
 
