@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -7,6 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using VisonProcess.Core.ToolBase;
+using VisonProcess.Models;
 using VisonProcess.Tools.ViewModels;
 
 namespace VisonProcess.ViewModels
@@ -20,18 +23,18 @@ namespace VisonProcess.ViewModels
 
         }
 
-        public OperationsMenuViewModel()
+        public OperationsMenuViewModel(ProcessModel processModel)
         {
+            //前提，需要规范命名
             List<string> list = new();
-            //Assembly assembly = Assembly.Load("./VisonProcess.Tools.ViewModels.dll");
             Assembly assembly = Assembly.GetAssembly(typeof(AcquireImageViewModel))!;//获取 AcquireImageViewModel 中的程序集
-            //var assemblyAllTypes = assembly.GetTypes();//获取该程序集中的所有类型
-            var assemblyAllTypes = GetTypesInNamespace(assembly, "VisonProcess.Tools.ViewModels");//获取该程序集中的所有类型
+            var assemblyAllTypes = GetTypesInNamespace(assembly, "VisonProcess.Tools.ViewModels");//获取该程序集命名空间中的所有类型
             foreach (var itemType in assemblyAllTypes)//遍历所有类型进行查找
             {
                 list.Add(itemType.Name.Replace("ViewModel", string.Empty));
             }
             AvailableOperations = list;
+            this.processModel = processModel;
         }
         public event Action? Closed;
 
@@ -40,6 +43,8 @@ namespace VisonProcess.ViewModels
 
         [ObservableProperty]
         private bool _isVisible;
+        private readonly ProcessModel processModel;
+
         public IEnumerable<string> AvailableOperations { get; }
 
 
@@ -56,9 +61,15 @@ namespace VisonProcess.ViewModels
             IsVisible = false;
         }
 
-
-        private void CreateOperation()
+        [RelayCommand]
+        private void CreateOperation(string className)
         {
+            //前提，需要规范命名
+            Assembly assembly = typeof(AcquireImageViewModel).Assembly;
+            var type = assembly.GetType("VisonProcess.Tools.ViewModels." + className + "ViewModel");
+            var instance = Activator.CreateInstance(type!);
+            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location });
+
 
         }
 

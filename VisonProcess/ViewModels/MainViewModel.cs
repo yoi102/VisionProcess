@@ -15,9 +15,7 @@ namespace VisonProcess.ViewModels
     {
         public MainViewModel()
         {
-            //Assembly d = typeof(AcquireImageViewModel).Assembly;
-            //var dddd=d.GetType("VisonProcess.Tools.ViewModels.AcquireImageViewModel");
-            //var instance = Activator.CreateInstance(dddd!);
+          
             Editors.WhenAdded((editor) =>
             {
                 if (AutoSelectNewEditor || Editors.Count == 1)
