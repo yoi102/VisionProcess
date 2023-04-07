@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="VisionProcess.Core.Controls.uclRecord"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:VisionProcess.Core.Controls"
+             mc:Ignorable="d"
+             x:Name="Record"
+             d:Background="Wheat"
+             Width="444"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <Grid>
+        <DockPanel>
+            <ComboBox  DockPanel.Dock="Top"
+                       Style="{StaticResource MahApps.Styles.ComboBox}"
+                       ItemsSource="{Binding ElementName=Record,Path=RecordSource}"
+                       SelectedItem="{Binding ElementName=Record,Path=SelectedRecord}"
+                       DisplayMemberPath="Title" />
+            <local:uclImage x:Name="image" ImageSource="{Binding ElementName=Record,Path=SelectedRecord.DisplayImage}" />
+        </DockPanel>
+    </Grid>
+</UserControl>
