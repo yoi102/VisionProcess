@@ -115,9 +115,6 @@ namespace VisonProcess.Models
                     item.Value = PropertyMisc.GetValue(_operation, item.ValuePath);
                 }
             }
-
-
-
         }
 
         public NodifyObservableCollection<ConnectorModel> Output { get; } = new NodifyObservableCollection<ConnectorModel>();
@@ -152,7 +149,6 @@ namespace VisonProcess.Models
             }
         }
 
-
         protected virtual void OnOutputValueChanged()
         {
         }
@@ -176,14 +172,11 @@ namespace VisonProcess.Models
         [RelayCommand]
         private void AddIO()
         {
-
         }
+
         [RelayCommand]
         private void RemoveIO()
         {
-
         }
-
-
     }
 }

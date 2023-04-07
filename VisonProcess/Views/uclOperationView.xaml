@@ -28,17 +28,14 @@
         <DataTemplate DataType="{x:Type tvm:ThresholdViewModel}">
             <tv:ThresholdView />
         </DataTemplate>
-        
-        
-        
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition Height="auto"
-                           MaxHeight="50" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <DockPanel Margin="3">
@@ -82,11 +79,14 @@
                         Content="{Binding Operation}" />
 
         <ScrollViewer Grid.Row="3"
+                      md:ScrollViewerAssist.IsAutoHideEnabled="True"
+                      VerticalScrollBarVisibility="Auto"
                       ToolTip="{Binding ElementName=textblock, Path=Text}">
             <TextBlock x:Name="textblock"
                        Text="{Binding Operation.RunStatus.Message}"
                        TextWrapping="Wrap">
             </TextBlock>
         </ScrollViewer>
+
     </Grid>
 </UserControl>
