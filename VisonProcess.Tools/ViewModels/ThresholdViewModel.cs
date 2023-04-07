@@ -36,6 +36,7 @@ namespace VisonProcess.Tools.ViewModels
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
 
+            message = Strings.Success;
             return true;
 
         }
