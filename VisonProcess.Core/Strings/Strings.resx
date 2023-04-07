@@ -288,10 +288,10 @@
   <data name="ThresholdType" xml:space="preserve">
     <value>Threshold Type</value>
   </data>
-  <data name="Threshold" xml:space="preserve">
-    <value>Threshold</value>
+  <data name="ThresholdValue" xml:space="preserve">
+    <value>ThresholdValue</value>
   </data>
-  <data name="MaxThresholdValue" xml:space="preserve">
-    <value>Max Threshold Value</value>
+  <data name="MaximumValue" xml:space="preserve">
+    <value>Maximum Value</value>
   </data>
 </root>

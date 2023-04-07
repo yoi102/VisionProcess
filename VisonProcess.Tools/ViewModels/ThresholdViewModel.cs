@@ -8,8 +8,8 @@ using VisonProcess.Tools.Models;
 namespace VisonProcess.Tools.ViewModels
 {
     [DefaultToolConnector(true, "Image", "Inputs.Image")]
-    [DefaultToolConnector(true, "Threshold", "Inputs.Threshold")]
-    [DefaultToolConnector(true, "MaxValue", "Inputs.MaxValue")]
+    [DefaultToolConnector(true, "ThresholdValue", "Inputs.ThresholdValue")]
+    [DefaultToolConnector(true, "MaximumValue", "Inputs.MaximumValue")]
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
     public class ThresholdViewModel : OperationBase<ThresholdInputs, ThresholdOutputs, GraphicsBase>
     {
@@ -27,7 +27,7 @@ namespace VisonProcess.Tools.ViewModels
                 return false;
             }
             Outputs.Image ??= new Mat();
-            Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.Threshold, Inputs.MaxValue, Inputs.ThresholdType);
+            Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
             message = Strings.Success;

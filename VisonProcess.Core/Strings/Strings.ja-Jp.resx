@@ -279,10 +279,10 @@
   <data name="ThresholdType" xml:space="preserve">
     <value>しきい値の種類</value>
   </data>
-  <data name="Threshold" xml:space="preserve">
+  <data name="ThresholdValue" xml:space="preserve">
     <value>しきい値</value>
   </data>
-  <data name="MaxThresholdValue" xml:space="preserve">
-    <value>最大しきい値</value>
+  <data name="MaximumValue" xml:space="preserve">
+    <value>最大し値</value>
   </data>
 </root>

@@ -285,13 +285,13 @@
   <data name="Disconnect" xml:space="preserve">
     <value>取消鏈接</value>
   </data>
-  <data name="Threshold" xml:space="preserve">
+  <data name="ThresholdValue" xml:space="preserve">
     <value>閾值</value>
   </data>
   <data name="ThresholdType" xml:space="preserve">
     <value>閾值類型</value>
   </data>
-  <data name="MaxThresholdValue" xml:space="preserve">
-    <value>最大閾值</value>
+  <data name="MaximumValue" xml:space="preserve">
+    <value>最大值</value>
   </data>
 </root>

@@ -5,9 +5,10 @@ namespace VisonProcess.Tools.Models
 {
     public class ThresholdInputs : InputsBase
     {
+    
         private Mat? _image;
-        private double _maxValue = 255;
-        private double _threshold = 50;
+        private double _maximumValue = 255;
+        private double _thresholdValue = 50;
         private ThresholdTypes _thresholdType = ThresholdTypes.Binary;
 
         public Mat? Image
@@ -24,18 +25,25 @@ namespace VisonProcess.Tools.Models
             }
         }
 
-        public double MaxValue
+        /// <summary>
+        /// maximum value to use with the THRESH_BINARY and THRESH_BINARY_INV thresholding types
+        /// </summary>
+        public double MaximumValue
         {
-            get { return _maxValue; }
-            set { SetProperty(ref _maxValue, value); }
+            get { return _maximumValue; }
+            set { SetProperty(ref _maximumValue, value); }
         }
-
-        public double Threshold
+        /// <summary>
+        /// threshold value
+        /// </summary>
+        public double ThresholdValue
         {
-            get { return _threshold; }
-            set { SetProperty(ref _threshold, value); }
+            get { return _thresholdValue; }
+            set { SetProperty(ref _thresholdValue, value); }
         }
-
+        /// <summary>
+        /// thresholding type (see the details below).</param>
+        /// </summary>
         public ThresholdTypes ThresholdType
         {
             get { return _thresholdType; }

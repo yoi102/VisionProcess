@@ -35,4 +35,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shapes\" />
+  </ItemGroup>
+
 </Project>

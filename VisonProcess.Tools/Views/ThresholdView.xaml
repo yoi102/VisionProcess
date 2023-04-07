@@ -38,7 +38,7 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.Threshold}"
+                <TextBlock Text="{x:Static strings:Strings.ThresholdValue}"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center" />
                 <mah:NumericUpDown Margin="3 0 0 0"
@@ -48,14 +48,14 @@
                                    Maximum="255"
                                    Interval="1"
                                    HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.Threshold}" />
+                                   Value="{Binding Inputs.ThresholdValue}" />
             </Grid>
             <Grid  VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition  Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.MaxThresholdValue}"
+                <TextBlock Text="{x:Static strings:Strings.MaximumValue}"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center" />
                 <mah:NumericUpDown Margin="3 0 0 0"
@@ -65,7 +65,7 @@
                                    Maximum="255"
                                    Interval="1"
                                    HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.MaxValue}" />
+                                   Value="{Binding Inputs.MaximumValue}" />
             </Grid>
         </StackPanel>
     </GroupBox>

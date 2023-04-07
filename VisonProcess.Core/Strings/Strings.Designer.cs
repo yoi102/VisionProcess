@@ -268,11 +268,11 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Max Threshold Value 的本地化字符串。
+        ///   查找类似 Maximum Value 的本地化字符串。
         /// </summary>
-        public static string MaxThresholdValue {
+        public static string MaximumValue {
             get {
-                return ResourceManager.GetString("MaxThresholdValue", resourceCulture);
+                return ResourceManager.GetString("MaximumValue", resourceCulture);
             }
         }
         
@@ -511,20 +511,20 @@ namespace VisonProcess.Core.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Threshold 的本地化字符串。
-        /// </summary>
-        public static string Threshold {
-            get {
-                return ResourceManager.GetString("Threshold", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Threshold Type 的本地化字符串。
         /// </summary>
         public static string ThresholdType {
             get {
                 return ResourceManager.GetString("ThresholdType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ThresholdValue 的本地化字符串。
+        /// </summary>
+        public static string ThresholdValue {
+            get {
+                return ResourceManager.GetString("ThresholdValue", resourceCulture);
             }
         }
         
