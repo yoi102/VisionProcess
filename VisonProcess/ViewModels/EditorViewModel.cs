@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using VisonProcess.Core.Mvvm;
 using VisonProcess.Models;
 
 namespace VisonProcess.ViewModels

@@ -1,10 +1,5 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VisonProcess.Core.Attributes;
 using VisonProcess.Core.Strings;
 using VisonProcess.Core.ToolBase;
@@ -35,19 +30,13 @@ namespace VisonProcess.Tools.ViewModels
             Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.Threshold, Inputs.MaxValue, Inputs.ThresholdType);
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
-
             message = Strings.Success;
             return true;
-
         }
 
         private void Init()
         {
             Records.Add(new() { Title = Strings.OutputImage });
         }
-
-
-
-
     }
 }

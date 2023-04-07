@@ -18,7 +18,6 @@
             <Setter Property="Foreground"
                     Value="{DynamicResource ForegroundBrush}" />
         </Style>
-
     </UserControl.Resources>
     <Border TextElement.Foreground="{StaticResource MaterialDesignDarkForeground}"
             Padding="7"

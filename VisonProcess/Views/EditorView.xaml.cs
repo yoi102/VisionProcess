@@ -18,6 +18,7 @@ namespace VisonProcess.Views
             EventManager.RegisterClassHandler(typeof(ItemContainer), ItemContainer.DragStartedEvent, new RoutedEventHandler(CloseOperationsMenu));
             EventManager.RegisterClassHandler(typeof(NodifyEditor), MouseRightButtonUpEvent, new MouseButtonEventHandler(OpenOperationsMenu));
         }
+
         private void OpenOperationsMenu(object sender, MouseButtonEventArgs e)
         {
             if (!e.Handled && e.OriginalSource is NodifyEditor editor && !editor.IsPanning && editor.DataContext is ProcessModel process)

@@ -28,7 +28,6 @@
         <DataTemplate DataType="{x:Type tvm:ThresholdViewModel}">
             <tv:ThresholdView />
         </DataTemplate>
-
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -87,6 +86,5 @@
                        TextWrapping="Wrap">
             </TextBlock>
         </ScrollViewer>
-
     </Grid>
 </UserControl>

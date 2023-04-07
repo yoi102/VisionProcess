@@ -33,6 +33,7 @@ namespace VisonProcess.Core.Controls
             get { return (ICollection<Record>)GetValue(RecordSourceProperty); }
             set { SetValue(RecordSourceProperty, value); }
         }
+
         public Record SelectedRecord
         {
             get { return (Record)GetValue(SelectedRecordProperty); }
@@ -49,6 +50,7 @@ namespace VisonProcess.Core.Controls
                 //这里需要通知前台
             }
         }
+
         private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //uclRecord uclRecord = (uclRecord)d;

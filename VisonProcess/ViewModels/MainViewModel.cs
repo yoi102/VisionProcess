@@ -4,10 +4,7 @@ using System;
 using System.Linq;
 using VisonProcess.Core.Extentions;
 using VisonProcess.Core.Mvvm;
-using VisonProcess.Tools.ViewModels;
 using VisonProcess.Models;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace VisonProcess.ViewModels
 {
@@ -15,7 +12,6 @@ namespace VisonProcess.ViewModels
     {
         public MainViewModel()
         {
-          
             Editors.WhenAdded((editor) =>
             {
                 if (AutoSelectNewEditor || Editors.Count == 1)
@@ -35,7 +31,7 @@ namespace VisonProcess.ViewModels
             {
                 Name = $"Editor {Editors.Count + 1}"
             });
-       }
+        }
 
         private void OnOpenInnerProcess(EditorViewModel parentEditor, ProcessModel process)
         {

@@ -162,7 +162,6 @@ namespace VisonProcess.Models
         {
             List<OperationModel>? list = SelectedOperations.ToList();
             list.ForEach(o => Operations.Remove(o));
-        
         }
 
         [RelayCommand]

@@ -2,11 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using VisonProcess.Core.ToolBase;
 using VisonProcess.Models;
@@ -16,11 +13,9 @@ namespace VisonProcess.ViewModels
 {
     public partial class OperationsMenuViewModel : ObservableObject
     {
-
         private Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
         {
             return assembly.GetTypes().Where(t => String.Equals(t.Namespace, nameSpace, StringComparison.Ordinal)).ToArray();
-
         }
 
         public OperationsMenuViewModel(ProcessModel processModel)
@@ -36,6 +31,7 @@ namespace VisonProcess.ViewModels
             AvailableOperations = list;
             this.processModel = processModel;
         }
+
         public event Action? Closed;
 
         [ObservableProperty]
@@ -43,11 +39,10 @@ namespace VisonProcess.ViewModels
 
         [ObservableProperty]
         private bool _isVisible;
+
         private readonly ProcessModel processModel;
 
         public IEnumerable<string> AvailableOperations { get; }
-
-
 
         public void OpenAt(Point targetLocation)
         {
@@ -68,14 +63,8 @@ namespace VisonProcess.ViewModels
             Assembly assembly = typeof(AcquireImageViewModel).Assembly;
             var type = assembly.GetType("VisonProcess.Tools.ViewModels." + operationName + "ViewModel");
             var instance = Activator.CreateInstance(type!);
-            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location ,Title = operationName });
+            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location, Title = operationName });
             IsVisible = false;
         }
-
-
-
-
-
-
     }
 }

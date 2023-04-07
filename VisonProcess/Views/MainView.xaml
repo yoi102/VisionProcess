@@ -219,7 +219,6 @@
                                                     Value="{DynamicResource ResourceKey=PrimaryHueMidBrush}" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
-
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -243,7 +242,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
         </Grid>
     </Grid>
 </mah:MetroWindow>

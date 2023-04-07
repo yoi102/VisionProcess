@@ -32,7 +32,6 @@
                           Style="{StaticResource MaterialDesignComboBox}"
                           SelectedItem="{Binding Inputs.ThresholdType}"
                           ItemsSource="{Binding Source={ex:EnumBindingSource  {x:Type opencv:ThresholdTypes}}}" />
-
             </Grid>
             <Grid  VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -68,7 +67,6 @@
                                    HorizontalAlignment="Left"
                                    Value="{Binding Inputs.MaxValue}" />
             </Grid>
-
         </StackPanel>
     </GroupBox>
 </UserControl>

@@ -6,6 +6,7 @@ namespace VisonProcess.Tools.Models
     public class ColorConvertInput : InputsBase
     {
         private Mat? _image;
+
         public Mat? Image
         {
             get { return _image; }

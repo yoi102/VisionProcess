@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using VisonProcess.Core.Mvvm;
 using VisonProcess.Models;
 
 namespace VisonProcess.Extentions

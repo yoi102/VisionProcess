@@ -178,8 +178,6 @@
                                                VerticalAlignment="Center" />
 
                                     <controls:EditableTextBlock  Text="{Binding Title}" />
-
-                            
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
@@ -205,7 +203,7 @@
                         <nodify:Node.Header>
                             <controls:EditableTextBlock  Text="{Binding Title}" />
                         </nodify:Node.Header>
-                        
+
                         <nodify:Node.ContextMenu>
                             <ContextMenu>
                                 <MenuItem  Header="Delete"
@@ -264,8 +262,6 @@
                     <local:OperationsMenuView />
                 </nodify:DecoratorContainer>
             </CompositeCollection>
-
         </nodify:NodifyEditor>
-
     </Grid>
 </UserControl>
