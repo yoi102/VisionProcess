@@ -48,6 +48,7 @@
                           Style="{StaticResource MaterialDesignComboBox}"
                           SelectedItem="{Binding Inputs.BorderType}"
                           ItemsSource="{Binding Source={ex:EnumBindingSource  {x:Type opencv:BorderTypes}}}" />
+                
             </Grid>
 
             <Grid  VerticalAlignment="Center">
