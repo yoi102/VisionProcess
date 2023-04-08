@@ -81,6 +81,7 @@
                         Content="{Binding Operation}" />
 
         <ScrollViewer Grid.Row="3"
+                      HorizontalScrollBarVisibility="Disabled"
                       md:ScrollViewerAssist.IsAutoHideEnabled="True"
                       VerticalScrollBarVisibility="Auto"
                       ToolTip="{Binding ElementName=textblock, Path=Text}">

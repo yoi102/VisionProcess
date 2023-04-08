@@ -259,7 +259,7 @@
             <CompositeCollection>
                 <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}"
                                            Location="{Binding Location}">
-                    <local:OperationsMenuView />
+                    <local:OperationsMenuView  />
                 </nodify:DecoratorContainer>
             </CompositeCollection>
         </nodify:NodifyEditor>

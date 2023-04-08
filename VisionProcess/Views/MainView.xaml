@@ -117,6 +117,7 @@
                 </Expander.Header>
 
                 <local:uclOperationView HorizontalAlignment="Left"
+                                        Width="440"
                                         DataContext="{Binding SelectedEditor.Process.SelectedOperation}"
                                         Visibility="{Binding Converter={StaticResource NotNullValueToVisibility}}" />
             </Expander>
