@@ -12,10 +12,13 @@ namespace VisionProcess.Tools.Models
     {
         [LocalizedDescription("NormalizedBox", typeof(Strings))]
         NormalizedBox,
+
         [LocalizedDescription("Median", typeof(Strings))]
         Median,
+
         [LocalizedDescription("Gaussian", typeof(Strings))]
         Gaussian,
+
         [LocalizedDescription("Bilateral", typeof(Strings))]
         Bilateral,
     }

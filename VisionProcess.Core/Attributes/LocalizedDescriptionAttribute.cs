@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VisionProcess.Core.Attributes
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {
-        ResourceManager _resourceManager;
-        string _resourceKey;
+        private ResourceManager _resourceManager;
+        private string _resourceKey;
 
         public LocalizedDescriptionAttribute(string resourceKey, Type resourceType)
         {

@@ -1,6 +1,5 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System.Windows.Shapes;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;

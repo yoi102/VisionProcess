@@ -5,7 +5,6 @@ namespace VisionProcess.Tools.Models
 {
     public class ImageBinarizationInputs : InputsBase
     {
-    
         private Mat? _image;
         private double _maximumValue = 255;
         private double _thresholdValue = 50;
@@ -33,6 +32,7 @@ namespace VisionProcess.Tools.Models
             get { return _maximumValue; }
             set { SetProperty(ref _maximumValue, value); }
         }
+
         /// <summary>
         /// threshold value
         /// </summary>
@@ -41,6 +41,7 @@ namespace VisionProcess.Tools.Models
             get { return _thresholdValue; }
             set { SetProperty(ref _thresholdValue, value); }
         }
+
         /// <summary>
         /// thresholding type (see the details below).</param>
         /// </summary>

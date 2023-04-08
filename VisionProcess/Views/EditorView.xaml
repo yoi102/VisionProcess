@@ -1,17 +1,17 @@
 ﻿<UserControl x:Class="VisionProcess.Views.EditorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:nodify="https://miroiu.github.io/nodify"
-             xmlns:local="clr-namespace:VisionProcess.Views"
-             xmlns:models="clr-namespace:VisionProcess.Models"
+             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
              xmlns:converter="clr-namespace:VisionProcess.Core.Converters;assembly=VisionProcess.Core"
              xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
              xmlns:core="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Core"
+             xmlns:models="clr-namespace:VisionProcess.Models"
              xmlns:viewmodels="clr-namespace:VisionProcess.ViewModels"
-             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
+             xmlns:local="clr-namespace:VisionProcess.Views"
+             xmlns:nodify="https://miroiu.github.io/nodify"
              d:DataContext="{d:DesignInstance Type=viewmodels:EditorViewModel}"
              mc:Ignorable="d"
              d:Background="Wheat"
@@ -259,7 +259,7 @@
             <CompositeCollection>
                 <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}"
                                            Location="{Binding Location}">
-                    <local:OperationsMenuView  />
+                    <local:OperationsMenuView />
                 </nodify:DecoratorContainer>
             </CompositeCollection>
         </nodify:NodifyEditor>
