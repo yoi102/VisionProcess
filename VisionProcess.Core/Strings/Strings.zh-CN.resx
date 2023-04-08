@@ -294,4 +294,34 @@
   <data name="MaximumValue" xml:space="preserve">
     <value>最大值</value>
   </data>
+  <data name="FilterType" xml:space="preserve">
+    <value>滤波类型</value>
+  </data>
+  <data name="KernelHeight" xml:space="preserve">
+    <value>滤波核高</value>
+  </data>
+  <data name="KernelWidth" xml:space="preserve">
+    <value>滤波核宽</value>
+  </data>
+  <data name="BorderType" xml:space="preserve">
+    <value>边框类型</value>
+  </data>
+  <data name="KernelSize" xml:space="preserve">
+    <value>滤波核尺寸</value>
+  </data>
+  <data name="Diameter" xml:space="preserve">
+    <value>直径</value>
+  </data>
+  <data name="NormalizedBox" xml:space="preserve">
+    <value>归一化框</value>
+  </data>
+  <data name="Median" xml:space="preserve">
+    <value>中值滤波</value>
+  </data>
+  <data name="Gaussian" xml:space="preserve">
+    <value>高斯滤波</value>
+  </data>
+  <data name="Bilateral" xml:space="preserve">
+    <value>双边滤波</value>
+  </data>
 </root>

@@ -204,4 +204,7 @@
   <data name="Disconnect" xml:space="preserve">
     <value>接続を解除</value>
   </data>
+  <data name="FilterType" xml:space="preserve">
+    <value>フィルタ　タイプ</value>
+  </data>
 </root>

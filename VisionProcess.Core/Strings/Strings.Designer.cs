@@ -79,6 +79,24 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Bilateral 的本地化字符串。
+        /// </summary>
+        public static string Bilateral {
+            get {
+                return ResourceManager.GetString("Bilateral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Border Type 的本地化字符串。
+        /// </summary>
+        public static string BorderType {
+            get {
+                return ResourceManager.GetString("BorderType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         public static string Cancel {
@@ -142,6 +160,15 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Diameter 的本地化字符串。
+        /// </summary>
+        public static string Diameter {
+            get {
+                return ResourceManager.GetString("Diameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Folder &apos;{0}&apos; not found 的本地化字符串。
         /// </summary>
         public static string DirectoryXNotFound {
@@ -151,7 +178,7 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Disconnect 的本地化字符串。
         /// </summary>
         public static string Disconnect {
             get {
@@ -205,6 +232,15 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Filter Type 的本地化字符串。
+        /// </summary>
+        public static string FilterType {
+            get {
+                return ResourceManager.GetString("FilterType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Folders 的本地化字符串。
         /// </summary>
         public static string Folders {
@@ -214,11 +250,47 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Gaussian 的本地化字符串。
+        /// </summary>
+        public static string Gaussian {
+            get {
+                return ResourceManager.GetString("Gaussian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Image Files 的本地化字符串。
         /// </summary>
         public static string ImageFiles {
             get {
                 return ResourceManager.GetString("ImageFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kernel Height 的本地化字符串。
+        /// </summary>
+        public static string KernelHeight {
+            get {
+                return ResourceManager.GetString("KernelHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kernel Size 的本地化字符串。
+        /// </summary>
+        public static string KernelSize {
+            get {
+                return ResourceManager.GetString("KernelSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kernel Width 的本地化字符串。
+        /// </summary>
+        public static string KernelWidth {
+            get {
+                return ResourceManager.GetString("KernelWidth", resourceCulture);
             }
         }
         
@@ -277,6 +349,15 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Median 的本地化字符串。
+        /// </summary>
+        public static string Median {
+            get {
+                return ResourceManager.GetString("Median", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Minimize 的本地化字符串。
         /// </summary>
         public static string Minimize {
@@ -300,6 +381,15 @@ namespace VisionProcess.Core.Strings {
         public static string NewDirectoryName {
             get {
                 return ResourceManager.GetString("NewDirectoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Normalized Box 的本地化字符串。
+        /// </summary>
+        public static string NormalizedBox {
+            get {
+                return ResourceManager.GetString("NormalizedBox", resourceCulture);
             }
         }
         
@@ -471,6 +561,42 @@ namespace VisionProcess.Core.Strings {
         public static string Selection {
             get {
                 return ResourceManager.GetString("Selection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SigmaColor 的本地化字符串。
+        /// </summary>
+        public static string SigmaColor {
+            get {
+                return ResourceManager.GetString("SigmaColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SigmaSpace 的本地化字符串。
+        /// </summary>
+        public static string SigmaSpace {
+            get {
+                return ResourceManager.GetString("SigmaSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SigmaX 的本地化字符串。
+        /// </summary>
+        public static string SigmaX {
+            get {
+                return ResourceManager.GetString("SigmaX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SigmaY 的本地化字符串。
+        /// </summary>
+        public static string SigmaY {
+            get {
+                return ResourceManager.GetString("SigmaY", resourceCulture);
             }
         }
         

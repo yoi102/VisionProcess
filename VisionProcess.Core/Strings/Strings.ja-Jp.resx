@@ -285,4 +285,28 @@
   <data name="MaximumValue" xml:space="preserve">
     <value>最大し値</value>
   </data>
+  <data name="KernelWidth" xml:space="preserve">
+    <value>カーネル幅</value>
+  </data>
+  <data name="KernelHeight" xml:space="preserve">
+    <value>カーネルの高さ</value>
+  </data>
+  <data name="BorderType" xml:space="preserve">
+    <value>ボーダータイプ</value>
+  </data>
+  <data name="KernelSize" xml:space="preserve">
+    <value>カーネルサイズ</value>
+  </data>
+  <data name="Diameter" xml:space="preserve">
+    <value>直径</value>
+  </data>
+  <data name="NormalizedBox" xml:space="preserve">
+    <value>正規化ボックス</value>
+  </data>
+  <data name="Median" xml:space="preserve">
+    <value>中央値</value>
+  </data>
+  <data name="Gaussian" xml:space="preserve">
+    <value>ガウス</value>
+  </data>
 </root>

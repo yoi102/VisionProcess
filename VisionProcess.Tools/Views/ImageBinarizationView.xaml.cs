@@ -3,11 +3,11 @@
 namespace VisionProcess.Tools.Views
 {
     /// <summary>
-    /// ThresholdView.xaml 的交互逻辑
+    /// ImageBinarizationView.xaml 的交互逻辑
     /// </summary>
-    public partial class ThresholdView : UserControl
+    public partial class ImageBinarizationView : UserControl
     {
-        public ThresholdView()
+        public ImageBinarizationView()
         {
             InitializeComponent();
         }

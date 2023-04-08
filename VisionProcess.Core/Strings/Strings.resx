@@ -283,7 +283,7 @@
     <value>Delet</value>
   </data>
   <data name="Disconnect" xml:space="preserve">
-    <value></value>
+    <value>Disconnect</value>
   </data>
   <data name="ThresholdType" xml:space="preserve">
     <value>Threshold Type</value>
@@ -293,5 +293,47 @@
   </data>
   <data name="MaximumValue" xml:space="preserve">
     <value>Maximum Value</value>
+  </data>
+  <data name="FilterType" xml:space="preserve">
+    <value>Filter Type</value>
+  </data>
+  <data name="KernelWidth" xml:space="preserve">
+    <value>Kernel Width</value>
+  </data>
+  <data name="KernelHeight" xml:space="preserve">
+    <value>Kernel Height</value>
+  </data>
+  <data name="BorderType" xml:space="preserve">
+    <value>Border Type</value>
+  </data>
+  <data name="KernelSize" xml:space="preserve">
+    <value>Kernel Size</value>
+  </data>
+  <data name="SigmaX" xml:space="preserve">
+    <value>SigmaX</value>
+  </data>
+  <data name="SigmaY" xml:space="preserve">
+    <value>SigmaY</value>
+  </data>
+  <data name="Diameter" xml:space="preserve">
+    <value>Diameter</value>
+  </data>
+  <data name="SigmaColor" xml:space="preserve">
+    <value>SigmaColor</value>
+  </data>
+  <data name="SigmaSpace" xml:space="preserve">
+    <value>SigmaSpace</value>
+  </data>
+  <data name="NormalizedBox" xml:space="preserve">
+    <value>Normalized Box</value>
+  </data>
+  <data name="Median" xml:space="preserve">
+    <value>Median</value>
+  </data>
+  <data name="Gaussian" xml:space="preserve">
+    <value>Gaussian</value>
+  </data>
+  <data name="Bilateral" xml:space="preserve">
+    <value>Bilateral</value>
   </data>
 </root>

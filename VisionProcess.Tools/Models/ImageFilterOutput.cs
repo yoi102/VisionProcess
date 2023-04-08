@@ -1,9 +1,14 @@
 ﻿using OpenCvSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ThresholdOutputs : OutputsBase
+    public class ImageFilterOutput : OutputsBase
     {
         private Mat? _image;
 

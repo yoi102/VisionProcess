@@ -25,8 +25,11 @@
             <tv:ColorConvertView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type tvm:ThresholdViewModel}">
-            <tv:ThresholdView />
+        <DataTemplate DataType="{x:Type tvm:ImageBinarizationViewModel}">
+            <tv:ImageBinarizationView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type tvm:ImageFilterViewModel}">
+            <tv:ImageFilterView />
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
