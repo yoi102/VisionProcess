@@ -1,22 +1,22 @@
-﻿<UserControl x:Class="VisionProcess.Tools.Views.AcquireImageView"
+﻿<UserControl
+    x:Class="VisionProcess.Tools.Views.AcquireImageView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:VisionProcess.Tools.Views"
-             xmlns:viewmodels="clr-namespace:VisionProcess.Tools.ViewModels"
-             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
-             d:DataContext="{d:DesignInstance Type=viewmodels:AcquireImageViewModel}"
              xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
+             xmlns:viewmodels="clr-namespace:VisionProcess.Tools.ViewModels"
              d:Background="Wheat"
-             mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="300">
+    d:DataContext="{d:DesignInstance Type=viewmodels:AcquireImageViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
     <GroupBox Header="AcquireImageView" Style="{StaticResource MaterialDesignCardGroupBox}">
         <StackPanel>
-            <Button Margin="50"
-                    Content="{x:Static strings:Strings.Select}"
-                    Command="{Binding AcquireLocalImagesCommand}" />
+            <Button
+                Margin="50"
+                Command="{Binding AcquireLocalImagesCommand}"
+                Content="{x:Static strings:Strings.Select}" />
         </StackPanel>
     </GroupBox>
 </UserControl>

@@ -16,11 +16,6 @@ namespace VisionProcess.Tools.ViewModels
             Init();
         }
 
-        private void Init()
-        {
-            Records.Add(new() { Title = Strings.OutputImage });
-        }
-
         protected override bool InternalExecute(out string message)
         {
             if (Inputs.Image is null)
@@ -52,10 +47,13 @@ namespace VisionProcess.Tools.ViewModels
             }
 
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
-
             message = Strings.Success;
-
             return true;
+        }
+
+        private void Init()
+        {
+            Records.Add(new() { Title = Strings.OutputImage });
         }
     }
 }

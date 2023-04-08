@@ -9,7 +9,10 @@ namespace VisionProcess.Tools.Models
 
         public Mat? Image
         {
-            get { return _image; }
+            get
+            {
+                return _image;
+            }
             internal set
             {
                 if (_image != value)

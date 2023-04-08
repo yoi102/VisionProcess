@@ -5,11 +5,21 @@ namespace VisionProcess.Tools.Models
 {
     public class ColorConvertInput : InputsBase
     {
+        private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.BGR2GRAY;
         private Mat? _image;
+
+        public ColorConversionCodes ColorConversionCodes
+        {
+            get { return _colorConversionCodes; }
+            set { SetProperty(ref _colorConversionCodes, value); }
+        }
 
         public Mat? Image
         {
-            get { return _image; }
+            get
+            {
+                return _image;
+            }
             set
             {
                 if (_image != value)
@@ -19,14 +29,6 @@ namespace VisionProcess.Tools.Models
                     OnPropertyChanged();
                 }
             }
-        }
-
-        private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.BGR2GRAY;
-
-        public ColorConversionCodes ColorConversionCodes
-        {
-            get { return _colorConversionCodes; }
-            set { SetProperty(ref _colorConversionCodes, value); }
         }
     }
 }

@@ -17,7 +17,10 @@ namespace VisionProcess.Core.ToolBase
 
         public BitmapSource? DisplayImage
         {
-            get { return _displayImage; }
+            get
+            {
+                return _displayImage;
+            }
             set
             {
                 if (value != _displayImage)

@@ -1,268 +1,257 @@
-﻿<UserControl x:Class="VisionProcess.Tools.Views.ImageFilterView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:opencv="clr-namespace:OpenCvSharp;assembly=OpenCvSharp"
-             xmlns:ex="clr-namespace:VisionProcess.Core.Extentions;assembly=VisionProcess.Core"
-             xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
-             xmlns:m="clr-namespace:VisionProcess.Tools.Models"
-             xmlns:vm="clr-namespace:VisionProcess.Tools.ViewModels"
-             d:DataContext="{d:DesignInstance Type=vm:ImageFilterViewModel}"
-             d:Background="Wheat"
-             mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="300">
+﻿<UserControl
+    x:Class="VisionProcess.Tools.Views.ImageFilterView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ex="clr-namespace:VisionProcess.Core.Extentions;assembly=VisionProcess.Core"
+    xmlns:m="clr-namespace:VisionProcess.Tools.Models"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:opencv="clr-namespace:OpenCvSharp;assembly=OpenCvSharp"
+    xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
+    xmlns:vm="clr-namespace:VisionProcess.Tools.ViewModels"
+    d:Background="Wheat"
+    d:DataContext="{d:DesignInstance Type=vm:ImageFilterViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style TargetType="Grid"
-               x:Key="KernelWidthHeightVisibility">
-            <Setter Property="Visibility"
-                    Value="Collapsed" />
+        <Style x:Key="KernelWidthHeightVisibility" TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Inputs.FilterType}"
-                             Value="NormalizedBox">
-                    <Setter Property="Visibility"
-                            Value="Visible" />
+                <DataTrigger Binding="{Binding Inputs.FilterType}" Value="NormalizedBox">
+                    <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Inputs.FilterType}"
-                             Value="Gaussian">
-                    <Setter Property="Visibility"
-                            Value="Visible" />
+                <DataTrigger Binding="{Binding Inputs.FilterType}" Value="Gaussian">
+                    <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="Grid"
-               x:Key="KernelSizeVisibility">
-            <Setter Property="Visibility"
-                    Value="Collapsed" />
+        <Style x:Key="KernelSizeVisibility" TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Inputs.FilterType}"
-                             Value="Median">
-                    <Setter Property="Visibility"
-                            Value="Visible" />
+                <DataTrigger Binding="{Binding Inputs.FilterType}" Value="Median">
+                    <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="Grid"
-               x:Key="SigmaXYVisibility">
-            <Setter Property="Visibility"
-                    Value="Collapsed" />
+        <Style x:Key="SigmaXYVisibility" TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Inputs.FilterType}"
-                             Value="Gaussian">
-                    <Setter Property="Visibility"
-                            Value="Visible" />
+                <DataTrigger Binding="{Binding Inputs.FilterType}" Value="Gaussian">
+                    <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="Grid"
-               x:Key="BilateralVisibility">
-            <Setter Property="Visibility"
-                    Value="Collapsed" />
+        <Style x:Key="BilateralVisibility" TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Inputs.FilterType}"
-                             Value="Bilateral">
-                    <Setter Property="Visibility"
-                            Value="Visible" />
+                <DataTrigger Binding="{Binding Inputs.FilterType}" Value="Bilateral">
+                    <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="Grid"
-               x:Key="BorderTypeVisibility">
-            <Setter Property="Visibility"
-                    Value="Visible" />
+        <Style x:Key="BorderTypeVisibility" TargetType="Grid">
+            <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Inputs.FilterType}"
-                             Value="Median">
-                    <Setter Property="Visibility"
-                            Value="Collapsed" />
+                <DataTrigger Binding="{Binding Inputs.FilterType}" Value="Median">
+                    <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
-    <GroupBox Header="ImageBinarizationView"
-              Style="{StaticResource MaterialDesignCardGroupBox}">
-        <StackPanel Margin="10 10 0 0">
-            <Grid  VerticalAlignment="Center">
+    <GroupBox Header="ImageBinarizationView" Style="{StaticResource MaterialDesignCardGroupBox}">
+        <StackPanel Margin="10,10,0,0">
+            <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.FilterType}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <ComboBox Margin="3 0 0 0"
-                          Width="150"
-                          Grid.Column="1"
-                          Style="{StaticResource MaterialDesignComboBox}"
-                          SelectedItem="{Binding Inputs.FilterType}"
-                          ItemsSource="{Binding Source={ex:EnumBindingSource  {x:Type m:FilterTypes}}}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.FilterType}" />
+                <ComboBox
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type m:FilterTypes}}}"
+                    SelectedItem="{Binding Inputs.FilterType}"
+                    Style="{StaticResource MaterialDesignComboBox}" />
             </Grid>
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource BorderTypeVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource BorderTypeVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.BorderType}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <ComboBox Margin="3 0 0 0"
-                          Width="150"
-                          Grid.Column="1"
-                          Style="{StaticResource MaterialDesignComboBox}"
-                          SelectedItem="{Binding Inputs.BorderType}"
-                          ItemsSource="{Binding Source={ex:EnumBindingSource  {x:Type opencv:BorderTypes}}}" />
-            </Grid>
-
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource KernelWidthHeightVisibility}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.KernelWidth}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Minimum="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.KernelWidth}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.BorderType}" />
+                <ComboBox
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type opencv:BorderTypes}}}"
+                    SelectedItem="{Binding Inputs.BorderType}"
+                    Style="{StaticResource MaterialDesignComboBox}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource KernelWidthHeightVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource KernelWidthHeightVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.KernelHeight}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Minimum="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.KernelHeight}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.KernelWidth}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Minimum="1"
+                    Value="{Binding Inputs.KernelWidth}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource KernelSizeVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource KernelWidthHeightVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{x:Static strings:Strings.KernelSize}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Minimum="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.KernelSize}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.KernelHeight}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Minimum="1"
+                    Value="{Binding Inputs.KernelHeight}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource SigmaXYVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource KernelSizeVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Static strings:Strings.SigmaX}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.SigmaX}" />
+
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.KernelSize}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Minimum="1"
+                    Value="{Binding Inputs.KernelSize}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource SigmaXYVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource SigmaXYVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{x:Static strings:Strings.SigmaY}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.SigmaY}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.SigmaX}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Value="{Binding Inputs.SigmaX}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource BilateralVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource SigmaXYVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{x:Static strings:Strings.Diameter}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.Diameter}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.SigmaY}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Value="{Binding Inputs.SigmaY}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource BilateralVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource BilateralVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{x:Static strings:Strings.SigmaColor}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.SigmaColor}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.Diameter}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Value="{Binding Inputs.Diameter}" />
             </Grid>
 
-            <Grid  VerticalAlignment="Center"
-                   Style="{StaticResource BilateralVisibility}">
+            <Grid VerticalAlignment="Center" Style="{StaticResource BilateralVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition  Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{x:Static strings:Strings.SigmaSpace}"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center" />
-                <mah:NumericUpDown Margin="3 0 0 0"
-                                   Width="150"
-                                   Grid.Column="1"
-                                   Interval="1"
-                                   HorizontalAlignment="Left"
-                                   Value="{Binding Inputs.SigmaSpace}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.SigmaColor}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Value="{Binding Inputs.SigmaColor}" />
+            </Grid>
+
+            <Grid VerticalAlignment="Center" Style="{StaticResource BilateralVisibility}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="{x:Static strings:Strings.SigmaSpace}" />
+                <mah:NumericUpDown
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="3,0,0,0"
+                    HorizontalAlignment="Left"
+                    Interval="1"
+                    Value="{Binding Inputs.SigmaSpace}" />
             </Grid>
         </StackPanel>
     </GroupBox>

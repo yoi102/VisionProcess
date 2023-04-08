@@ -11,7 +11,10 @@ namespace VisionProcess.Core.Extentions
 
         public Type? EnumType
         {
-            get { return _enumType; }
+            get
+            {
+                return _enumType;
+            }
             set
             {
                 if (value != _enumType)
