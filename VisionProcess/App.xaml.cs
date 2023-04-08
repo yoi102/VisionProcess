@@ -19,7 +19,7 @@ namespace VisionProcess
         public App()
         {
             string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
-            //string lang = "ja-jp";
+            //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang); ;
 

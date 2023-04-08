@@ -19,8 +19,11 @@ namespace VisionProcess.Core.Converters
                     FieldInfo? fi = value.GetType().GetField(value.ToString()!);
                     if (fi != null)
                     {
-                        var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-                        return ((attributes.Length > 0) && (!String.IsNullOrEmpty(attributes[0].Description))) ? attributes[0].Description : value.ToString();
+                        //var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                        //return ((attributes.Length > 0) && (!String.IsNullOrEmpty(attributes[0].Description))) ? attributes[0].Description : value.ToString();
+
+                        var attributes = (DescriptionAttribute?)fi.GetCustomAttribute(typeof(DescriptionAttribute), false);
+                        return ((attributes is not null) && (!String.IsNullOrEmpty(attributes.Description))) ? attributes.Description : value.ToString();
                     }
                 }
 
