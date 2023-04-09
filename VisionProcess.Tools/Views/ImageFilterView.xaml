@@ -63,8 +63,9 @@
         </Style>
 
     </UserControl.Resources>
-
-    <GroupBox Header="ImageBinarizationView" Style="{StaticResource MaterialDesignCardGroupBox}">
+    <!--也可以 ContentTemplateSelector 用EnumTemplateSelector，
+    但需要定制Template的Key为Enum的值名称-->
+    <GroupBox Header="ImageBinarizationView" Style="{StaticResource MaterialDesignCardGroupBox}" >
 
         <StackPanel Margin="10,10,0,0">
             <Grid VerticalAlignment="Center">
