@@ -16,7 +16,10 @@ namespace VisionProcess.Core.Selectors
         {
             if (container is FrameworkElement element)
             {
-                return element.FindResource(item.ToString()) as DataTemplate;
+                if (item.GetType().IsEnum)
+                {
+                    return element.FindResource(item.ToString()) as DataTemplate;
+                }
             }
             return null;
         }
