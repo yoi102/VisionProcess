@@ -1,4 +1,5 @@
-﻿using OpenCvSharp;
+﻿using ControlzEx.Standard;
+using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
@@ -26,8 +27,8 @@ namespace VisionProcess.Tools.ViewModels
                 message = "Input image can not be null";
                 return false;
             }
-            Outputs.Image ??= new Mat();
-            Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
+            Outputs.Image = Inputs.Image.Threshold(Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
+            //Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
             message = Strings.Success;
