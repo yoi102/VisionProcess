@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="VisionProcess.Tools.Views.ImageBinarizationView"
+    x:Class="VisionProcess.Tools.Views.ImageThresholdView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,11 +10,11 @@
     xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
     xmlns:viewmodels="clr-namespace:VisionProcess.Tools.ViewModels"
     d:Background="Wheat"
-    d:DataContext="{d:DesignInstance Type=viewmodels:ImageBinarizationViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodels:ImageThresholdViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="300"
     mc:Ignorable="d">
-    <GroupBox Header="ImageBinarizationView" Style="{StaticResource MaterialDesignCardGroupBox}">
+    <GroupBox Header="ImageThresholdView" Style="{StaticResource MaterialDesignCardGroupBox}">
         <StackPanel Margin="10,10,0,0">
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>

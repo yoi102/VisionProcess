@@ -3,7 +3,7 @@ using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ImageBinarizationInputs : InputsBase
+    public class ImageThresholdInputs : InputsBase
     {
         private Mat? _image;
         private double _maximumValue = 255;

@@ -25,8 +25,8 @@
             <tv:ColorConvertView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type tvm:ImageBinarizationViewModel}">
-            <tv:ImageBinarizationView />
+        <DataTemplate DataType="{x:Type tvm:ImageThresholdViewModel}">
+            <tv:ImageThresholdView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type tvm:ImageFilterViewModel}">
             <tv:ImageFilterView />

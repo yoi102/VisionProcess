@@ -3,7 +3,7 @@ using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ImageBinarizationOutputs : OutputsBase
+    public class ImageThresholdOutputs : OutputsBase
     {
         private Mat? _image;
 

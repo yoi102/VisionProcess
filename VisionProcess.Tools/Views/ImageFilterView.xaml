@@ -65,7 +65,7 @@
     </UserControl.Resources>
     <!--也可以 ContentTemplateSelector 用EnumTemplateSelector，
     但需要定制Template的Key为Enum的值名称-->
-    <GroupBox Header="ImageBinarizationView" Style="{StaticResource MaterialDesignCardGroupBox}" >
+    <GroupBox Header="ImageThresholdView" Style="{StaticResource MaterialDesignCardGroupBox}" >
 
         <StackPanel Margin="10,10,0,0">
             <Grid VerticalAlignment="Center">
@@ -156,7 +156,7 @@
                     Width="150"
                     Margin="3,0,0,0"
                     HorizontalAlignment="Left"
-                    Interval="1"
+                    Interval="2"
                     Minimum="1"
                     Value="{Binding Inputs.KernelSize}" />
             </Grid>
