@@ -336,4 +336,7 @@
   <data name="Bilateral" xml:space="preserve">
     <value>Bilateral</value>
   </data>
+  <data name="SaveImage" xml:space="preserve">
+    <value>Save Image</value>
+  </data>
 </root>

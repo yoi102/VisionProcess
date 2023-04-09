@@ -309,4 +309,7 @@
   <data name="Gaussian" xml:space="preserve">
     <value>ガウス</value>
   </data>
+  <data name="SaveImage" xml:space="preserve">
+    <value>画像保存</value>
+  </data>
 </root>

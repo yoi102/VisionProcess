@@ -324,4 +324,7 @@
   <data name="Bilateral" xml:space="preserve">
     <value>双边滤波</value>
   </data>
+  <data name="SaveImage" xml:space="preserve">
+    <value>保存图像</value>
+  </data>
 </root>

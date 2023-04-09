@@ -32,6 +32,9 @@
                                 Click="MenuItem_Click"
                                 Header="{x:Static strings:Strings.AdaptiveForm}"
                                 Icon="{md:PackIcon Kind=FitToScreenOutline}" />
+                            <MenuItem Click="MenuItem_Click_1"
+                                      Header="{x:Static strings:Strings.SaveImage}"
+                                      Icon="{md:PackIcon Kind=ImageSecure}" />
                         </ContextMenu>
                     </ScrollViewer.ContextMenu>
                     <!--  <Image Source="{Binding Path=ImageSource, ElementName=IM}"  -->

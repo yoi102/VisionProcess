@@ -1,11 +1,14 @@
-﻿using OpenCvSharp;
+﻿using Microsoft.Win32;
+using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using VisionProcess.Core.Strings;
 using Point = System.Windows.Point;
 
 namespace VisionProcess.Core.Controls
@@ -221,6 +224,32 @@ namespace VisionProcess.Core.Controls
             var group = (TransformGroup)im.RenderTransform;
             group.Children[0] = new ScaleTransform();
             group.Children[1] = new TranslateTransform();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
+            var dialog = new SaveFileDialog();
+            // 设置对话框标题
+            dialog.Title = Strings.Strings.SaveFile;
+            // 设置默认文件名和文件类型
+            dialog.FileName = Strings.Strings.SaveImage;
+            dialog.DefaultExt = ".bmp";
+            dialog.Filter = Strings.Strings.SaveImage+ " (*.bmp)|*.bmp| (*.jpg)|*.jpg| (*.png)|*.png";
+
+            // 显示对话框并获取用户选择的文件路径
+            bool? result = dialog.ShowDialog();
+            if (result == true)
+            {
+                string filePath = dialog.FileName;
+
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create((BitmapSource)ImageSource));
+                FileStream file = new FileStream(filePath, FileMode.Create);
+                encoder.Save(file);
+                file.Close();
+            }
+
         }
     }
 }
