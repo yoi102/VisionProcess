@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using VisionProcess.Core.Strings;
 using Point = System.Windows.Point;
 
 namespace VisionProcess.Core.Controls
@@ -228,7 +227,6 @@ namespace VisionProcess.Core.Controls
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-
             var dialog = new SaveFileDialog();
             // 设置对话框标题
             dialog.Title = Strings.Strings.SaveFile;
@@ -242,25 +240,14 @@ namespace VisionProcess.Core.Controls
             if (result == true)
             {
                 string filePath = dialog.FileName;
-
-
-                BitmapEncoder? encoder = null;
-
                 string fileExtension = Path.GetExtension(filePath);
-
-                switch (fileExtension)
+                BitmapEncoder? encoder = fileExtension switch
                 {
-
-                    case ".bmp":
-                        encoder = new BmpBitmapEncoder(); break;
-                    case ".jpg":
-                    case ".jpeg":
-                        encoder = new JpegBitmapEncoder(); break;
-                    case ".png":
-                        encoder = new PngBitmapEncoder(); break;
-                    default:
-                        throw new NotSupportedException("Unsupported file format");
-                }
+                    ".bmp" => new BmpBitmapEncoder(),
+                    ".jpg" or ".jpeg" => new JpegBitmapEncoder(),
+                    ".png" => new PngBitmapEncoder(),
+                    _ => throw new NotSupportedException("Unsupported file format"),
+                };
                 if (encoder is not null)
                 {
                     encoder.Frames.Add(BitmapFrame.Create((BitmapSource)ImageSource));
@@ -268,13 +255,7 @@ namespace VisionProcess.Core.Controls
                     encoder.Save(file);
                     file.Close();
                 }
-      
-
-
-
-
             }
-
         }
     }
 }
