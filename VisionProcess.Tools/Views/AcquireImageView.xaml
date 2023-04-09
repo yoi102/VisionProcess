@@ -13,10 +13,9 @@
     mc:Ignorable="d">
     <GroupBox Header="AcquireImageView" Style="{StaticResource MaterialDesignCardGroupBox}">
         <StackPanel>
-            <Button
-                Margin="50"
-                Command="{Binding AcquireLocalImagesCommand}"
-                Content="{x:Static strings:Strings.Select}" />
+            <Button Margin="50"
+                    Command="{Binding AcquireLocalImagesCommand}"
+                    Content="{x:Static strings:Strings.Select}" />
         </StackPanel>
     </GroupBox>
 </UserControl>

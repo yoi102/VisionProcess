@@ -8,7 +8,8 @@ namespace VisionProcess.Core.Converters
     {
         public bool UseHidden { get; set; }
         public int VisibleValue { get; set; }
-        public List<int> VisibleValues { get; set; } = new List<int>();
+        //public params int[] VisibleValues { get; set; } 
+
 
         public override object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
