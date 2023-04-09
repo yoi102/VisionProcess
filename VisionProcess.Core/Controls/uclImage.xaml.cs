@@ -235,7 +235,7 @@ namespace VisionProcess.Core.Controls
             // 设置默认文件名和文件类型
             dialog.FileName = Strings.Strings.SaveImage;
             dialog.DefaultExt = ".bmp";
-            dialog.Filter = Strings.Strings.SaveImage+ " (*.bmp)|*.bmp| (*.jpg)|*.jpg| (*.png)|*.png";
+            dialog.Filter = Strings.Strings.SaveImage + " (*.bmp)|*.bmp| (*.jpeg)|*.jpeg| (*.png)|*.png";
 
             // 显示对话框并获取用户选择的文件路径
             bool? result = dialog.ShowDialog();
@@ -243,11 +243,36 @@ namespace VisionProcess.Core.Controls
             {
                 string filePath = dialog.FileName;
 
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create((BitmapSource)ImageSource));
-                FileStream file = new FileStream(filePath, FileMode.Create);
-                encoder.Save(file);
-                file.Close();
+
+                BitmapEncoder? encoder = null;
+
+                string fileExtension = Path.GetExtension(filePath);
+
+                switch (fileExtension)
+                {
+
+                    case ".bmp":
+                        encoder = new BmpBitmapEncoder(); break;
+                    case ".jpg":
+                    case ".jpeg":
+                        encoder = new JpegBitmapEncoder(); break;
+                    case ".png":
+                        encoder = new PngBitmapEncoder(); break;
+                    default:
+                        throw new NotSupportedException("Unsupported file format");
+                }
+                if (encoder is not null)
+                {
+                    encoder.Frames.Add(BitmapFrame.Create((BitmapSource)ImageSource));
+                    FileStream file = new FileStream(filePath, FileMode.Create);
+                    encoder.Save(file);
+                    file.Close();
+                }
+      
+
+
+
+
             }
 
         }
