@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using VisionProcess.ViewModels;
 using static ControlzEx.Standard.NativeMethods;
 
@@ -22,7 +23,7 @@ namespace VisionProcess
             //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang); ;
-
+           
             Services = ConfigureServices();
             this.InitializeComponent();
         }

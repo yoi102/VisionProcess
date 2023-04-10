@@ -7,7 +7,7 @@ namespace VisionProcess.Core.ToolBase
 {
     public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation where T1 : InputsBase, new() where T2 : OutputsBase, new() where T3 : GraphicsBase, new()
     {
-        public OperationBase()
+        protected OperationBase()
         {
             Inputs = new T1();
             Outputs = new T2();
