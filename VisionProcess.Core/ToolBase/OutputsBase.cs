@@ -1,6 +1,12 @@
 ﻿namespace VisionProcess.Core.ToolBase
 {
-    public class OutputsBase : IOutputs
+    /// <summary>
+    /// To be added
+    /// </summary>
+    public abstract class OutputsBase : IOutputs
+    {
+    }
+    public abstract class OutputsEmpty : OutputsBase
     {
     }
 }

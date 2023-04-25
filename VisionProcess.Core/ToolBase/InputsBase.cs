@@ -2,7 +2,15 @@
 
 namespace VisionProcess.Core.ToolBase
 {
-    public class InputsBase : ObservableObject, IInputs
+    /// <summary>
+    /// To be added
+    /// </summary>
+    public abstract class InputsBase : ObservableObject, IInputs
     {
     }
+
+    public  class InputsEmpty : InputsBase
+    {
+    }
+
 }

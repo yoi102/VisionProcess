@@ -1,6 +1,17 @@
 ﻿namespace VisionProcess.Core.ToolBase
 {
-    public class GraphicsBase : IGraphics
+    /// <summary>
+    /// To be added
+    /// </summary>
+    public abstract class GraphicsBase : IGraphics
     {
+        
     }
+
+    public  class GraphicsEmpty : GraphicsBase
+    {
+
+    }
+
+
 }

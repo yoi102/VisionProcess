@@ -12,7 +12,7 @@ namespace VisionProcess.Tools.ViewModels
     [DefaultToolConnector(true, "ThresholdValue", "Inputs.ThresholdValue")]
     [DefaultToolConnector(true, "MaximumValue", "Inputs.MaximumValue")]
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
-    public class ImageThresholdViewModel : OperationBase<ImageThresholdInputs, ImageThresholdOutputs, GraphicsBase>
+    public class ImageThresholdViewModel : OperationBase<ImageThresholdInputs, ImageThresholdOutputs, GraphicsEmpty>
     {
         public ImageThresholdViewModel() : base()
         {

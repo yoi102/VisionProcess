@@ -10,7 +10,7 @@ namespace VisionProcess.Tools.ViewModels
 {
     [DefaultToolConnector(true, "Image", "Inputs.Image")]
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
-    public class ImageFilterViewModel : OperationBase<ImageFilterInput, ImageFilterOutput, GraphicsBase>
+    public class ImageFilterViewModel : OperationBase<ImageFilterInput, ImageFilterOutput, GraphicsEmpty>
     {
         public ImageFilterViewModel() : base()
         {

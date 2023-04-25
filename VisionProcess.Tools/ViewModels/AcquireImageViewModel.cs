@@ -12,7 +12,7 @@ using VisionProcess.Tools.Models;
 namespace VisionProcess.Tools.ViewModels
 {
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
-    public partial class AcquireImageViewModel : OperationBase<InputsBase, AcquireImageOutput, GraphicsBase>
+    public partial class AcquireImageViewModel : OperationBase<InputsEmpty, AcquireImageOutput, GraphicsEmpty>
     {
         public AcquireImageViewModel() : base()
         {
