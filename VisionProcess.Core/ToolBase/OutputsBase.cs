@@ -6,7 +6,7 @@
     public abstract class OutputsBase : IOutputs
     {
     }
-    public abstract class OutputsEmpty : OutputsBase
+    public  class OutputsEmpty : OutputsBase
     {
     }
 }
