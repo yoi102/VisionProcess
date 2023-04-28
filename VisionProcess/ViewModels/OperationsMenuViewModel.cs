@@ -13,7 +13,7 @@ namespace VisionProcess.ViewModels
 {
     public partial class OperationsMenuViewModel : ObservableObject
     {
-        private Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
+        private static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
         {
             return assembly.GetTypes().Where(t => String.Equals(t.Namespace, nameSpace, StringComparison.Ordinal)).ToArray();
         }
@@ -61,8 +61,12 @@ namespace VisionProcess.ViewModels
         {
             //前提，需要规范命名
             Assembly assembly = typeof(AcquireImageViewModel).Assembly;
-            var type = assembly.GetType("VisionProcess.Tools.ViewModels." + operationName + "ViewModel");
-            var instance = Activator.CreateInstance(type!);
+            var type = assembly.GetType("VisionProcess.Tools.ViewModels." + operationName + "ViewModel") ??
+                throw new ArgumentNullException($"{operationName} + ViewModel");
+
+            var instance = App.Current.Services.GetService(type);
+            //var instance = Activator.CreateInstance(type!);
+
             processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location, Title = operationName });
             IsVisible = false;
         }

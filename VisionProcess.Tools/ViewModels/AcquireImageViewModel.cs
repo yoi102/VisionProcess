@@ -64,9 +64,8 @@ namespace VisionProcess.Tools.ViewModels
                 //string filename = dialog.FileName;
                 imagePaths = dialog.FileNames.ToList();
                 currentIndex = 0;
+                Execute();
             }
-
-            Execute();
         }
 
         private void Init()

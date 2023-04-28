@@ -163,9 +163,9 @@ namespace VisionProcess.Core.Extentions
             return type;
         }
 
-        public static Type GetType(string typeName)//不清楚这干嘛的，获取方法的type？
+        public static Type ? GetType(string typeName)//不清楚这干嘛的，获取方法的type？
         {
-            Type type = null;
+            Type? type = null;
             List<Assembly> list = AppDomain.CurrentDomain.GetAssemblies().ToList();
             List<string> list2 = Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll").ToList();
             foreach (string item2 in list2)
@@ -219,7 +219,7 @@ namespace VisionProcess.Core.Extentions
             }
             else
             {
-                Assembly assembly = null;
+                Assembly? assembly = null;
                 int k = 0;
                 for (int count2 = list.Count; k < count2; k++)
                 {

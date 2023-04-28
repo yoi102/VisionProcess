@@ -56,6 +56,9 @@ namespace VisionProcess.Tools.ViewModels
             return true;
         }
 
+
+
+
         private void Init()
         {
             Records.Add(new() { Title = Strings.OutputImage });

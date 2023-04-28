@@ -1,10 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using VisionProcess.Core.ToolBase;
+using VisionProcess.Models;
+using VisionProcess.Tools.ViewModels;
 using VisionProcess.ViewModels;
 using static ControlzEx.Standard.NativeMethods;
 
@@ -23,7 +29,7 @@ namespace VisionProcess
             //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang); ;
-           
+
             Services = ConfigureServices();
             this.InitializeComponent();
         }
@@ -55,8 +61,35 @@ namespace VisionProcess
             services.AddTransient<EditorViewModel>();
             //services.AddSingleton<IFilesService, FilesService>();
 
+
+
+            //前提，需要规范命名
+            //获取 AcquireImageViewModel 中的程序集
+            Assembly assembly = Assembly.GetAssembly(typeof(AcquireImageViewModel))!;
+            //获取该程序集命名空间中的所有类型
+            var assemblyAllTypes = assembly.GetTypes().Where(t => string.Equals(t.Namespace, "VisionProcess.Tools.ViewModels", StringComparison.Ordinal)).ToArray();
+
+            foreach (var itemType in assemblyAllTypes)//遍历所有类型进行查找
+            {
+                services.AddTransient(itemType);
+                //list.Add(itemType.Name.Replace("ViewModel", string.Empty));
+            }
+
+
+
+
+
+
             return services.BuildServiceProvider();
         }
+
+
+
+
+
+
+
+
 
         private void CheckMutex(StartupEventArgs e)
         {

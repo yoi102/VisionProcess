@@ -5,14 +5,11 @@ using System.Diagnostics;
 
 namespace VisionProcess.Core.ToolBase
 {
-    public abstract partial class OperationBase<T1, T2, T3> : ObservableObject, IOperation where T1 : InputsBase, new() where T2 : OutputsBase, new() where T3 : GraphicsBase, new()
+    public abstract partial class OperationBase<TInputs, TOutputs, TGraphic> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphic : GraphicsBase, new()
     {
+
         protected OperationBase()
         {
-            Inputs = new T1();
-            Outputs = new T2();
-            Graphic = new T3();
-
             //如果，，将被运行两次!!!!!!!
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
@@ -23,11 +20,11 @@ namespace VisionProcess.Core.ToolBase
 
         public event EventHandler? Executing;
 
-        public T3 Graphic { get; protected set; }
+        public TGraphic Graphic { get; protected set; } = new TGraphic();
 
-        public T1 Inputs { get; protected set; }
+        public TInputs Inputs { get; protected set; } = new TInputs();
 
-        public T2 Outputs { get; protected set; }
+        public TOutputs Outputs { get; protected set; } = new TOutputs();
 
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
@@ -73,18 +70,16 @@ namespace VisionProcess.Core.ToolBase
 
         protected virtual void OnExecuted()
         {
-            Executed?.Invoke(this, new EventArgs());
+            Executed?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnExecutng()
         {
-            Executing?.Invoke(this, new EventArgs());
+            Executing?.Invoke(this, EventArgs.Empty);
         }
-
         private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Execute();
-            //ExecuteCommand.Execute();
         }
     }
 }
