@@ -7,24 +7,17 @@ using System.Reflection;
 using System.Windows;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Models;
-using VisionProcess.Tools.ViewModels;
 
 namespace VisionProcess.ViewModels
 {
     public partial class OperationsMenuViewModel : ObservableObject
     {
-        private static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
-        {
-            return assembly.GetTypes().Where(t => String.Equals(t.Namespace, nameSpace, StringComparison.Ordinal)).ToArray();
-        }
 
         public OperationsMenuViewModel(ProcessModel processModel)
         {
             //前提，需要规范命名
             List<string> list = new();
-            Assembly assembly = Assembly.GetAssembly(typeof(AcquireImageViewModel))!;//获取 AcquireImageViewModel 中的程序集
-            var assemblyAllTypes = GetTypesInNamespace(assembly, "VisionProcess.Tools.ViewModels");//获取该程序集命名空间中的所有类型
-            foreach (var itemType in assemblyAllTypes)//遍历所有类型进行查找
+            foreach (var itemType in App.ToolsViewModelsTypes)//遍历所有类型进行查找
             {
                 list.Add(itemType.Name.Replace("ViewModel", string.Empty));
             }
@@ -59,9 +52,10 @@ namespace VisionProcess.ViewModels
         private void CreateOperation(string operationName)
         {
             //前提，需要规范命名
-            Assembly assembly = typeof(AcquireImageViewModel).Assembly;
-            var type = assembly.GetType("VisionProcess.Tools.ViewModels." + operationName + "ViewModel") ??
-                throw new ArgumentNullException($"{operationName} + ViewModel");
+            var type = App.ToolsViewModelsTypes.FirstOrDefault(t => t.Name == operationName + "ViewModel") ??
+                   throw new ArgumentNullException($"{operationName} + ViewModel");
+
+            //var type = App.ToolsAssembly.GetType("VisionProcess.Tools.ViewModels." + operationName + "ViewModel");
 
             var instance = App.Current.Services.GetService(type);
             //var instance = Activator.CreateInstance(type!);

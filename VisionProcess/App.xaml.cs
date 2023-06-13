@@ -17,12 +17,32 @@ using static ControlzEx.Standard.NativeMethods;
 
 namespace VisionProcess
 {
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
         private static Mutex? appMutex;
+
+
+        //前提，需要规范命名
+        //获取该程序集命名空间中的所有类型
+        public static readonly Assembly ToolsAssembly = typeof(AcquireImageViewModel).Assembly;
+        public static readonly IEnumerable<Type> ToolsViewModelsTypes = ToolsAssembly.GetTypes()
+            .Where(t => string.Equals(t.Namespace, "VisionProcess.Tools.ViewModels", StringComparison.Ordinal));
+
+
+
+        /// <summary>
+        /// Gets the current <see cref="App"/> instance in use
+        /// </summary>
+        public new static App Current => (App)Application.Current;
+
+        /// <summary>
+        /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
+        /// </summary>
+        public IServiceProvider Services { get; }
 
         public App()
         {
@@ -41,15 +61,7 @@ namespace VisionProcess
             CheckMutex(e);
         }
 
-        /// <summary>
-        /// Gets the current <see cref="App"/> instance in use
-        /// </summary>
-        public new static App Current => (App)Application.Current;
-
-        /// <summary>
-        /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
-        /// </summary>
-        public IServiceProvider Services { get; }
+   
 
         /// <summary>
         /// Configures the services for the application.
@@ -64,13 +76,9 @@ namespace VisionProcess
 
 
 
-            //前提，需要规范命名
-            //获取 AcquireImageViewModel 中的程序集
-            Assembly assembly = Assembly.GetAssembly(typeof(AcquireImageViewModel))!;
-            //获取该程序集命名空间中的所有类型
-            var assemblyAllTypes = assembly.GetTypes().Where(t => string.Equals(t.Namespace, "VisionProcess.Tools.ViewModels", StringComparison.Ordinal)).ToArray();
+       
 
-            foreach (var itemType in assemblyAllTypes)//遍历所有类型进行查找
+            foreach (var itemType in ToolsViewModelsTypes)//遍历所有类型进行查找
             {
                 services.AddTransient(itemType);
                 //list.Add(itemType.Name.Replace("ViewModel", string.Empty));
@@ -86,7 +94,7 @@ namespace VisionProcess
 
 
 
-
+   
 
 
 
