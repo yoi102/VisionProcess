@@ -13,7 +13,6 @@ using VisionProcess.Core.ToolBase;
 using VisionProcess.Models;
 using VisionProcess.Tools.ViewModels;
 using VisionProcess.ViewModels;
-using static ControlzEx.Standard.NativeMethods;
 
 namespace VisionProcess
 {
@@ -140,15 +139,15 @@ namespace VisionProcess
         [DllImport("User32.dll", EntryPoint = "FindWindow")]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [DllImport("user32.dll")]
+        [DllImport("User32.dll")]
         private static extern int ShowWindow(IntPtr hwnd, uint nCmdShow);
 
-        [DllImport("USER32.DLL")]
+        [DllImport("User32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+        //[DllImport("User32.dll")]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        //public static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
 
         [DllImport("User32.dll", CharSet = CharSet.Unicode, EntryPoint = "FlashWindow")]
         public static extern void FlashWindow(IntPtr hwnd, bool bInvert);

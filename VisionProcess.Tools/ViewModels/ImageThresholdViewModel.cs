@@ -1,5 +1,4 @@
-﻿using ControlzEx.Standard;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;

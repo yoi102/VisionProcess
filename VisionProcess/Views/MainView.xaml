@@ -18,7 +18,7 @@
     Width="1400"
     Height="850"
     d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
-    mah:ControlsHelper.CornerRadius="22"
+    mah:ControlsHelper.CornerRadius="0"
     ResizeMode="CanResizeWithGrip"
     TitleCharacterCasing="Normal"
     mc:Ignorable="d">
