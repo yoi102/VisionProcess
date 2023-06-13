@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
-
+#nullable disable   
 namespace VisionProcess.Core.Extentions
 {
     public class PropertyMisc
@@ -44,14 +44,14 @@ namespace VisionProcess.Core.Extentions
             //return list;
         }
 
-        public static object? GetValue(object ob, string fullPath, params char[] spiltChars)
+        public static object GetValue(object ob, string fullPath, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);
             if (list.Count == 0)
             {
                 return null;
             }
-            object? o = ob;
+            object o = ob;
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -79,14 +79,14 @@ namespace VisionProcess.Core.Extentions
             return o;
         }
 
-        public static bool SetValue(object ob, string fullPath, object? value, params char[] spiltChars)
+        public static bool SetValue(object ob, string fullPath, object value, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);
             if (list.Count == 0)
             {
                 return false;
             }
-            object? o = ob;
+            object o = ob;
             try
             {
                 for (int i = 0; i < list.Count; i++)
@@ -117,7 +117,7 @@ namespace VisionProcess.Core.Extentions
             }
         }
 
-        public static Type? GetType(object ob, string fullPath, params char[] spiltChars)
+        public static Type GetType(object ob, string fullPath, params char[] spiltChars)
         {
             List<string> list = SplitFullPath(fullPath, spiltChars);//默认为 "."
             if (list.Count == 0)
@@ -149,7 +149,7 @@ namespace VisionProcess.Core.Extentions
                 }
                 else//如没有（）则为属性
                 {
-                    PropertyInfo? propertyInfo = GetPropertyInfo(type, array[0]);
+                    PropertyInfo propertyInfo = GetPropertyInfo(type, array[0]);
                     if (propertyInfo == null)
                     {
                         //return typeof(object);
@@ -163,9 +163,9 @@ namespace VisionProcess.Core.Extentions
             return type;
         }
 
-        public static Type ? GetType(string typeName)//不清楚这干嘛的，获取方法的type？
+        public static Type GetType(string typeName)//不清楚这干嘛的，获取方法的type？
         {
-            Type? type = null;
+            Type type = null;
             List<Assembly> list = AppDomain.CurrentDomain.GetAssemblies().ToList();
             List<string> list2 = Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll").ToList();
             foreach (string item2 in list2)
@@ -219,7 +219,7 @@ namespace VisionProcess.Core.Extentions
             }
             else
             {
-                Assembly? assembly = null;
+                Assembly assembly = null;
                 int k = 0;
                 for (int count2 = list.Count; k < count2; k++)
                 {
@@ -257,10 +257,10 @@ namespace VisionProcess.Core.Extentions
             return list;
         }
 
-        public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
+        public static PropertyInfo GetPropertyInfo(Type type, string propertyName)
         {
             string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            PropertyInfo? result = null;
+            PropertyInfo result = null;
             try
             {
                 //这个应该没错
@@ -276,7 +276,7 @@ namespace VisionProcess.Core.Extentions
                     {
                         if (propertyInfo.Name == array[0])
                         {
-                            string? text = propertyInfo.ToString();
+                            string text = propertyInfo.ToString();
                             if (propertyInfo.ToString()!.Contains("System.String") && !flag)
                             {
                                 result = propertyInfo;
@@ -300,14 +300,14 @@ namespace VisionProcess.Core.Extentions
             return result;
         }
 
-        public static object? GetPropertyValue(object ob, string propertyName)
+        public static object GetPropertyValue(object ob, string propertyName)
         {
-            PropertyInfo? propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
+            PropertyInfo propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
             if (propertyInfo == null)
             {
                 return null;
             }
-            object? o;
+            object o;
             string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
             if (propertyName.Contains('['))
             {
@@ -328,9 +328,9 @@ namespace VisionProcess.Core.Extentions
             return o;
         }
 
-        public static bool SetPropertyValue(object ob, string propertyName, object? objValue)
+        public static bool SetPropertyValue(object ob, string propertyName, object objValue)
         {
-            PropertyInfo? propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
+            PropertyInfo propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
             if (propertyInfo == null)
             {
                 return false;
@@ -356,25 +356,25 @@ namespace VisionProcess.Core.Extentions
             return true;
         }
 
-        public static object? RunMethod(object ob, string methodName)
+        public static object RunMethod(object ob, string methodName)
         {
             try
             {
-                MethodInfo? method = ob.GetType().GetMethod(methodName, Type.EmptyTypes);
-                return method?.Invoke(ob, null);
+                MethodInfo method = ob.GetType().GetMethod(methodName, Type.EmptyTypes);
+                return method.Invoke(ob, null);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //throw ex.InnerException;
                 return null;
             }
         }
 
-        public static object? RunMethod(object ob, string methodName, Type[] paramType, params object[] param)
+        public static object RunMethod(object ob, string methodName, Type[] paramType, params object[] param)
         {
             try
             {
-                MethodInfo? method = ob.GetType().GetMethod(methodName, paramType);
+                MethodInfo method = ob.GetType().GetMethod(methodName, paramType);
                 return method?.Invoke(ob, param);
             }
             catch (Exception)

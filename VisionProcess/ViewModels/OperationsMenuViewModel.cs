@@ -32,7 +32,6 @@ namespace VisionProcess.ViewModels
             this.processModel = processModel;
         }
 
-        public event Action? Closed;
 
         [ObservableProperty]
         private Point _location;
