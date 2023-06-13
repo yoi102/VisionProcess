@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using VisionProcess.Core;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Models;
 using VisionProcess.Tools.ViewModels;

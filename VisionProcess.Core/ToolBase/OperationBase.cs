@@ -7,7 +7,8 @@ namespace VisionProcess.Core.ToolBase
 {
     public abstract partial class OperationBase<TInputs, TOutputs, TGraphic> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphic : GraphicsBase, new()
     {
-
+   
+        //子类可依赖注入
         protected OperationBase()
         {
             //如果，，将被运行两次!!!!!!!
