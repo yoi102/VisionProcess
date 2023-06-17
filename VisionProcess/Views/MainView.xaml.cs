@@ -1,6 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using H.NotifyIcon.EfficiencyMode;
+using H.NotifyIcon;
+using Microsoft.Extensions.DependencyInjection;
+using OpenCvSharp;
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Xml;
 using VisionProcess.ViewModels;
 
 namespace VisionProcess.Views
@@ -10,6 +20,10 @@ namespace VisionProcess.Views
     /// </summary>
     public partial class MainView
     {
+
+
+
+
         public MainView()
         {
             InitializeComponent();
@@ -26,7 +40,15 @@ namespace VisionProcess.Views
 
             //还有云母布局。。。
             //https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-snap-layout-menu
+
+            //EfficiencyModeUtilities.SetEfficiencyMode(true);
+            //WindowExtensions.Hide(this, enableEfficiencyMode: true); // default value
+            //WindowExtensions.Show(this, disableEfficiencyMode: true);// default value
+            //ic.ForceCreate(enablesEfficiencyMode: true); // default value
         }
+
+
+
 
         // The enum flag for DwmSetWindowAttribute's second parameter, which tells the function what attribute to set.
         // Copied from dwmapi.h
