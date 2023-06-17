@@ -74,9 +74,6 @@ namespace VisionProcess
             //services.AddSingleton<IFilesService, FilesService>();
 
 
-
-       
-
             foreach (var itemType in ToolsViewModelsTypes)//遍历所有类型进行查找
             {
                 services.AddTransient(itemType);
@@ -84,18 +81,8 @@ namespace VisionProcess
             }
 
 
-
-
-
-
             return services.BuildServiceProvider();
         }
-
-
-
-   
-
-
 
 
 
