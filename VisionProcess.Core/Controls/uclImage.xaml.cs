@@ -70,7 +70,7 @@ namespace VisionProcess.Core.Controls
             //e.RightButton == MouseButtonState.Pressed)
             {
                 mouseDownCount += 1;
-                DispatcherTimer timer = new DispatcherTimer();
+                DispatcherTimer timer = new();
                 timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
                 timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
                 timer.IsEnabled = true;
@@ -251,7 +251,7 @@ namespace VisionProcess.Core.Controls
                 if (encoder is not null)
                 {
                     encoder.Frames.Add(BitmapFrame.Create((BitmapSource)ImageSource));
-                    FileStream file = new FileStream(filePath, FileMode.Create);
+                    FileStream file = new(filePath, FileMode.Create);
                     encoder.Save(file);
                     file.Close();
                 }

@@ -4,7 +4,6 @@ using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.Collections.Generic;
 using System.Linq;
-using VisionProcess.Core;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -18,6 +17,7 @@ namespace VisionProcess.Tools.ViewModels
         public AcquireImageViewModel() : base()
         {
             Init();
+    
         }
 
         private int currentIndex = 0;

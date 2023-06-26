@@ -5,6 +5,8 @@ namespace VisionProcess.Core.ToolBase
 {
     public interface IOperation
     {
+        string? Name { get; set; }
+
         event EventHandler? Executed;
 
         event EventHandler? Executing;

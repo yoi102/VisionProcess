@@ -26,12 +26,7 @@ namespace VisionProcess.Core.Controls
 
         private static object CoerceIsEditing(DependencyObject d, object value)
         {
-            if (!((EditableTextBlock)d).IsEditable)
-            {
-                return BoxValue.False;
-            }
-
-            return value;
+            return !((EditableTextBlock)d).IsEditable ? BoxValue.False : value;
         }
 
         public string Text

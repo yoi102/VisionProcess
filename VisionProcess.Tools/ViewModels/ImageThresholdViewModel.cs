@@ -1,5 +1,4 @@
-﻿using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
+﻿using OpenCvSharp.WpfExtensions;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -16,6 +15,7 @@ namespace VisionProcess.Tools.ViewModels
         public ImageThresholdViewModel() : base()
         {
             Init();
+
         }
 
         protected override bool InternalExecute(out string message)

@@ -18,14 +18,7 @@ namespace VisionProcess.Core.Converters
             {
                 var v = (int)value;
 
-                if (v == VisibleValue)
-                {
-                    return Visibility.Visible;
-                }
-                else
-                {
-                    return UseHidden ? Visibility.Hidden : Visibility.Collapsed;
-                }
+                return v == VisibleValue ? Visibility.Visible : (object)(UseHidden ? Visibility.Hidden : Visibility.Collapsed);
             }
             return Binding.DoNothing;
         }

@@ -14,6 +14,7 @@ namespace VisionProcess.Tools.ViewModels
         public ImageFilterViewModel() : base()
         {
             Init();
+ 
         }
 
         protected override bool InternalExecute(out string message)
@@ -27,7 +28,7 @@ namespace VisionProcess.Tools.ViewModels
             switch (Inputs.FilterType)
             {
                 case FilterTypes.NormalizedBox:
-                    Outputs.Image= Inputs.Image.Blur(new Size(Inputs.KernelWidth, Inputs.KernelHeight), borderType: Inputs.BorderType);
+                    Outputs.Image = Inputs.Image.Blur(new Size(Inputs.KernelWidth, Inputs.KernelHeight), borderType: Inputs.BorderType);
                     //Cv2.Blur(Inputs.Image, Outputs.Image, new Size(Inputs.KernelWidth, Inputs.KernelHeight), borderType: Inputs.BorderType);
                     break;
 

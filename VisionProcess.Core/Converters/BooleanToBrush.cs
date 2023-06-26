@@ -11,12 +11,7 @@ namespace VisionProcess.Core.Converters
 
         public override object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool b)
-            {
-                return b ? TrueValue : FalseValue;
-            }
-            else
-                return Binding.DoNothing;
+            return value is bool b ? b ? TrueValue : FalseValue : Binding.DoNothing;
         }
 
         public override object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

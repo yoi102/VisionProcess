@@ -14,10 +14,7 @@ namespace VisionProcess.Core.Converters
             if (value is bool b)
             {
                 if (Reversed) b = !b;
-                if (b)
-                    return Visibility.Visible;
-                else
-                    return UseHidden ? Visibility.Hidden : Visibility.Collapsed;
+                return b ? Visibility.Visible : (object)(UseHidden ? Visibility.Hidden : Visibility.Collapsed);
             }
             else
                 return Binding.DoNothing;

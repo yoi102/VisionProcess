@@ -241,7 +241,7 @@ namespace VisionProcess.Core.Extentions
 
         public static List<Type> GetTypes(string path, Predicate<Type> match)
         {
-            List<Type> list = new List<Type>();
+            List<Type> list = new();
             path = Path.GetFullPath(path);
             Assembly assembly = Assembly.LoadFile(path);
             Type[] types = assembly.GetTypes();
@@ -309,21 +309,11 @@ namespace VisionProcess.Core.Extentions
             }
             object o;
             string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            if (propertyName.Contains('['))
-            {
-                if (int.TryParse(array[1], out int result))
-                {
-                    o = propertyInfo.GetValue(ob, new object[1] { result });
-                }
-                else
-                {
-                    o = propertyInfo.GetValue(ob, new object[1] { array[1] });
-                }
-            }
-            else
-            {
-                o = propertyInfo.GetValue(ob, null);
-            }
+            o = propertyName.Contains('[')
+                ? int.TryParse(array[1], out int result)
+                    ? propertyInfo.GetValue(ob, new object[1] { result })
+                    : propertyInfo.GetValue(ob, new object[1] { array[1] })
+                : propertyInfo.GetValue(ob, null);
 
             return o;
         }

@@ -1,17 +1,23 @@
-﻿<UserControl
-    x:Class="VisionProcess.Tools.Views.AcquireImageView"
+﻿<UserControl x:Class="VisionProcess.Tools.Views.AcquireImageView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
              xmlns:viewmodels="clr-namespace:VisionProcess.Tools.ViewModels"
+             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
+             xmlns:views="clr-namespace:VisionProcess.Tools.Views"
              d:Background="Wheat"
-    d:DataContext="{d:DesignInstance Type=viewmodels:AcquireImageViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="300"
-    mc:Ignorable="d">
-    <GroupBox Header="AcquireImageView" Style="{StaticResource MaterialDesignCardGroupBox}">
+             d:DataContext="{d:DesignInstance Type=viewmodels:AcquireImageViewModel}"
+             d:DesignHeight="450"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+
+    <GroupBox  Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox.Header>
+            <controls:EditableTextBlock Grid.Row="1"
+                                        Text="{Binding Name}" />
+        </GroupBox.Header>
         <StackPanel>
             <Button Margin="50"
                     Command="{Binding AcquireLocalImagesCommand}"

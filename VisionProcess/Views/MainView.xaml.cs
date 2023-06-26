@@ -1,16 +1,6 @@
-﻿using H.NotifyIcon.EfficiencyMode;
-using H.NotifyIcon;
-using Microsoft.Extensions.DependencyInjection;
-using OpenCvSharp;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Xml;
 using VisionProcess.ViewModels;
 
 namespace VisionProcess.Views

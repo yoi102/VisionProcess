@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Models;
@@ -60,7 +59,7 @@ namespace VisionProcess.ViewModels
             var instance = App.Current.Services.GetService(type);
             //var instance = Activator.CreateInstance(type!);
 
-            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location, Title = operationName });
+            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location });
             IsVisible = false;
         }
     }

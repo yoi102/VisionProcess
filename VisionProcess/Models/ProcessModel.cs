@@ -186,7 +186,6 @@ namespace VisionProcess.Models
 
             Operations.Add(new OperationGroupModel
             {
-                Title = "Operations",
                 Location = bounding.Location,
                 GroupSize = new Size(bounding.Width, bounding.Height)
             });

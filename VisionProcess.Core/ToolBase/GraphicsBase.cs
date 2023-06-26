@@ -5,10 +5,10 @@
     /// </summary>
     public abstract class GraphicsBase : IGraphics
     {
-        
+
     }
 
-    public  class GraphicsEmpty : GraphicsBase
+    public class GraphicsEmpty : GraphicsBase
     {
 
     }

@@ -13,6 +13,7 @@ namespace VisionProcess.Tools.ViewModels
         public ColorConvertViewModel() : base()
         {
             Init();
+   
         }
 
         protected override bool InternalExecute(out string message)

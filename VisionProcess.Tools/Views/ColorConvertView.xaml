@@ -8,11 +8,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:opencv="clr-namespace:OpenCvSharp;assembly=OpenCvSharp"
-    d:Background="Wheat"
+             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
+             d:Background="Wheat"
     d:DesignHeight="450"
     d:DesignWidth="300"
     mc:Ignorable="d">
-    <GroupBox Header="ColorConvertView" Style="{StaticResource MaterialDesignCardGroupBox}">
+    <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox.Header>
+            <controls:EditableTextBlock Grid.Row="1"
+                                        Text="{Binding Name}" />
+        </GroupBox.Header>
         <StackPanel>
             <ComboBox
                 Margin="20"

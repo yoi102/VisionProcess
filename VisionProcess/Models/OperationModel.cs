@@ -45,7 +45,6 @@ namespace VisionProcess.Models
 
         private Size _size = default;
 
-        private string? _title;
 
         public NodifyObservableCollection<ConnectorModel> Input { get; } = new NodifyObservableCollection<ConnectorModel>();
 
@@ -68,8 +67,8 @@ namespace VisionProcess.Models
             {
                 if (value is not null)
                 {
-                    value.Executed += Value_Executed; ;
-                    Title = value.GetType().Name.Replace("ViewModel", "");
+                    value.Executed += Value_Executed;
+                    value .Name= value.GetType().Name.Replace("ViewModel", "");
                     var attributes = (DefaultToolConnectorAttribute[])value.GetType().GetCustomAttributes(typeof(DefaultToolConnectorAttribute), false);
                     foreach (var item in attributes)
                     {
@@ -125,11 +124,7 @@ namespace VisionProcess.Models
             set => SetProperty(ref _size, value);
         }
 
-        public string? Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
+     
 
         protected virtual void OnInputValueChanged()
         {

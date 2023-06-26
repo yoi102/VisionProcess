@@ -9,7 +9,7 @@ namespace VisionProcess.Core.ToolBase
     {
     }
 
-    public  class InputsEmpty : InputsBase
+    public class InputsEmpty : InputsBase
     {
     }
 

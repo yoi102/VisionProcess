@@ -190,7 +190,7 @@
                         Input="{Binding Input}"
                         Output="{Binding Output}">
                         <nodify:Node.Header>
-                            <controls:EditableTextBlock Text="{Binding Title}" />
+                            <controls:EditableTextBlock Text="{Binding Operation.Name}" />
                         </nodify:Node.Header>
 
                         <nodify:Node.ContextMenu>

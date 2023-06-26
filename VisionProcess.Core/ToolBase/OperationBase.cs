@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OpenCvSharp;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -7,7 +8,7 @@ namespace VisionProcess.Core.ToolBase
 {
     public abstract partial class OperationBase<TInputs, TOutputs, TGraphic> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphic : GraphicsBase, new()
     {
-   
+
         //子类可依赖注入
         protected OperationBase()
         {
@@ -30,6 +31,8 @@ namespace VisionProcess.Core.ToolBase
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
         public RunStatus RunStatus { get; } = new RunStatus();
+        [ObservableProperty]
+        public string? name;
 
         [RelayCommand]
         private async Task ExecuteAsync()
@@ -52,6 +55,18 @@ namespace VisionProcess.Core.ToolBase
                 RunStatus.LastTime = DateTime.Now;
                 RunStatus.Result = InternalExecute(out string message);
                 RunStatus.Message = message;
+            }
+            catch (OpenCVException ex)
+            {
+                RunStatus.Result = false;
+                RunStatus.Exception = ex;
+                RunStatus.Message = ex.Message;
+            }
+            catch (ArgumentNullException ex)
+            {
+                RunStatus.Result = false;
+                RunStatus.Exception = ex;
+                RunStatus.Message = ex.Message;
             }
             catch (Exception ex)
             {

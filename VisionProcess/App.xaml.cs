@@ -7,16 +7,11 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
-using VisionProcess.Core;
-using VisionProcess.Core.ToolBase;
-using VisionProcess.Models;
 using VisionProcess.Tools.ViewModels;
 using VisionProcess.ViewModels;
 
 namespace VisionProcess
 {
-
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -24,14 +19,12 @@ namespace VisionProcess
     {
         private static Mutex? appMutex;
 
-
         //前提，需要规范命名
         //获取该程序集命名空间中的所有类型
         public static readonly Assembly ToolsAssembly = typeof(AcquireImageViewModel).Assembly;
+
         public static readonly IEnumerable<Type> ToolsViewModelsTypes = ToolsAssembly.GetTypes()
             .Where(t => string.Equals(t.Namespace, "VisionProcess.Tools.ViewModels", StringComparison.Ordinal));
-
-
 
         /// <summary>
         /// Gets the current <see cref="App"/> instance in use
@@ -60,8 +53,6 @@ namespace VisionProcess
             CheckMutex(e);
         }
 
-   
-
         /// <summary>
         /// Configures the services for the application.
         /// </summary>
@@ -80,11 +71,8 @@ namespace VisionProcess
                 //list.Add(itemType.Name.Replace("ViewModel", string.Empty));
             }
 
-
             return services.BuildServiceProvider();
         }
-
-
 
         private void CheckMutex(StartupEventArgs e)
         {

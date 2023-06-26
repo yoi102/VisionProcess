@@ -32,13 +32,13 @@ namespace VisionProcess.Core.Mvvm
 
     public class NodifyObservableCollection<T> : Collection<T>, INodifyObservableCollection<T>, INotifyPropertyChanged, INotifyCollectionChanged
     {
-        protected static readonly PropertyChangedEventArgs IndexerPropertyChanged = new PropertyChangedEventArgs("Item[]");
-        protected static readonly PropertyChangedEventArgs CountPropertyChanged = new PropertyChangedEventArgs("Count");
-        protected static readonly NotifyCollectionChangedEventArgs ResetCollectionChanged = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
+        protected static readonly PropertyChangedEventArgs IndexerPropertyChanged = new("Item[]");
+        protected static readonly PropertyChangedEventArgs CountPropertyChanged = new("Count");
+        protected static readonly NotifyCollectionChangedEventArgs ResetCollectionChanged = new(NotifyCollectionChangedAction.Reset);
 
-        private readonly List<Action<T>> _added = new List<Action<T>>();
-        private readonly List<Action<T>> _removed = new List<Action<T>>();
-        private readonly List<Action<IList<T>>> _cleared = new List<Action<IList<T>>>();
+        private readonly List<Action<T>> _added = new();
+        private readonly List<Action<T>> _removed = new();
+        private readonly List<Action<IList<T>>> _cleared = new();
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 

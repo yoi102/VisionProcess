@@ -11,7 +11,8 @@
     xmlns:opencv="clr-namespace:OpenCvSharp;assembly=OpenCvSharp"
     xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
     xmlns:vm="clr-namespace:VisionProcess.Tools.ViewModels"
-    d:Background="Wheat"
+             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
+             d:Background="Wheat"
     d:DataContext="{d:DesignInstance Type=vm:ImageFilterViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="300"
@@ -63,9 +64,15 @@
         </Style>
 
     </UserControl.Resources>
-    <!--也可以 ContentTemplateSelector 用EnumTemplateSelector，
-    但需要定制Template的Key为Enum的值名称-->
-    <GroupBox Header="ImageThresholdView" Style="{StaticResource MaterialDesignCardGroupBox}" >
+    <!--
+        也可以 ContentTemplateSelector 用EnumTemplateSelector，
+        但需要定制Template的Key为Enum的值名称
+    -->
+    <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox.Header>
+            <controls:EditableTextBlock Grid.Row="1"
+                                        Text="{Binding Name}" />
+        </GroupBox.Header>
 
         <StackPanel Margin="10,10,0,0">
             <Grid VerticalAlignment="Center">
