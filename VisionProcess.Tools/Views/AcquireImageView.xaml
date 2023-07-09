@@ -13,15 +13,10 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <GroupBox  Style="{StaticResource MaterialDesignCardGroupBox}">
-        <GroupBox.Header>
-            <controls:EditableTextBlock Grid.Row="1"
-                                        Text="{Binding Name}" />
-        </GroupBox.Header>
+  
         <StackPanel>
             <Button Margin="50"
                     Command="{Binding AcquireLocalImagesCommand}"
                     Content="{x:Static strings:Strings.Select}" />
         </StackPanel>
-    </GroupBox>
 </UserControl>

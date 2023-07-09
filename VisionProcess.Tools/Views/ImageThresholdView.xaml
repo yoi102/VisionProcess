@@ -14,61 +14,56 @@
              d:DesignHeight="450"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <GroupBox  Style="{StaticResource MaterialDesignCardGroupBox}">
-        <GroupBox.Header>
-            <controls:EditableTextBlock Grid.Row="1"
-                                        Text="{Binding Name}" />
-        </GroupBox.Header>
-        <StackPanel Margin="10,10,0,0">
-            <Grid VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Text="{x:Static strings:Strings.ThresholdType}" />
-                <ComboBox Grid.Column="1"
-                          Width="150"
-                          Margin="3,0,0,0"
-                          ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type opencv:ThresholdTypes}}}"
-                          SelectedItem="{Binding Inputs.ThresholdType}"
-                          Style="{StaticResource MaterialDesignComboBox}" />
-            </Grid>
-            <Grid VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Text="{x:Static strings:Strings.ThresholdValue}" />
-                <mah:NumericUpDown Grid.Column="1"
-                                   Width="150"
-                                   Margin="3,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   Interval="1"
-                                   Maximum="255"
-                                   Minimum="0"
-                                   Value="{Binding Inputs.ThresholdValue}" />
-            </Grid>
-            <Grid VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Text="{x:Static strings:Strings.MaximumValue}" />
-                <mah:NumericUpDown Grid.Column="1"
-                                   Width="150"
-                                   Margin="3,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   Interval="1"
-                                   Maximum="255"
-                                   Minimum="0"
-                                   Value="{Binding Inputs.MaximumValue}" />
-            </Grid>
-        </StackPanel>
-    </GroupBox>
+
+    <StackPanel Margin="10,10,0,0">
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Text="{x:Static strings:Strings.ThresholdType}" />
+            <ComboBox Grid.Column="1"
+                      Width="150"
+                      Margin="3,0,0,0"
+                      ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type opencv:ThresholdTypes}}}"
+                      SelectedItem="{Binding Inputs.ThresholdType}"
+                      Style="{StaticResource MaterialDesignComboBox}" />
+        </Grid>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Text="{x:Static strings:Strings.ThresholdValue}" />
+            <mah:NumericUpDown Grid.Column="1"
+                               Width="150"
+                               Margin="3,0,0,0"
+                               HorizontalAlignment="Left"
+                               Interval="1"
+                               Maximum="255"
+                               Minimum="0"
+                               Value="{Binding Inputs.ThresholdValue}" />
+        </Grid>
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Text="{x:Static strings:Strings.MaximumValue}" />
+            <mah:NumericUpDown Grid.Column="1"
+                               Width="150"
+                               Margin="3,0,0,0"
+                               HorizontalAlignment="Left"
+                               Interval="1"
+                               Maximum="255"
+                               Minimum="0"
+                               Value="{Binding Inputs.MaximumValue}" />
+        </Grid>
+    </StackPanel>
 </UserControl>

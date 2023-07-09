@@ -68,11 +68,7 @@
         也可以 ContentTemplateSelector 用EnumTemplateSelector，
         但需要定制Template的Key为Enum的值名称
     -->
-    <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}">
-        <GroupBox.Header>
-            <controls:EditableTextBlock Grid.Row="1"
-                                        Text="{Binding Name}" />
-        </GroupBox.Header>
+
 
         <StackPanel Margin="10,10,0,0">
             <Grid VerticalAlignment="Center">
@@ -262,5 +258,4 @@
                     Value="{Binding Inputs.SigmaSpace}" />
             </Grid>
         </StackPanel>
-    </GroupBox>
 </UserControl>
