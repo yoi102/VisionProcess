@@ -2,23 +2,23 @@
     x:Class="VisionProcess.Tools.Views.ColorConvertView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ex="clr-namespace:VisionProcess.Core.Extentions;assembly=VisionProcess.Core"
     xmlns:local="clr-namespace:VisionProcess.Tools.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:opencv="clr-namespace:OpenCvSharp;assembly=OpenCvSharp"
-             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
-             d:Background="Wheat"
+    d:Background="Wheat"
     d:DesignHeight="450"
     d:DesignWidth="300"
     mc:Ignorable="d">
 
-        <StackPanel>
-            <ComboBox
-                Margin="20"
-                ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type opencv:ColorConversionCodes}}}"
-                SelectedItem="{Binding Inputs.ColorConversionCodes}"
-                Style="{StaticResource MaterialDesignComboBox}" />
-        </StackPanel>
+    <StackPanel>
+        <ComboBox
+            Margin="20"
+            ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type opencv:ColorConversionCodes}}}"
+            SelectedItem="{Binding Inputs.ColorConversionCodes}"
+            Style="{StaticResource MaterialDesignComboBox}" />
+    </StackPanel>
 </UserControl>
