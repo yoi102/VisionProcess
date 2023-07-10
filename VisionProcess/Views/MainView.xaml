@@ -128,7 +128,7 @@
                 ExpandDirection="Left"
                 IsExpanded="True"
                 Style="{StaticResource MaterialDesignExpander}">
-                <Expander.Header>
+                <Expander.Header>           
                     <TextBlock
                         HorizontalAlignment="Center"
                         RenderTransformOrigin=".5,.5"

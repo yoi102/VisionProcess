@@ -6,6 +6,7 @@ namespace VisionProcess.Core.ToolBase
     public interface IOperation
     {
         string? Name { get; set; }
+        bool IsRealTime { get; set; }
 
         event EventHandler? Executed;
 

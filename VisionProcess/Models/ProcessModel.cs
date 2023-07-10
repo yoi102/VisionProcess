@@ -93,7 +93,18 @@ namespace VisionProcess.Models
         public OperationModel? SelectedOperation
         {
             get => _selectedOperation;
-            set => SetProperty(ref _selectedOperation, value);
+            set
+            {
+                if (_selectedOperation is not null && _selectedOperation.Operation is not null)
+                {
+                    _selectedOperation.Operation.IsRealTime = false;
+                }
+                if (value is not null && value.Operation is not null)
+                {
+                    value.Operation.IsRealTime = true;
+                }
+                SetProperty(ref _selectedOperation, value);
+            }
         }
 
         public NodifyObservableCollection<OperationModel> SelectedOperations

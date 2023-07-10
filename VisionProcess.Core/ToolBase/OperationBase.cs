@@ -12,8 +12,7 @@ namespace VisionProcess.Core.ToolBase
         //子类可依赖注入
         protected OperationBase()
         {
-            //如果，，将被运行两次!!!!!!!
-            Inputs.PropertyChanged += Inputs_PropertyChanged;
+
         }
 
         private Stopwatch? sw;
@@ -31,6 +30,30 @@ namespace VisionProcess.Core.ToolBase
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
         public RunStatus RunStatus { get; } = new RunStatus();
+
+        private bool _IsRealTime;
+        public bool IsRealTime
+        {
+            get { return _IsRealTime; }
+            set
+            {
+                if (value)
+                {
+                    Inputs.PropertyChanged -= Inputs_PropertyChanged;
+                    Inputs.PropertyChanged += Inputs_PropertyChanged;
+                }
+                else
+                {
+                    Inputs.PropertyChanged -= Inputs_PropertyChanged;
+                }
+                SetProperty(ref _IsRealTime, value);
+            }
+        }
+
+
+
+
+
         [ObservableProperty]
         public string? name;
 
