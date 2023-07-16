@@ -45,9 +45,12 @@
                                       Size=25}"
                     DockPanel.Dock="Left"
                     Style="{StaticResource MaterialDesignToolForegroundButton}" />
-            <CheckBox Margin="10 0 0 0"
-                      Content="IsRealTime"
-                      IsChecked="{Binding Operation.IsRealTime}" />
+            <ToggleButton Margin="10 0 0 0 "
+                          Height="20"
+                          Width="20"
+                          Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}"
+                          Content="{md:PackIcon Kind=LightningBolt}"
+                          IsChecked="{Binding Operation.IsRealTime}" />
 
             <Ellipse Width="10"
                      Height="10"
