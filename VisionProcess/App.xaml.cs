@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using VisionProcess.Core.Helpers;
+using VisionProcess.Core.ToolBase;
 using VisionProcess.Tools.ViewModels;
 using VisionProcess.ViewModels;
 
@@ -18,13 +20,22 @@ namespace VisionProcess
     public partial class App : Application
     {
         private static Mutex? appMutex;
+        //查找，启动可能会慢
+        public static readonly IEnumerable<Type> ToolViewModelTypes = GetToolViewModels(ReflectionHelper.GetAllReferencedAssemblies());
 
-        //前提，需要规范命名
-        //获取该程序集命名空间中的所有类型
-        public static readonly Assembly ToolsAssembly = typeof(AcquireImageViewModel).Assembly;
 
-        public static readonly IEnumerable<Type> ToolsViewModelsTypes = ToolsAssembly.GetTypes()
-            .Where(t => string.Equals(t.Namespace, "VisionProcess.Tools.ViewModels", StringComparison.Ordinal));
+        public static IEnumerable<Type> GetToolViewModels(IEnumerable<Assembly> assemblies)
+        {
+            List<Type> viewModel = new List<Type>();
+            foreach (var asm in assemblies)
+            {
+                var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.IsAssignableTo(typeof(IOperation)));
+                viewModel.AddRange(types);
+            }
+            return viewModel;
+        }
+
+
 
         /// <summary>
         /// Gets the current <see cref="App"/> instance in use
@@ -38,6 +49,7 @@ namespace VisionProcess
 
         public App()
         {
+
             string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
             //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
@@ -65,7 +77,7 @@ namespace VisionProcess
             //services.AddSingleton<IFilesService, FilesService>();
 
 
-            foreach (var itemType in ToolsViewModelsTypes)//遍历所有类型进行查找
+            foreach (var itemType in ToolViewModelTypes)//遍历所有类型进行查找
             {
                 services.AddTransient(itemType);
                 //list.Add(itemType.Name.Replace("ViewModel", string.Empty));

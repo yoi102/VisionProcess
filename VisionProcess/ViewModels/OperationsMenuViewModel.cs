@@ -14,9 +14,9 @@ namespace VisionProcess.ViewModels
 
         public OperationsMenuViewModel(ProcessModel processModel)
         {
-            //前提，需要规范命名
+
             List<string> list = new();
-            foreach (var itemType in App.ToolsViewModelsTypes)//遍历所有类型进行查找
+            foreach (var itemType in App.ToolViewModelTypes)//遍历所有类型进行查找
             {
                 list.Add(itemType.Name.Replace("ViewModel", string.Empty));
             }
@@ -51,7 +51,7 @@ namespace VisionProcess.ViewModels
         private void CreateOperation(string operationName)
         {
             //前提，需要规范命名
-            var type = App.ToolsViewModelsTypes.FirstOrDefault(t => t.Name == operationName + "ViewModel") ??
+            var type = App.ToolViewModelTypes.FirstOrDefault(t => t.Name == operationName + "ViewModel") ??
                    throw new ArgumentNullException($"{operationName} + ViewModel");
 
             //var type = App.ToolsAssembly.GetType("VisionProcess.Tools.ViewModels." + operationName + "ViewModel");
