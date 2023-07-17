@@ -312,4 +312,7 @@
   <data name="SaveImage" xml:space="preserve">
     <value>画像保存</value>
   </data>
+  <data name="InputImage" xml:space="preserve">
+    <value>入力画像</value>
+  </data>
 </root>

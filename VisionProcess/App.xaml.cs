@@ -26,13 +26,13 @@ namespace VisionProcess
 
         public static IEnumerable<Type> GetToolViewModels(IEnumerable<Assembly> assemblies)
         {
-            List<Type> viewModel = new List<Type>();
+            List<Type> viewModels = new List<Type>();
             foreach (var asm in assemblies)
             {
                 var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.IsAssignableTo(typeof(IOperation)));
-                viewModel.AddRange(types);
+                viewModels.AddRange(types);
             }
-            return viewModel;
+            return viewModels;
         }
 
 

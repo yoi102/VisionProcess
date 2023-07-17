@@ -294,4 +294,7 @@
   <data name="MaximumValue" xml:space="preserve">
     <value>最大值</value>
   </data>
+  <data name="InputImage" xml:space="preserve">
+    <value>輸入圖像</value>
+  </data>
 </root>

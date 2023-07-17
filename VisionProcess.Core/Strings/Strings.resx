@@ -339,4 +339,7 @@
   <data name="SaveImage" xml:space="preserve">
     <value>Save Image</value>
   </data>
+  <data name="InputImage" xml:space="preserve">
+    <value>InputImage</value>
+  </data>
 </root>

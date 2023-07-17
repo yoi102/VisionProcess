@@ -26,15 +26,15 @@ namespace VisionProcess.Core.Controls
                 nameof(SelectedRecord),
                 typeof(Record),
                 typeof(uclRecord),
-                new PropertyMetadata(null, SelectedRecordRecordChenged));
+                new PropertyMetadata(null, SelectedRecordRecordChanged));
 
-        public ICollection<Record> RecordSource
+        public ICollection<Record>? RecordSource
         {
             get { return (ICollection<Record>)GetValue(RecordSourceProperty); }
             set { SetValue(RecordSourceProperty, value); }
         }
 
-        public Record SelectedRecord
+        public Record? SelectedRecord
         {
             get { return (Record)GetValue(SelectedRecordProperty); }
             set { SetValue(SelectedRecordProperty, value); }
@@ -45,13 +45,12 @@ namespace VisionProcess.Core.Controls
             var uclRecord = (uclRecord)d;
             if (e.NewValue is not null)
             {
-                uclRecord.SelectedRecord = ((ICollection<Record>)e.NewValue).FirstOrDefault()!;
-
+                uclRecord.SelectedRecord = ((ICollection<Record>)e.NewValue).FirstOrDefault();//默认选项
                 //这里需要通知前台
             }
         }
 
-        private static void SelectedRecordRecordChenged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void SelectedRecordRecordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //uclRecord uclRecord = (uclRecord)d;
             //if (e.NewValue is not null)

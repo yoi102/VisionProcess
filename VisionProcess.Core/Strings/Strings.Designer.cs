@@ -268,6 +268,15 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 InputImage 的本地化字符串。
+        /// </summary>
+        public static string InputImage {
+            get {
+                return ResourceManager.GetString("InputImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Kernel Height 的本地化字符串。
         /// </summary>
         public static string KernelHeight {

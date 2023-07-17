@@ -17,8 +17,9 @@ namespace VisionProcess.Tools.ViewModels
         public AcquireImageViewModel() : base()
         {
             Init();
-    
         }
+
+  
 
         private int currentIndex = 0;
         private List<string>? imagePaths;
@@ -37,7 +38,7 @@ namespace VisionProcess.Tools.ViewModels
                 currentIndex = 0;
             }
             Outputs.Image = new Mat(imagePaths[currentIndex]);
-            Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
+            Records[^1].DisplayImage = Outputs.Image.ToBitmapSource();
 
             currentIndex++;
             ////延时

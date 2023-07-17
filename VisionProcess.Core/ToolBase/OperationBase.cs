@@ -65,7 +65,7 @@ namespace VisionProcess.Core.ToolBase
 
         public void Execute()
         {
-            OnExecutng();
+            OnExecuting();
 
             sw ??= new Stopwatch();
             sw.Reset();
@@ -112,7 +112,7 @@ namespace VisionProcess.Core.ToolBase
             Executed?.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnExecutng()
+        protected virtual void OnExecuting()
         {
             Executing?.Invoke(this, EventArgs.Empty);
         }

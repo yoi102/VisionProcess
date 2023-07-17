@@ -16,11 +16,19 @@ namespace VisionProcess.Tools.ViewModels
         {
             Init();
 
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
+        }
+
+        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName?.Equals(nameof(Inputs.Image)) == true)
+            {
+                Records[^1].DisplayImage = Inputs.Image?.ToBitmapSource();
+            }
         }
 
         protected override bool InternalExecute(out string message)
         {
-            message = "";
             if (Inputs.Image is null)
             {
                 message = "Input image can not be null";
@@ -37,6 +45,8 @@ namespace VisionProcess.Tools.ViewModels
         private void Init()
         {
             Records.Add(new() { Title = Strings.OutputImage });
+            Records.Add(new() { Title = Strings.InputImage });
+
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using OpenCvSharp.WpfExtensions;
+﻿using OpenCvSharp;
+using OpenCvSharp.WpfExtensions;
+using System.Linq;
+using System.Windows.Media.Imaging;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -13,7 +16,15 @@ namespace VisionProcess.Tools.ViewModels
         public ColorConvertViewModel() : base()
         {
             Init();
-   
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
+        }
+
+        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName?.Equals(nameof(Inputs.Image)) == true)
+            {
+                Records[^1].DisplayImage = Inputs.Image?.ToBitmapSource();
+            }
         }
 
         protected override bool InternalExecute(out string message)
@@ -40,6 +51,8 @@ namespace VisionProcess.Tools.ViewModels
         private void Init()
         {
             Records.Add(new() { Title = Strings.OutputImage });
+            Records.Add(new() { Title = Strings.InputImage });
+
         }
     }
 }
