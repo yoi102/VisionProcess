@@ -17,17 +17,18 @@ namespace VisionProcess.Models
         //    _valuePath = path;
         //}
 
-        public ConnectorModel(string title, object value, Type valueType, string valuePath)
+        public ConnectorModel(string title, object value, Type valueType, string valuePath,bool isInput)
         {
             _title = title;
             _value = value;
             _valueType = valueType;
             _valuePath = valuePath;
+            _isInput = isInput;
         }
 
         private Point _anchor = default;
         private bool _isConnected = false;
-        private bool _isInput = true;
+        private readonly bool _isInput = true;
         private OperationModel _operation = default!;
         private string _title;
         private object? _value;
@@ -55,7 +56,7 @@ namespace VisionProcess.Models
         public bool IsInput
         {
             get => _isInput;
-            set => SetProperty(ref _isInput, value);
+            //set => SetProperty(ref _isInput, value);
         }
 
         public OperationModel Operation
@@ -78,7 +79,9 @@ namespace VisionProcess.Models
                 if (value is not null)
                 {
                     Type type = value.GetType();
-                    if (type.Name != ValueType.Name && type.GetInterface(ValueType.Name) == null && ValueType.GetInterface(type.Name) == null)
+                    if (type.Name != ValueType.Name && 
+                        type.GetInterface(ValueType.Name) == null &&
+                        ValueType.GetInterface(type.Name) == null)
                     {
                         throw new ArgumentException($"{Strings.ValueTypeMustBeX} ", ValueType.Name);
                     }

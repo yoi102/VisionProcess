@@ -17,7 +17,7 @@ namespace VisionProcess.Models
             Input.WhenAdded(x =>
             {
                 x.Operation = this;
-                x.IsInput = true;
+                //x.IsInput = true;
                 x.PropertyChanged += OnInputValueChanged;
             })
             .WhenRemoved(x =>
@@ -28,7 +28,7 @@ namespace VisionProcess.Models
             Output.WhenAdded(x =>
             {
                 x.Operation = this;
-                x.IsInput = false;
+                //x.IsInput = false;
                 x.PropertyChanged += OnOutputValueChanged;
             })
           .WhenRemoved(x =>
@@ -81,11 +81,11 @@ namespace VisionProcess.Models
                         }
                         if (item.IsInput)
                         {
-                            Input.Add(new ConnectorModel(item.Title, v, t, item.Path));
+                            Input.Add(new ConnectorModel(item.Title, v, t, item.Path,true));
                         }
                         else
                         {
-                            Output.Add(new ConnectorModel(item.Title, v, t, item.Path));
+                            Output.Add(new ConnectorModel(item.Title, v, t, item.Path,false));
                         }
                     }
                 }
