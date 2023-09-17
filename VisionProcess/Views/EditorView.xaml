@@ -166,8 +166,8 @@
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <TextBlock VerticalAlignment="Center" Text=" O-" />
-
                                     <controls:EditableTextBlock Text="{Binding Title}" />
+                                    <!--<controls:EditableTextBlock Text="{Binding Title,StringFormat=O-{0}}" />-->
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>

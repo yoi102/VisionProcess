@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.IO;
@@ -17,12 +18,7 @@ namespace VisionProcess.Core.Controls
     /// </summary>
     public partial class uclImage : UserControl
     {
-        public uclImage()
-        {
-            InitializeComponent();
-        }
 
-        // Using a DependencyProperty as the backing store for ImageSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource",
                 typeof(ImageSource), typeof(uclImage),
@@ -33,21 +29,36 @@ namespace VisionProcess.Core.Controls
                                 null),
                         null);
 
-        private Vec3b[,]? _ImageData3b;
-        private byte[,]? _ImageDatab;
-        private Point _MiddleButtonClickedPosition;
-        private double _X;
-        private double _Y;
-        //记录中键点击的位置。。。。。鼠标中键拖拉移动用
+        public static readonly DependencyProperty TitleProperty =
+    DependencyProperty.Register("Title", typeof(string), typeof(uclImage), new PropertyMetadata(""));
+
+        private byte[,]? imageData;
+
+        private Vec3b[,]? imageData3b;
+
+        private int maxX;
+
+        private int maxY;
+
+        private Point middleButtonClickedPosition;
 
         private int mouseDownCount = 0;
 
+        public uclImage()
+        {
+            InitializeComponent();
+        }
         public ImageSource ImageSource
         {
             get { return (ImageSource)GetValue(ImageSourceProperty); }
             set { SetValue(ImageSourceProperty, value); }
         }
 
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
         private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var uclImage = (uclImage)d;
@@ -88,28 +99,28 @@ namespace VisionProcess.Core.Controls
 
         private void GetImageSourceData()
         {
-            var image = ImageSource as BitmapSource;
-            if (image != null)
+            if (ImageSource is BitmapSource image)
             {
-                using (Mat mat = image.ToMat())
+                using Mat mat = image.ToMat();
+                if (mat.Channels() == 3)
                 {
-                    if (mat.Channels() == 3)
-                    {
-                        mat.GetRectangularArray<Vec3b>(out Vec3b[,] vec3Ds);
-                        _ImageData3b = vec3Ds;
-                        _ImageDatab = null;
-
-                        GrayPanel.Visibility = Visibility.Collapsed;
-                        RGBPanel.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        mat.GetRectangularArray<byte>(out byte[,] vecDs);
-                        _ImageDatab = vecDs;
-                        _ImageData3b = null;
-                        GrayPanel.Visibility = Visibility.Visible;
-                        RGBPanel.Visibility = Visibility.Collapsed;
-                    }
+                    mat.GetRectangularArray(out Vec3b[,] vec3Ds);
+                    imageData3b = vec3Ds;
+                    maxY = imageData3b.GetLength(0);
+                    maxX = imageData3b.GetLength(1);
+                    imageData = null;
+                    GrayPanel.Visibility = Visibility.Collapsed;
+                    RGBPanel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    mat.GetRectangularArray(out byte[,] vecDs);
+                    imageData = vecDs;
+                    imageData3b = null;
+                    maxY = 0;
+                    maxX = 0;
+                    GrayPanel.Visibility = Visibility.Visible;
+                    RGBPanel.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -119,7 +130,7 @@ namespace VisionProcess.Core.Controls
             if (e.MiddleButton == MouseButtonState.Pressed)
             //e.RightButton == MouseButtonState.Pressed)
             {
-                _MiddleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
+                middleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
 
                 //mouseDownCount += 1;
                 //DispatcherTimer timer = new DispatcherTimer();
@@ -146,44 +157,47 @@ namespace VisionProcess.Core.Controls
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
             var cursorPosition = e.GetPosition((IInputElement)e.Source);
-            double x = cursorPosition.X;
-            double y = cursorPosition.Y;
+
             //获取控件大小
             Image imageControl = (Image)(IInputElement)e.Source;
 
             double xRatio = ImageSource.Width / imageControl.ActualWidth;
             double yRatio = ImageSource.Height / imageControl.ActualHeight;
 
-            _X = (float)(x * xRatio);
-            _Y = (float)(y * yRatio);
+            double x = cursorPosition.X * xRatio;
+            double y = cursorPosition.Y * yRatio;
+            int int_x = (int)x;
+            int int_y = (int)y;
 
-            Path_X.Text = _X.ToString("0.00");
-            Path_Y.Text = _Y.ToString("0.00");
+            Path_X.Text = x.ToString("0.00");
+            Path_Y.Text = y.ToString("0.00");
             //获取图片像素信息
-            if (_ImageData3b != null)
+            if (imageData3b != null)
             {
-                //准了
-                Path_B.Text = _ImageData3b[(int)_Y, (int)_X].Item0.ToString("000");
-                Path_G.Text = _ImageData3b[(int)_Y, (int)_X].Item1.ToString("000");
-                Path_R.Text = _ImageData3b[(int)_Y, (int)_X].Item2.ToString("000");
+                if (y < maxY && x < maxX)
+                {
+                    //准了
+                    Path_B.Text = imageData3b[int_y, int_x].Item0.ToString("000");
+                    Path_G.Text = imageData3b[int_y, int_x].Item1.ToString("000");
+                    Path_R.Text = imageData3b[int_y, int_x].Item2.ToString("000");
+                }
             }
-            else if (_ImageDatab != null)
+            else if (imageData != null)
             {
-                Path_Gray.Text = _ImageDatab[(int)_Y, (int)_X].ToString("000");
-                Path_Gray.Text = _ImageDatab[(int)_Y, (int)_X].ToString("000");
-                Path_Gray.Text = _ImageDatab[(int)_Y, (int)_X].ToString("000");
+                Path_Gray.Text = imageData[int_y, int_x].ToString("000");
+                Path_Gray.Text = imageData[int_y, int_x].ToString("000");
+                Path_Gray.Text = imageData[int_y, int_x].ToString("000");
             }
 
             //当中键按下，移动图片
             if (e.MiddleButton == MouseButtonState.Pressed)
-            //e.RightButton == MouseButtonState.Pressed)
             {
                 Image im = (Image)sender;
                 var group = (TransformGroup)im.RenderTransform;
                 var ttf = (TranslateTransform)group.Children[1];//对应Xaml位置    这样搞，放大缩小有点奇怪
 
-                ttf.X += cursorPosition.X - _MiddleButtonClickedPosition.X;
-                ttf.Y += cursorPosition.Y - _MiddleButtonClickedPosition.Y;
+                ttf.X += cursorPosition.X - middleButtonClickedPosition.X;
+                ttf.Y += cursorPosition.Y - middleButtonClickedPosition.Y;
             }
         }
 
@@ -256,6 +270,25 @@ namespace VisionProcess.Core.Controls
                     file.Close();
                 }
             }
+        }
+
+        private void OpenInNewWindow(object sender, RoutedEventArgs e)
+        {
+            var window = new MetroWindow();
+            window.Width = 800;
+            window.Height = 600;
+            window.Title = Title;
+            window.ResizeMode = ResizeMode.CanResizeWithGrip;
+            window.TitleCharacterCasing = CharacterCasing.Normal;
+            uclImage imageEx = new uclImage
+            {
+                ImageSource = ImageSource,
+                Title = Title
+            };
+            imageEx.OpenInNewWindowMenuItem.Visibility = Visibility.Collapsed;
+            window.Content = imageEx;
+            window.ShowDialog();
+            //window.Show();
         }
     }
 }

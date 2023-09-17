@@ -297,4 +297,7 @@
   <data name="InputImage" xml:space="preserve">
     <value>輸入圖像</value>
   </data>
+  <data name="OpenInNewWindow" xml:space="preserve">
+    <value>在新的窗口中打開</value>
+  </data>
 </root>

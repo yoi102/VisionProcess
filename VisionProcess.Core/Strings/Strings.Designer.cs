@@ -448,6 +448,15 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Open in new window 的本地化字符串。
+        /// </summary>
+        public static string OpenInNewWindow {
+            get {
+                return ResourceManager.GetString("OpenInNewWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Operations 的本地化字符串。
         /// </summary>
         public static string Operations {

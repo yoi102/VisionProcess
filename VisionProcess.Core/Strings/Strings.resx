@@ -342,4 +342,7 @@
   <data name="InputImage" xml:space="preserve">
     <value>InputImage</value>
   </data>
+  <data name="OpenInNewWindow" xml:space="preserve">
+    <value>Open in new window</value>
+  </data>
 </root>

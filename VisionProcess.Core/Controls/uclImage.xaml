@@ -35,7 +35,13 @@
                             <MenuItem
                                 Click="MenuItem_Click_1"
                                 Header="{x:Static strings:Strings.SaveImage}"
-                                Icon="{md:PackIcon Kind=ImageSecure}" />
+                                Icon="{md:PackIcon Kind=ContentSave}" />
+                            <MenuItem
+                                Name="OpenInNewWindowMenuItem"
+                                Click="OpenInNewWindow"
+                                Header="{x:Static strings:Strings.OpenInNewWindow}"
+                                Icon="{md:PackIcon Kind=WindowRestore}" />
+
                         </ContextMenu>
                     </ScrollViewer.ContextMenu>
                     <!--  <Image Source="{Binding Path=ImageSource, ElementName=IM}"  -->
