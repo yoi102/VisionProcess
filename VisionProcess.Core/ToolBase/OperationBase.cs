@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OpenCvSharp;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -8,14 +9,27 @@ namespace VisionProcess.Core.ToolBase
 {
     public abstract partial class OperationBase<TInputs, TOutputs, TGraphic> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphic : GraphicsBase, new()
     {
+        [ObservableProperty]
+        public string? name;
+
+        private readonly Stopwatch stopwatch = new Stopwatch();
+        private bool isRealTime;
 
         //子类可依赖注入
         protected OperationBase()
         {
-
         }
 
-        private Stopwatch? sw;
+        protected OperationBase(TGraphic graphic, TInputs inputs,
+            TOutputs outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
+        {
+            Graphic = graphic;
+            Inputs = inputs;
+            Outputs = outputs;
+            IsRealTime = isRealTime;
+            Records = records;
+            RunStatus = runStatus;
+        }
 
         public event EventHandler? Executed;
 
@@ -25,16 +39,9 @@ namespace VisionProcess.Core.ToolBase
 
         public TInputs Inputs { get; protected set; } = new TInputs();
 
-        public TOutputs Outputs { get; protected set; } = new TOutputs();
-
-        public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
-
-        public RunStatus RunStatus { get; } = new RunStatus();
-
-        private bool _IsRealTime;
         public bool IsRealTime
         {
-            get { return _IsRealTime; }
+            get { return isRealTime; }
             set
             {
                 if (value)
@@ -46,30 +53,22 @@ namespace VisionProcess.Core.ToolBase
                 {
                     Inputs.PropertyChanged -= Inputs_PropertyChanged;
                 }
-                SetProperty(ref _IsRealTime, value);
+                SetProperty(ref isRealTime, value);
             }
         }
 
+        public TOutputs Outputs { get; protected set; } = new TOutputs();
 
+        public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
-
-
-        [ObservableProperty]
-        public string? name;
-
-        [RelayCommand]
-        private async Task ExecuteAsync()
-        {
-            await Task.Run(() => Execute());
-        }
+        public RunStatus RunStatus { get; } = new RunStatus();
 
         public void Execute()
         {
             OnExecuting();
 
-            sw ??= new Stopwatch();
-            sw.Reset();
-            sw.Start();
+            stopwatch.Reset();
+            stopwatch.Start();
 
             RunStatus.Exception = null;
 
@@ -99,8 +98,8 @@ namespace VisionProcess.Core.ToolBase
             }
             finally
             {
-                sw.Stop();
-                RunStatus.ProcessingTime = sw.ElapsedMilliseconds;
+                stopwatch.Stop();
+                RunStatus.ProcessingTime = stopwatch.ElapsedMilliseconds;
                 OnExecuted();
             }
         }
@@ -116,6 +115,14 @@ namespace VisionProcess.Core.ToolBase
         {
             Executing?.Invoke(this, EventArgs.Empty);
         }
+
+        [property: JsonIgnore]
+        [RelayCommand]
+        private async Task ExecuteAsync()
+        {
+            await Task.Run(() => Execute());
+        }
+
         private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Execute();

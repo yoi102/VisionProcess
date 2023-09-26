@@ -5,7 +5,6 @@ namespace VisionProcess.Core.Selectors
 {
     public class EnumTemplateSelector : DataTemplateSelector
     {
-
         public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
             if (container is FrameworkElement element)
@@ -17,7 +16,5 @@ namespace VisionProcess.Core.Selectors
             }
             return null;
         }
-
-
     }
 }

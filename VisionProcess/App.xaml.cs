@@ -1,15 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using VisionProcess.Core.Helpers;
+using VisionProcess.Core.Mvvm;
 using VisionProcess.Core.ToolBase;
-using VisionProcess.Tools.ViewModels;
 using VisionProcess.ViewModels;
 
 namespace VisionProcess
@@ -20,9 +22,9 @@ namespace VisionProcess
     public partial class App : Application
     {
         private static Mutex? appMutex;
+
         //查找，启动可能会慢
         public static readonly IEnumerable<Type> ToolViewModelTypes = GetToolViewModels(ReflectionHelper.GetAllReferencedAssemblies());
-
 
         public static IEnumerable<Type> GetToolViewModels(IEnumerable<Assembly> assemblies)
         {
@@ -34,8 +36,6 @@ namespace VisionProcess
             }
             return viewModels;
         }
-
-
 
         /// <summary>
         /// Gets the current <see cref="App"/> instance in use
@@ -49,7 +49,6 @@ namespace VisionProcess
 
         public App()
         {
-
             string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
             //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
@@ -65,17 +64,67 @@ namespace VisionProcess
             CheckMutex(e);
         }
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            var mainViewModel = Services.GetService<MainViewModel>()
+                                ?? throw new ArgumentNullException(nameof(MainViewModel));
+
+            if (File.Exists(@"configs\Editors.config"))
+            {
+                // serialize JSON to a string and then write string to a file
+                File.WriteAllText(@"configs\Editors.config", JsonConvert.SerializeObject(mainViewModel.Editors));
+            }
+            else
+            {
+                // serialize JSON directly to a file
+                using (StreamWriter file = File.CreateText(@"configs\Editors.config"))
+                {
+                    JsonSerializer serializer = new()
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        TypeNameHandling = TypeNameHandling.Auto,
+                        Formatting = Formatting.Indented,
+                        DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                        DateParseHandling = DateParseHandling.DateTime
+                    };
+                    serializer.Serialize(file, mainViewModel.Editors);
+                }
+            }
+            base.OnExit(e);
+        }
+
         /// <summary>
         /// Configures the services for the application.
         /// </summary>
         private static IServiceProvider ConfigureServices()
         {
-            var services = new ServiceCollection();
+            if (!Directory.Exists(@"configs"))   //如果文件夹不存在则创建
+            {
+                Directory.CreateDirectory(@"configs");
+            }
 
-            services.AddSingleton<MainViewModel>();
+            var services = new ServiceCollection();
+            if (File.Exists(@"configs\Editors.config"))
+            {
+                // serialize JSON to a string and then write string to a file
+                var editors = JsonConvert.DeserializeObject<NodifyObservableCollection<EditorViewModel>>(File.ReadAllText(@"configs\Editors.config"), new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    Formatting = Formatting.Indented,
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    DateParseHandling = DateParseHandling.DateTime
+                });
+                if (editors is null)
+                    throw new ArgumentNullException();
+                services.AddSingleton(o => new MainViewModel() { Editors = editors });
+            }
+            else
+            {
+                services.AddSingleton<MainViewModel>();
+            }
             services.AddTransient<EditorViewModel>();
             //services.AddSingleton<IFilesService, FilesService>();
-
 
             foreach (var itemType in ToolViewModelTypes)//遍历所有类型进行查找
             {

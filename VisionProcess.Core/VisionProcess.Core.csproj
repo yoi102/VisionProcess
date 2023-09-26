@@ -1,27 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsmResolver.DotNet" Version="5.4.0" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="Antelcat.I18N.WPF" Version="1.0.1" />
+    <PackageReference Include="AsmResolver.DotNet" Version="5.5.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
-    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.108" />
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.124" />
     <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0457" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="2.1.5-ci281" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.5.23280.8" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-preview.5.23280.8" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Nodify" Version="5.0.2" />
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.7.0.20230115" />
-    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.7.0.20230115" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.0-preview.2.23128.3" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.9.0.20240103" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.9.0.20240103" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
     <PackageReference Include="ValueConverters" Version="3.0.26" />
   </ItemGroup>
 

@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
@@ -19,7 +21,13 @@ namespace VisionProcess.Tools.ViewModels
             Init();
         }
 
-  
+        [JsonConstructor]
+        public AcquireImageViewModel(GraphicsEmpty graphic, InputsEmpty inputs,
+                 AcquireImageOutput outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
+                 : base(graphic, inputs,
+        outputs, isRealTime, records, runStatus)
+        {
+        }
 
         private int currentIndex = 0;
         private List<string>? imagePaths;
@@ -47,6 +55,7 @@ namespace VisionProcess.Tools.ViewModels
             return true;
         }
 
+        [property: JsonIgnore]
         [RelayCommand]
         private void AcquireLocalImages()
         {

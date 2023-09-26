@@ -89,7 +89,6 @@
                 <controls:EditableTextBlock Grid.Row="1" Text="{Binding Operation.Name}" />
             </GroupBox.Header>
             <ContentControl Content="{Binding Operation}" />
-
         </GroupBox>
 
         <ScrollViewer

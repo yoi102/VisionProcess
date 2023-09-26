@@ -4,8 +4,11 @@ namespace VisionProcess.Core
 {
     public class BindingProxy : Freezable
     {
-        public static readonly DependencyProperty DataContextProperty =
-            DependencyProperty.Register(nameof(DataContext), typeof(object), typeof(BindingProxy), new UIPropertyMetadata(default(object)));
+        public static readonly DependencyProperty DataContextProperty = DependencyProperty.Register(
+                nameof(DataContext),
+                typeof(object),
+                typeof(BindingProxy),
+                new UIPropertyMetadata(default(object)));
 
         public object DataContext
         {

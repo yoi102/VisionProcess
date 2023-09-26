@@ -1,5 +1,7 @@
-﻿using OpenCvSharp;
+﻿using Newtonsoft.Json;
+using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
+using System.Collections.ObjectModel;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -14,17 +16,18 @@ namespace VisionProcess.Tools.ViewModels
         public ImageFilterViewModel() : base()
         {
             Init();
-
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
 
-        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        [JsonConstructor]
+        public ImageFilterViewModel(GraphicsEmpty graphic, ImageFilterInput inputs,
+              ImageFilterOutput outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
+              : base(graphic, inputs,
+                outputs, isRealTime, records, runStatus)
         {
-            if (e.PropertyName?.Equals(nameof(Inputs.Image)) == true)
-            {
-                Records[^1].DisplayImage = Inputs.Image?.ToBitmapSource();
-            }
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
+
         protected override bool InternalExecute(out string message)
         {
             if (Inputs.Image is null)
@@ -64,14 +67,18 @@ namespace VisionProcess.Tools.ViewModels
             return true;
         }
 
-
-
-
         private void Init()
         {
             Records.Add(new() { Title = Strings.OutputImage });
             Records.Add(new() { Title = Strings.InputImage });
+        }
 
+        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName?.Equals(nameof(Inputs.Image)) == true)
+            {
+                Records[^1].DisplayImage = Inputs.Image?.ToBitmapSource();
+            }
         }
     }
 }

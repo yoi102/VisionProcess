@@ -1,38 +1,59 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
+using OpenCvSharp;
+using OpenCvSharp.WpfExtensions;
 using System.Windows.Media.Imaging;
 
 namespace VisionProcess.Core.ToolBase
 {
     public class Record : ObservableObject
     {
-        private string? _title;
+        private string? title;
 
         public string? Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get { return title; }
+            set { SetProperty(ref title, value); }
         }
 
-        private BitmapSource? _displayImage;
+        private BitmapSource? displayImage;
 
+        [JsonIgnore]
         public BitmapSource? DisplayImage
         {
             get
             {
-                return _displayImage;
+                return displayImage;
             }
             set
             {
-                if (value != _displayImage)
+                if (value != displayImage)
                 {
-                    _displayImage = value;
-                    _displayImage?.Freeze();
-                    //OnPropertyChanged();
-                    //只能这样更新？
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        OnPropertyChanged();
-                    });
+                    displayImage = value;
+                    displayImage?.Freeze();
+                    //System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    //{
+                    OnPropertyChanged();
+                    //});
+                }
+            }
+        }
+
+        [JsonProperty("DisplayImage")]
+        public byte[]? DisplayImageBytes
+        {
+            get
+            {
+                if (displayImage is null)
+                    return null;
+                return BitmapSourceConverter.ToMat(displayImage).ToBytes();
+            }
+            set
+            {
+                if (value is not null)
+                {
+                    using var mat = Mat.FromArray(value);
+                    DisplayImage = mat.ToBitmapSource();
                 }
             }
         }

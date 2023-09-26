@@ -187,8 +187,8 @@
                     <nodify:Node
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Input="{Binding Input}"
-                        Output="{Binding Output}">
+                        Input="{Binding Inputs}"
+                        Output="{Binding Outputs}">
                         <nodify:Node.Header>
                             <controls:EditableTextBlock Text="{Binding Operation.Name}" />
                         </nodify:Node.Header>

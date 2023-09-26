@@ -10,48 +10,48 @@ namespace VisionProcess.Core.ToolBase
 
         public RunStatus(string message)
         {
-            _message = message;
+            this.message = message;
         }
 
         public RunStatus(Exception exception)
         {
-            _exception = exception;
+            this.exception = exception;
         }
 
-        private Exception? _exception;
-        private DateTime _lastTime = DateTime.Now;
-        private string _message = Strings.Strings.Success;
-        private double _processingTime = 0;
-        private bool _result = false;
+        private Exception? exception;
+        private DateTime lastTime = DateTime.Now;
+        private string message = Strings.Strings.Success;
+        private double processingTime = 0;
+        private bool result = false;
 
         public Exception? Exception
         {
-            get { return _exception; }
-            internal set { SetProperty(ref _exception, value); }
+            get { return exception; }
+            internal set { SetProperty(ref exception, value); }
         }
 
         public DateTime LastTime
         {
-            get { return _lastTime; }
-            internal set { SetProperty(ref _lastTime, value); }
+            get { return lastTime; }
+            internal set { SetProperty(ref lastTime, value); }
         }
 
         public string Message
         {
-            get { return _message; }
-            internal set { SetProperty(ref _message, value); }
+            get { return message; }
+            internal set { SetProperty(ref message, value); }
         }
 
         public double ProcessingTime
         {
-            get { return _processingTime; }
-            internal set { SetProperty(ref _processingTime, value); }
+            get { return processingTime; }
+            internal set { SetProperty(ref processingTime, value); }
         }
 
         public bool Result
         {
-            get { return _result; }
-            internal set { SetProperty(ref _result, value); }
+            get { return result; }
+            internal set { SetProperty(ref result, value); }
         }
     }
 }

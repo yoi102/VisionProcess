@@ -18,7 +18,6 @@ namespace VisionProcess.Core.Controls
     /// </summary>
     public partial class ImageEx : UserControl
     {
-
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource",
                 typeof(ImageSource), typeof(ImageEx),
@@ -48,6 +47,7 @@ namespace VisionProcess.Core.Controls
         {
             InitializeComponent();
         }
+
         public ImageSource ImageSource
         {
             get { return (ImageSource)GetValue(ImageSourceProperty); }
@@ -59,6 +59,7 @@ namespace VisionProcess.Core.Controls
             get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
+
         private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var imageEx = (ImageEx)d;
@@ -112,7 +113,7 @@ namespace VisionProcess.Core.Controls
                     GrayPanel.Visibility = Visibility.Collapsed;
                     RGBPanel.Visibility = Visibility.Visible;
                 }
-                else
+                else if (mat.Channels() == 1)
                 {
                     mat.GetRectangularArray(out byte[,] vecDs);
                     imageData = vecDs;

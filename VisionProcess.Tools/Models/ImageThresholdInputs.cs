@@ -1,28 +1,43 @@
-﻿using OpenCvSharp;
+﻿using Newtonsoft.Json;
+using OpenCvSharp;
 using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
     public class ImageThresholdInputs : InputsBase
     {
-        private Mat? _image;
-        private double _maximumValue = 255;
-        private ThresholdTypes _thresholdType = ThresholdTypes.Binary;
-        private double _thresholdValue = 50;
+        private Mat? image;
+        private double maximumValue = 255;
+        private ThresholdTypes thresholdType = ThresholdTypes.Binary;
+        private double thresholdValue = 50;
 
+        [JsonIgnore]
         public Mat? Image
         {
             get
             {
-                return _image;
+                return image;
             }
             set
             {
-                if (_image != value)
+                if (image != value)
                 {
-                    _image?.Dispose();
-                    _image = value;
+                    image?.Dispose();
+                    image = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        [JsonProperty("Image")]
+        public byte[]? ImageBytes
+        {
+            get { return Image?.ToBytes(); }
+            set
+            {
+                if (value is not null)
+                {
+                    Image = Mat.FromArray(value);
                 }
             }
         }
@@ -32,8 +47,8 @@ namespace VisionProcess.Tools.Models
         /// </summary>
         public double MaximumValue
         {
-            get { return _maximumValue; }
-            set { SetProperty(ref _maximumValue, value); }
+            get { return maximumValue; }
+            set { SetProperty(ref maximumValue, value); }
         }
 
         /// <summary>
@@ -41,8 +56,8 @@ namespace VisionProcess.Tools.Models
         /// </summary>
         public ThresholdTypes ThresholdType
         {
-            get { return _thresholdType; }
-            set { SetProperty(ref _thresholdType, value); }
+            get { return thresholdType; }
+            set { SetProperty(ref thresholdType, value); }
         }
 
         /// <summary>
@@ -50,8 +65,8 @@ namespace VisionProcess.Tools.Models
         /// </summary>
         public double ThresholdValue
         {
-            get { return _thresholdValue; }
-            set { SetProperty(ref _thresholdValue, value); }
+            get { return thresholdValue; }
+            set { SetProperty(ref thresholdValue, value); }
         }
     }
 }

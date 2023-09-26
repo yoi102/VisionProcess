@@ -41,7 +41,6 @@
                                 Click="OpenInNewWindow"
                                 Header="{x:Static strings:Strings.OpenInNewWindow}"
                                 Icon="{md:PackIcon Kind=WindowRestore}" />
-
                         </ContextMenu>
                     </ScrollViewer.ContextMenu>
                     <!--  <Image Source="{Binding Path=ImageSource, ElementName=IM}"  -->

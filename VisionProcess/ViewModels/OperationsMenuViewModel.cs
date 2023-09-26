@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Windows;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Models;
@@ -11,10 +12,8 @@ namespace VisionProcess.ViewModels
 {
     public partial class OperationsMenuViewModel : ObservableObject
     {
-
         public OperationsMenuViewModel(ProcessModel processModel)
         {
-
             List<string> list = new();
             foreach (var itemType in App.ToolViewModelTypes)//遍历所有类型进行查找
             {
@@ -23,7 +22,6 @@ namespace VisionProcess.ViewModels
             AvailableOperations = list;
             this.processModel = processModel;
         }
-
 
         [ObservableProperty]
         private Point _location;
@@ -47,6 +45,7 @@ namespace VisionProcess.ViewModels
             IsVisible = false;
         }
 
+        [property: JsonIgnore]
         [RelayCommand]
         private void CreateOperation(string operationName)
         {

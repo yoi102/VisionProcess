@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
 namespace VisionProcess.Core.Helpers;
+
 public static class ReflectionHelper
 {
-
     /// <summary>
     /// 据产品名称获取程序集
     /// </summary>
@@ -29,6 +26,7 @@ public static class ReflectionHelper
             }
         }
     }
+
     //是否是微软等的官方Assembly
     private static bool IsSystemAssembly(Assembly asm)
     {
@@ -210,7 +208,7 @@ public static class ReflectionHelper
         }
     }
 
-    class AssemblyEquality : EqualityComparer<Assembly>
+    private class AssemblyEquality : EqualityComparer<Assembly>
     {
         public override bool Equals(Assembly? x, Assembly? y)
         {

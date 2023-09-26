@@ -12,5 +12,4 @@ namespace VisionProcess.Core.ToolBase
     public class InputsEmpty : InputsBase
     {
     }
-
 }

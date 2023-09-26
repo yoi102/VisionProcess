@@ -5,36 +5,36 @@ namespace VisionProcess.Models
 {
     public class PendingConnectionModel : ObservableObject
     {
-        private ConnectorModel _source = default!;
+        private ConnectorModel source = default!;
 
         public ConnectorModel Source
         {
-            get => _source;
-            set => SetProperty(ref _source, value);
+            get => source;
+            set => SetProperty(ref source, value);
         }
 
-        private ConnectorModel? _target;
+        private ConnectorModel? target;
 
         public ConnectorModel? Target
         {
-            get => _target;
-            set => SetProperty(ref _target, value);
+            get => target;
+            set => SetProperty(ref target, value);
         }
 
-        private bool _isVisible;
+        private bool isVisible;
 
         public bool IsVisible
         {
-            get => _isVisible;
-            set => SetProperty(ref _isVisible, value);
+            get => isVisible;
+            set => SetProperty(ref isVisible, value);
         }
 
-        private Point _targetLocation;
+        private Point targetLocation;
 
         public Point TargetLocation
         {
-            get => _targetLocation;
-            set => SetProperty(ref _targetLocation, value);
+            get => targetLocation;
+            set => SetProperty(ref targetLocation, value);
         }
     }
 }

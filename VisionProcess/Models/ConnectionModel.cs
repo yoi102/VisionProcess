@@ -4,20 +4,20 @@ namespace VisionProcess.Models
 {
     public class ConnectionModel : ObservableObject
     {
-        private ConnectorModel _input = default!;
+        private ConnectorModel? input;
 
-        public ConnectorModel Input
+        public ConnectorModel? Input
         {
-            get => _input;
-            set => SetProperty(ref _input, value);
+            get => input;
+            set => SetProperty(ref input, value);
         }
 
-        private ConnectorModel _output = default!;
+        private ConnectorModel? output;
 
-        public ConnectorModel Output
+        public ConnectorModel? Output
         {
-            get => _output;
-            set => SetProperty(ref _output, value);
+            get => output;
+            set => SetProperty(ref output, value);
         }
     }
 }

@@ -10,10 +10,6 @@ namespace VisionProcess.Views
     /// </summary>
     public partial class MainView
     {
-
-
-
-
         public MainView()
         {
             InitializeComponent();
@@ -36,9 +32,6 @@ namespace VisionProcess.Views
             //WindowExtensions.Show(this, disableEfficiencyMode: true);// default value
             //ic.ForceCreate(enablesEfficiencyMode: true); // default value
         }
-
-
-
 
         // The enum flag for DwmSetWindowAttribute's second parameter, which tells the function what attribute to set.
         // Copied from dwmapi.h

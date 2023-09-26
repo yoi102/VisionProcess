@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -14,105 +16,154 @@ namespace VisionProcess.Models
     {
         public ProcessModel()
         {
+            OperationsMenu = new(this);
+            operations = new();
             Init();
-            OperationsMenu = new OperationsMenuViewModel(this);
+        }
+
+        [JsonConstructor]
+        public ProcessModel(NodifyObservableCollection<OperationModel> operations,
+            NodifyObservableCollection<ConnectionModel> connections)
+        {
+            OperationsMenu = new(this);
+            this.operations = operations;
+            foreach (var item in operations)
+            {
+                item.OperationExecuted += OperationExecuted;
+            }
+            foreach (var connection in connections)
+            {
+                //不出错的话必然是存在的
+                var inputOperation = operations.First(x => x.Guid == connection.Input!.OwnerGuid);
+                var outputOperation = operations.First(x => x.Guid == connection.Output!.OwnerGuid);
+                var inputConnector = inputOperation.Inputs.First(x => x.ValuePath == connection.Input!.ValuePath);
+                var outputConnector = outputOperation.Outputs.First(x => x.ValuePath == connection.Output!.ValuePath);
+                outputConnector.ValueObservers.Add(inputConnector);
+                Connections.Add(new ConnectionModel() { Input = inputConnector, Output = outputConnector });
+            }
+            Init();
         }
 
         private void Init()
         {
             Connections.WhenAdded(c =>
             {
-                c.Input.IsConnected = true;
-                c.Output.IsConnected = true;
-                c.Input.Value = c.Output.Value;
+                c.Input!.IsConnected = true;
+                c.Output!.IsConnected = true;
+                //当连接时反射设值。。。
+                var outputOperationMode = operations.First(x => x.Guid == c.Output.OwnerGuid);
+                var inputOperationMode = operations.First(x => x.Guid == c.Input.OwnerGuid);
+                var outputValue = PropertyMisc.GetValue(outputOperationMode.Operation, c.Output.ValuePath);
+                PropertyMisc.SetValue(inputOperationMode.Operation, c.Input.ValuePath, outputValue);
+                inputOperationMode.Operation!.Execute();
                 c.Output.ValueObservers.Add(c.Input);
             })
-         .WhenRemoved(c =>
-         {
-             var ic = Connections.Count(con => con.Input == c.Input || con.Output == c.Input);
-             var oc = Connections.Count(con => con.Input == c.Output || con.Output == c.Output);
-             if (ic == 0)
-             {
-                 c.Input.IsConnected = false;
-             }
-
-             if (oc == 0)
-             {
-                 c.Output.IsConnected = false;
-             }
-
-             c.Output.ValueObservers.Remove(c.Input);
-         });
+            .WhenRemoved(c =>
+            {
+                var ic = Connections.Count(con => con.Input == c.Input || con.Output == c.Input);
+                var oc = Connections.Count(con => con.Input == c.Output || con.Output == c.Output);
+                if (ic == 0)
+                {
+                    c.Input!.IsConnected = false;
+                }
+                if (oc == 0)
+                {
+                    c.Output!.IsConnected = false;
+                }
+                c.Output!.ValueObservers.Remove(c.Input!);
+            });
 
             Operations.WhenAdded(x =>
             {
-                x.Input.WhenRemoved(RemoveConnection);
+                x.OperationExecuted += OperationExecuted;
 
-                //if (x is CalculatorInputOperationViewModel ci)
-                //{
-                //    ci.Output.WhenRemoved(RemoveConnection);
-                //}
-
+                x.Inputs.WhenRemoved(RemoveConnection);
                 void RemoveConnection(ConnectorModel i)
                 {
                     var c = Connections.Where(con => con.Input == i || con.Output == i).ToArray();
                     c.ForEach(con => Connections.Remove(con));
                 }
             })
-           .WhenRemoved(x =>
-           {
-               foreach (var input in x.Input)
-               {
-                   DisconnectConnector(input);
-               }
+            .WhenRemoved(x =>
+            {
+                x.OperationExecuted -= OperationExecuted;
 
-               foreach (var output in x.Output)
-               {
-                   DisconnectConnector(output);
-               }
-           });
+                foreach (var input in x.Inputs)
+                {
+                    DisconnectConnector(input);
+                }
+
+                foreach (var output in x.Outputs)
+                {
+                    DisconnectConnector(output);
+                }
+            });
+        }
+
+        private void OperationExecuted(object? sender, EventArgs e)
+        {   //一个操作运行完时，修改连接上的操作的输入并运行
+            if (sender is not OperationModel operationModel)
+                return;
+            List<OperationModel> targetOperationModelList = new(); ;
+            foreach (var output in operationModel.Outputs)
+            {
+                if (!output.IsConnected)
+                    continue;
+                var outputValue = PropertyMisc.GetValue(operationModel.Operation, output.ValuePath);
+                output.ValueObservers.ForEach(x =>
+                {
+                    var targetOperationModel = operations.First(o => o.Guid == x.OwnerGuid);
+                    targetOperationModelList.Add(targetOperationModel);
+                    PropertyMisc.SetValue(targetOperationModel.Operation, x.ValuePath, outputValue);
+                });
+            }
+            targetOperationModelList.ForEach(x => x.Operation!.Execute());
         }
 
         #region Properties
 
-        private NodifyObservableCollection<OperationModel> _operations = new();
-        private OperationModel? _selectedOperation;
-        private NodifyObservableCollection<OperationModel> _selectedOperations = new();
-
+        private NodifyObservableCollection<OperationModel> operations;
+        private OperationModel? selectedOperation;
+        private NodifyObservableCollection<OperationModel> selectedOperations = new();
         public NodifyObservableCollection<ConnectionModel> Connections { get; } = new();
 
         public NodifyObservableCollection<OperationModel> Operations
         {
-            get => _operations;
-            set => SetProperty(ref _operations, value);
+            get => operations;
+            set => SetProperty(ref operations, value);
         }
 
-        public OperationsMenuViewModel OperationsMenu { get; set; }
+        [JsonIgnore]
+        public OperationsMenuViewModel OperationsMenu { get; }
+
+        [JsonIgnore]
         public PendingConnectionModel PendingConnection { get; set; } = new();
 
+        [JsonIgnore]
         public OperationModel? SelectedOperation
         {
-            get => _selectedOperation;
+            get => selectedOperation;
             set
             {
-                if (_selectedOperation is not null && _selectedOperation.Operation is not null)
+                if (selectedOperation is not null && selectedOperation.Operation is not null)
                 {
-                    _selectedOperation.Operation.IsRealTime = false;
+                    selectedOperation.Operation.IsRealTime = false;
                 }
                 if (value is not null && value.Operation is not null)
                 {
                     value.Operation.IsRealTime = true;
                 }
-                SetProperty(ref _selectedOperation, value);
+                SetProperty(ref selectedOperation, value);
             }
         }
 
+        [JsonIgnore]
         public NodifyObservableCollection<OperationModel> SelectedOperations
         {
-            get => _selectedOperations;
+            get => selectedOperations;
             set
             {
-                SetProperty(ref _selectedOperations, value);
+                SetProperty(ref selectedOperations, value);
                 SelectedOperation = value?.FirstOrDefault();
             }
         }
@@ -121,10 +172,9 @@ namespace VisionProcess.Models
 
         #region Commands
 
-        //不能与 CanCreateConnection 重名？？
         internal static bool IsCanCreateConnection(ConnectorModel source, ConnectorModel? target) => target == null ||
                     (source != target &&
-                    source.Operation != target.Operation &&
+                    source.OwnerGuid != target.OwnerGuid &&
                     source.IsInput != target.IsInput &&
                     source.ValueType.IsAssignableTo(target.ValueType));
 
@@ -138,6 +188,7 @@ namespace VisionProcess.Models
             return SelectedOperations.Count > 0;
         }
 
+        [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanCreateConnection))]
         private void CreateConnection()
         {
@@ -171,6 +222,7 @@ namespace VisionProcess.Models
         //    PendingConnection.IsVisible = false;
         //    OperationsMenu.Closed -= OnOperationsMenuClosed;
         //}
+        [property: JsonIgnore]
         [RelayCommand]
         private void DeleteSelection()
         {
@@ -178,6 +230,7 @@ namespace VisionProcess.Models
             list.ForEach(o => Operations.Remove(o));
         }
 
+        [property: JsonIgnore]
         [RelayCommand]
         private void DisconnectConnector(ConnectorModel connector)
         {
@@ -188,11 +241,11 @@ namespace VisionProcess.Models
         //[RelayCommand]
         //private void DeletLineConnection(ConnectionModel connection)
         //{
-        //    connection.Input.IsConnected = false;
-        //    connection.Output.IsConnected = false;
+        //    connection.Inputs.IsConnected = false;
+        //    connection.Outputs.IsConnected = false;
         //    Connections.Remove(connection);
         //}
-
+        [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanGroupSelection))]
         private void GroupSelection()
         {
@@ -205,6 +258,7 @@ namespace VisionProcess.Models
             });
         }
 
+        [property: JsonIgnore]
         [RelayCommand]
         private void StartConnection()
         {

@@ -55,12 +55,12 @@ namespace VisionProcess.ViewModels
         #region Properties
 
         [ObservableProperty]
-        private bool _autoSelectNewEditor = true;
+        private bool autoSelectNewEditor = true;
 
         [ObservableProperty]
-        private EditorViewModel? _selectedEditor;
+        private EditorViewModel? selectedEditor;
 
-        public NodifyObservableCollection<EditorViewModel> Editors { get; } = new NodifyObservableCollection<EditorViewModel>();
+        public NodifyObservableCollection<EditorViewModel> Editors { get; init; } = new NodifyObservableCollection<EditorViewModel>();
 
         #endregion Properties
 

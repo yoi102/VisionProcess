@@ -1,4 +1,5 @@
-﻿using OpenCvSharp;
+﻿using Newtonsoft.Json;
+using OpenCvSharp;
 using System.ComponentModel;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Converters;
@@ -25,56 +26,70 @@ namespace VisionProcess.Tools.Models
 
     public class ImageFilterInput : InputsBase
     {
-        private BorderTypes _borderType = BorderTypes.Default;
-        private FilterTypes _filterType = FilterTypes.Median;
-        private Mat? _image;
+        private BorderTypes borderType = BorderTypes.Default;
+        private FilterTypes filterType = FilterTypes.Median;
+        private Mat? image;
 
-        private int _kernelHeight = 3;
+        private int kernelHeight = 3;
 
-        private int _kernelWidth = 3;
+        private int kernelWidth = 3;
 
         /// <summary>
         /// pixel extrapolation method
         /// </summary>
         public BorderTypes BorderType
         {
-            get { return _borderType; }
-            set { SetProperty(ref _borderType, value); }
+            get { return borderType; }
+            set { SetProperty(ref borderType, value); }
         }
 
         public FilterTypes FilterType
         {
-            get { return _filterType; }
-            set { SetProperty(ref _filterType, value); }
+            get { return filterType; }
+            set { SetProperty(ref filterType, value); }
         }
 
+        [JsonIgnore]
         public Mat? Image
         {
             get
             {
-                return _image;
+                return image;
             }
             set
             {
-                if (_image != value)
+                if (image != value)
                 {
-                    _image?.Dispose();
-                    _image = value;
+                    image?.Dispose();
+                    image = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        [JsonProperty("Image")]
+        public byte[]? ImageBytes
+        {
+            get { return Image?.ToBytes(); }
+            set
+            {
+                if (value is not null)
+                {
+                    Image = Mat.FromArray(value);
                 }
             }
         }
 
         public int KernelHeight
         {
-            get { return _kernelHeight; }
-            set { SetProperty(ref _kernelHeight, value); }
+            get { return kernelHeight; }
+            set { SetProperty(ref kernelHeight, value); }
         }
 
         public int KernelWidth
         {
-            get { return _kernelWidth; }
-            set { SetProperty(ref _kernelWidth, value); }
+            get { return kernelWidth; }
+            set { SetProperty(ref kernelWidth, value); }
         }
 
         #region Median

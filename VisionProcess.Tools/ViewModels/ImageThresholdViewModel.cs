@@ -1,4 +1,6 @@
-﻿using OpenCvSharp.WpfExtensions;
+﻿using Newtonsoft.Json;
+using OpenCvSharp.WpfExtensions;
+using System.Collections.ObjectModel;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -15,7 +17,15 @@ namespace VisionProcess.Tools.ViewModels
         public ImageThresholdViewModel() : base()
         {
             Init();
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
+        }
 
+        [JsonConstructor]
+        public ImageThresholdViewModel(GraphicsEmpty graphic, ImageThresholdInputs inputs,
+                 ImageThresholdOutputs outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
+                 : base(graphic, inputs,
+                 outputs, isRealTime, records, runStatus)
+        {
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
 
@@ -46,7 +56,6 @@ namespace VisionProcess.Tools.ViewModels
         {
             Records.Add(new() { Title = Strings.OutputImage });
             Records.Add(new() { Title = Strings.InputImage });
-
         }
     }
 }

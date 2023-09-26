@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Reflection;
-#nullable disable   
+
+#nullable disable
+
 namespace VisionProcess.Core.Extentions
 {
     public class PropertyMisc
@@ -72,7 +74,7 @@ namespace VisionProcess.Core.Extentions
                 }
                 else//如果是属性
                 {
-                    o = GetPropertyValue(o!, list[i]);
+                    o = GetPropertyValue(o, list[i]);
                 }
             }
 
@@ -331,11 +333,11 @@ namespace VisionProcess.Core.Extentions
             {
                 if (int.TryParse(array[1], out int result))
                 {
-                    propertyInfo.SetValue(ob, objValue, new object[1] { result });
+                    propertyInfo.SetValue(ob, objValue, [result]);
                 }
                 else
                 {
-                    propertyInfo.SetValue(ob, objValue, new object[1] { array[1] });
+                    propertyInfo.SetValue(ob, objValue, [array[1]]);
                 }
             }
             else

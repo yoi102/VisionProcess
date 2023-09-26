@@ -1,32 +1,47 @@
-﻿using OpenCvSharp;
+﻿using Newtonsoft.Json;
+using OpenCvSharp;
 using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
     public class ColorConvertInput : InputsBase
     {
-        private ColorConversionCodes _colorConversionCodes = ColorConversionCodes.BGR2GRAY;
-        private Mat? _image;
+        private ColorConversionCodes colorConversionCodes = ColorConversionCodes.BGR2GRAY;
+        private Mat? image;
 
         public ColorConversionCodes ColorConversionCodes
         {
-            get { return _colorConversionCodes; }
-            set { SetProperty(ref _colorConversionCodes, value); }
+            get { return colorConversionCodes; }
+            set { SetProperty(ref colorConversionCodes, value); }
         }
 
+        [JsonIgnore]
         public Mat? Image
         {
             get
             {
-                return _image;
+                return image;
             }
             set
             {
-                if (_image != value)
+                if (image != value)
                 {
-                    _image?.Dispose();
-                    _image = value;
+                    image?.Dispose();
+                    image = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        [JsonProperty("Image")]
+        public byte[]? ImageBytes
+        {
+            get { return Image?.ToBytes(); }
+            set
+            {
+                if (value is not null)
+                {
+                    Image = Mat.FromArray(value);
                 }
             }
         }
