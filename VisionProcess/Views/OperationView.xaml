@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="VisionProcess.Views.uclOperationView"
+    x:Class="VisionProcess.Views.OperationView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
@@ -80,8 +80,8 @@
             </DockPanel.ToolTip>
         </DockPanel>
 
-        <controls:uclRecord Grid.Row="1" RecordSource="{Binding Operation.Records, Mode=OneWay}" />
-        <!--<controls:uclImage Grid.Row="1"
+        <controls:ImageRecord Grid.Row="1" RecordSource="{Binding Operation.Records, Mode=OneWay}" />
+        <!--<controls:imageEx Grid.Row="1"
                            ImageSource="{Binding Operation.Records[0].DisplayImage}" />-->
 
         <GroupBox Grid.Row="2" Style="{StaticResource MaterialDesignCardGroupBox}">

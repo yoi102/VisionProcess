@@ -14,14 +14,14 @@ using Point = System.Windows.Point;
 namespace VisionProcess.Core.Controls
 {
     /// <summary>
-    /// uclImage.xaml 的交互逻辑
+    /// ImageEx.xaml 的交互逻辑
     /// </summary>
-    public partial class uclImage : UserControl
+    public partial class ImageEx : UserControl
     {
 
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource",
-                typeof(ImageSource), typeof(uclImage),
+                typeof(ImageSource), typeof(ImageEx),
                 new FrameworkPropertyMetadata(
                                 null,
                                 FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
@@ -30,7 +30,7 @@ namespace VisionProcess.Core.Controls
                         null);
 
         public static readonly DependencyProperty TitleProperty =
-    DependencyProperty.Register("Title", typeof(string), typeof(uclImage), new PropertyMetadata(""));
+    DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new PropertyMetadata(""));
 
         private byte[,]? imageData;
 
@@ -44,7 +44,7 @@ namespace VisionProcess.Core.Controls
 
         private int mouseDownCount = 0;
 
-        public uclImage()
+        public ImageEx()
         {
             InitializeComponent();
         }
@@ -61,17 +61,17 @@ namespace VisionProcess.Core.Controls
         }
         private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var uclImage = (uclImage)d;
+            var imageEx = (ImageEx)d;
             if (e.NewValue != null)
             {
-                //uclImage!.ImageSource = (ImageSource)e.NewValue;
-                uclImage.image.Source = (ImageSource)e.NewValue;
-                uclImage.GetImageSourceData();
+                //ImageEx!.ImageSource = (ImageSource)e.NewValue;
+                imageEx.image.Source = (ImageSource)e.NewValue;
+                imageEx.GetImageSourceData();
             }
             else
             {
-                uclImage.image.Source = null;
-                //uclImage!.ImageSource = null;
+                imageEx.image.Source = null;
+                //ImageEx!.ImageSource = null;
             }
         }
 
@@ -280,7 +280,7 @@ namespace VisionProcess.Core.Controls
             window.Title = Title;
             window.ResizeMode = ResizeMode.CanResizeWithGrip;
             window.TitleCharacterCasing = CharacterCasing.Normal;
-            uclImage imageEx = new uclImage
+            ImageEx imageEx = new ImageEx
             {
                 ImageSource = ImageSource,
                 Title = Title

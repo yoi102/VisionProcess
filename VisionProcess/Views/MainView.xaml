@@ -139,7 +139,7 @@
                     </TextBlock>
                 </Expander.Header>
 
-                <local:uclOperationView
+                <local:OperationView
                     Width="440"
                     HorizontalAlignment="Left"
                     DataContext="{Binding SelectedEditor.Process.SelectedOperation}"

@@ -5,11 +5,11 @@ using VisionProcess.Core.ToolBase;
 namespace VisionProcess.Core.Controls
 {
     /// <summary>
-    /// uclRecord.xaml 的交互逻辑
+    /// ImageRecord.xaml 的交互逻辑
     /// </summary>
-    public partial class uclRecord : UserControl
+    public partial class ImageRecord : UserControl
     {
-        public uclRecord()
+        public ImageRecord()
         {
             InitializeComponent();
         }
@@ -18,14 +18,14 @@ namespace VisionProcess.Core.Controls
             DependencyProperty.Register(
                 nameof(RecordSource),
                 typeof(ICollection<Record>),
-                typeof(uclRecord),
+                typeof(ImageRecord),
                 new PropertyMetadata(null, RecordSourcePropertyChanged));
 
         public static readonly DependencyProperty SelectedRecordProperty =
             DependencyProperty.Register(
                 nameof(SelectedRecord),
                 typeof(Record),
-                typeof(uclRecord),
+                typeof(ImageRecord),
                 new PropertyMetadata(null, SelectedRecordRecordChanged));
 
         public ICollection<Record>? RecordSource
@@ -42,24 +42,24 @@ namespace VisionProcess.Core.Controls
 
         private static void RecordSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var uclRecord = (uclRecord)d;
+            var imageRecord = (ImageRecord)d;
             if (e.NewValue is not null)
             {
-                uclRecord.SelectedRecord = ((ICollection<Record>)e.NewValue).FirstOrDefault();//默认选项
+                imageRecord.SelectedRecord = ((ICollection<Record>)e.NewValue).FirstOrDefault();//默认选项
                 //这里需要通知前台
             }
         }
 
         private static void SelectedRecordRecordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //uclRecord uclRecord = (uclRecord)d;
+            //ImageRecord ImageRecord = (ImageRecord)d;
             //if (e.NewValue is not null)
             //{
-            //    uclRecord.image.ImageSource = ((Record)e.NewValue).DisplayImage!;
+            //    ImageRecord.image.ImageSource = ((Record)e.NewValue).DisplayImage!;
             //}
             //else
             //{
-            //    uclRecord.image.ImageSource = null;
+            //    ImageRecord.image.ImageSource = null;
             //}
         }
     }

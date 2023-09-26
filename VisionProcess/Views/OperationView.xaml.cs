@@ -3,11 +3,11 @@
 namespace VisionProcess.Views
 {
     /// <summary>
-    /// uclOperationView.xaml 的交互逻辑
+    /// OperationView.xaml 的交互逻辑
     /// </summary>
-    public partial class uclOperationView : UserControl
+    public partial class OperationView : UserControl
     {
-        public uclOperationView()
+        public OperationView()
         {
             InitializeComponent();
         }

@@ -1,5 +1,4 @@
-﻿<UserControl
-    x:Class="VisionProcess.Core.Controls.uclRecord"
+﻿<UserControl x:Class="VisionProcess.Core.Controls.ImageRecord"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,7 +18,7 @@
                 ItemsSource="{Binding ElementName=Record, Path=RecordSource}"
                 SelectedItem="{Binding ElementName=Record, Path=SelectedRecord}"
                 Style="{StaticResource MahApps.Styles.ComboBox}" />
-            <local:uclImage x:Name="image" ImageSource="{Binding ElementName=Record, Path=SelectedRecord.DisplayImage}" />
+            <local:ImageEx x:Name="image" ImageSource="{Binding ElementName=Record, Path=SelectedRecord.DisplayImage}" />
         </DockPanel>
     </Grid>
 </UserControl>
