@@ -1,6 +1,6 @@
 # VisionProcess
 
-.Net 7
+.Net 8
 
 Package :     
 *Nodify  
