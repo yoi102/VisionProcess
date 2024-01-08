@@ -4,7 +4,7 @@ using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ColorConvertOutput : OutputsBase
+    public class ColorConvertOutputs : OutputsBase
     {
         private Mat? image;
 

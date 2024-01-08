@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace VisionProcess.Core.ToolBase
 {
-    public abstract partial class OperationBase<TInputs, TOutputs, TGraphic> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphic : GraphicsBase, new()
+    public abstract partial class OperationBase<TInputs, TOutputs, TGraphics> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphics : GraphicsBase, new()
     {
         [ObservableProperty]
         public string? name;
@@ -20,8 +20,11 @@ namespace VisionProcess.Core.ToolBase
         {
         }
 
-        protected OperationBase(RunStatus runStatus)
+        protected OperationBase(TInputs inputs, TOutputs outputs, TGraphics graphics, RunStatus runStatus)
         {
+            Inputs = inputs;
+            Outputs = outputs;
+            Graphics = graphics;
             RunStatus = runStatus;
         }
 
@@ -29,7 +32,7 @@ namespace VisionProcess.Core.ToolBase
 
         public event EventHandler? Executing;
 
-        public TGraphic Graphic { get; protected set; } = new TGraphic();
+        public TGraphics Graphics { get; protected set; } = new TGraphics();
 
         public TInputs Inputs { get; protected set; } = new TInputs();
 

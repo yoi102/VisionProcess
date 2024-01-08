@@ -4,7 +4,7 @@ using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ColorConvertInput : InputsBase
+    public class ColorConvertInputs : InputsBase
     {
         private ColorConversionCodes colorConversionCodes = ColorConversionCodes.BGR2GRAY;
         private Mat? image;

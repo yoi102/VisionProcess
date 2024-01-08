@@ -4,7 +4,7 @@ using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ImageFilterOutput : OutputsBase
+    public class AcquireImageOutputs : OutputsBase
     {
         private Mat? image;
 

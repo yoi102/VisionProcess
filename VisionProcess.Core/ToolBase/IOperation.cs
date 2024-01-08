@@ -12,7 +12,7 @@ namespace VisionProcess.Core.ToolBase
 
         event EventHandler? Executing;
 
-        //IGraphics Graphic { get; }
+        //IGraphics Graphics { get; }
         //IInputs Inputs { get; }
         //IOutputs Outputs { get; }
         RunStatus RunStatus { get; }

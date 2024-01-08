@@ -24,7 +24,7 @@ namespace VisionProcess.Tools.Models
         Bilateral,
     }
 
-    public class ImageFilterInput : InputsBase
+    public class ImageFilterInputs : InputsBase
     {
         private BorderTypes borderType = BorderTypes.Default;
         private FilterTypes filterType = FilterTypes.Median;

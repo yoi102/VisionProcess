@@ -11,7 +11,7 @@ namespace VisionProcess.Tools.ViewModels
 {
     [DefaultToolConnector(true, "Image", "Inputs.Image")]
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
-    public class ImageFilterViewModel : OperationBase<ImageFilterInput, ImageFilterOutput, GraphicsEmpty>
+    public class ImageFilterViewModel : OperationBase<ImageFilterInputs, ImageFilterOutputs, GraphicsEmpty>
     {
         public ImageFilterViewModel() : base()
         {
@@ -20,7 +20,8 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public ImageFilterViewModel(RunStatus runStatus) : base(runStatus)
+        public ImageFilterViewModel(ImageFilterInputs inputs, ImageFilterOutputs outputs, GraphicsEmpty graphics, RunStatus runStatus) 
+            : base(inputs, outputs, graphics, runStatus)
         {
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }

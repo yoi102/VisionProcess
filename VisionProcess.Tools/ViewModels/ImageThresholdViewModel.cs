@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenCvSharp.WpfExtensions;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -21,7 +22,8 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public ImageThresholdViewModel(RunStatus runStatus) : base(runStatus)
+        public ImageThresholdViewModel(ImageThresholdInputs inputs, ImageThresholdOutputs outputs, GraphicsEmpty graphics, RunStatus runStatus) 
+            : base(inputs, outputs, graphics, runStatus)
         {
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
