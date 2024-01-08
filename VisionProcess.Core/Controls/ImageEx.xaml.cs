@@ -177,7 +177,6 @@ namespace VisionProcess.Core.Controls
             {
                 if (y < maxY && x < maxX)
                 {
-                    //准了
                     Path_B.Text = imageData3b[int_y, int_x].Item0.ToString("000");
                     Path_G.Text = imageData3b[int_y, int_x].Item1.ToString("000");
                     Path_R.Text = imageData3b[int_y, int_x].Item2.ToString("000");

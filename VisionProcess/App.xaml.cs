@@ -10,7 +10,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using VisionProcess.Core.Helpers;
-using VisionProcess.Core.Mvvm;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.ViewModels;
 
@@ -69,7 +68,7 @@ namespace VisionProcess
             var mainViewModel = Services.GetService<MainViewModel>()
                                 ?? throw new ArgumentNullException(nameof(MainViewModel));
 
-            if (File.Exists(@"configs\Editors.config"))
+            if (File.Exists(@"configs\mainViewModel.config"))
             {
                 // serialize JSON to a string and then write string to a file
                 JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()
@@ -80,12 +79,12 @@ namespace VisionProcess
                     DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
                     DateParseHandling = DateParseHandling.DateTime
                 };
-                File.WriteAllText(@"configs\Editors.config", JsonConvert.SerializeObject(mainViewModel.Editors, jsonSerializerSettings));
+                File.WriteAllText(@"configs\mainViewModel.config", JsonConvert.SerializeObject(mainViewModel, jsonSerializerSettings));
             }
             else
             {
                 // serialize JSON directly to a file
-                using (StreamWriter file = File.CreateText(@"configs\Editors.config"))
+                using (StreamWriter file = File.CreateText(@"configs\mainViewModel.config"))
                 {
                     JsonSerializer serializer = new()
                     {
@@ -95,7 +94,7 @@ namespace VisionProcess
                         DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
                         DateParseHandling = DateParseHandling.DateTime
                     };
-                    serializer.Serialize(file, mainViewModel.Editors);
+                    serializer.Serialize(file, mainViewModel);
                 }
             }
             base.OnExit(e);
@@ -112,10 +111,10 @@ namespace VisionProcess
             }
 
             var services = new ServiceCollection();
-            if (File.Exists(@"configs\Editors.config"))
+            if (File.Exists(@"configs\mainViewModel.config"))
             {
                 // serialize JSON to a string and then write string to a file
-                var editors = JsonConvert.DeserializeObject<NodifyObservableCollection<EditorViewModel>>(File.ReadAllText(@"configs\Editors.config"), new JsonSerializerSettings
+                var mainViewModel = JsonConvert.DeserializeObject<MainViewModel>(File.ReadAllText(@"configs\mainViewModel.config"), new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
                     TypeNameHandling = TypeNameHandling.Auto,
@@ -123,16 +122,15 @@ namespace VisionProcess
                     DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
                     DateParseHandling = DateParseHandling.DateTime
                 });
-                if (editors is null)
+                if (mainViewModel is null)
                     throw new ArgumentNullException();
-                services.AddSingleton(o => new MainViewModel() { Editors = editors, SelectedEditor = editors.FirstOrDefault() });
+                services.AddSingleton(o => mainViewModel);
             }
             else
             {
                 services.AddSingleton<MainViewModel>();
             }
             services.AddTransient<EditorViewModel>();
-            //services.AddSingleton<IFilesService, FilesService>();
 
             foreach (var itemType in ToolViewModelTypes)//遍历所有类型进行查找
             {

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using VisionProcess.Core.Extentions;
@@ -12,6 +13,33 @@ namespace VisionProcess.ViewModels
     {
         public MainViewModel()
         {
+            Editors = new NodifyObservableCollection<EditorViewModel>();
+
+            Init();
+            Editors.Add(new EditorViewModel
+            {
+                Name = $"Editor {Editors.Count + 1}"
+            });
+        }
+
+        [JsonConstructor]
+        public MainViewModel(NodifyObservableCollection<EditorViewModel> editors,
+            bool autoSelectNewEditor, EditorViewModel? selectedEditor)
+        {
+            foreach (var editor in editors)
+            {
+                editor.OnOpenInnerProcess += OnOpenInnerProcess;
+            }
+            Editors = editors;
+            this.autoSelectNewEditor = autoSelectNewEditor;
+            if (selectedEditor is not null)
+            {
+                this.selectedEditor = editors.First(x => x.Id == selectedEditor.Id);
+            }
+        }
+
+        private void Init()
+        {
             Editors.WhenAdded((editor) =>
             {
                 if (AutoSelectNewEditor || Editors.Count == 1)
@@ -20,16 +48,11 @@ namespace VisionProcess.ViewModels
                 }
                 editor.OnOpenInnerProcess += OnOpenInnerProcess;
             })
-       .WhenRemoved((editor) =>
-       {
-           editor.OnOpenInnerProcess -= OnOpenInnerProcess;
-           var childEditors = Editors.Where(ed => ed.Parent == editor).ToArray();
-           childEditors.ForEach(ed => Editors.Remove(ed));
-       });
-
-            Editors.Add(new EditorViewModel
+            .WhenRemoved((editor) =>
             {
-                Name = $"Editor {Editors.Count + 1}"
+                editor.OnOpenInnerProcess -= OnOpenInnerProcess;
+                var childEditors = Editors.Where(ed => ed.Parent == editor).ToArray();
+                childEditors.ForEach(ed => Editors.Remove(ed));
             });
         }
 
@@ -60,12 +83,13 @@ namespace VisionProcess.ViewModels
         [ObservableProperty]
         private EditorViewModel? selectedEditor;
 
-        public NodifyObservableCollection<EditorViewModel> Editors { get; init; } = new NodifyObservableCollection<EditorViewModel>();
+        public NodifyObservableCollection<EditorViewModel> Editors { get; }
 
         #endregion Properties
 
         #region Commands
 
+        [property: JsonIgnore]
         [RelayCommand]
         private void AddEditor()
         {
@@ -75,6 +99,7 @@ namespace VisionProcess.ViewModels
             });
         }
 
+        [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanCloseEditor))]
         private void CloseEditor(Guid id)
         {

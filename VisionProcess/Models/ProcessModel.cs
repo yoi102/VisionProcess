@@ -18,12 +18,15 @@ namespace VisionProcess.Models
         {
             OperationsMenu = new(this);
             operations = new();
+            selectedOperations = new();
             Init();
         }
 
         [JsonConstructor]
         public ProcessModel(NodifyObservableCollection<OperationModel> operations,
-            NodifyObservableCollection<ConnectionModel> connections)
+            NodifyObservableCollection<ConnectionModel> connections,
+            NodifyObservableCollection<OperationModel> selectedOperations,
+            OperationModel? selectedOperation)
         {
             OperationsMenu = new(this);
             this.operations = operations;
@@ -34,14 +37,20 @@ namespace VisionProcess.Models
             foreach (var connection in connections)
             {
                 //不出错的话必然是存在的
-                var inputOperation = operations.First(x => x.Guid == connection.Input!.OwnerGuid);
-                var outputOperation = operations.First(x => x.Guid == connection.Output!.OwnerGuid);
+                var inputOperation = operations.First(x => x.Id == connection.Input!.OwnerGuid);
+                var outputOperation = operations.First(x => x.Id == connection.Output!.OwnerGuid);
                 var inputConnector = inputOperation.Inputs.First(x => x.ValuePath == connection.Input!.ValuePath);
                 var outputConnector = outputOperation.Outputs.First(x => x.ValuePath == connection.Output!.ValuePath);
                 outputConnector.ValueObservers.Add(inputConnector);
                 Connections.Add(new ConnectionModel() { Input = inputConnector, Output = outputConnector });
             }
             Init();
+            var selectedIds = selectedOperations.Select(x => x.Id);
+            this.selectedOperations = new(operations.Where(x => selectedIds.Contains(x.Id)));
+            if (selectedOperation is not null)
+            {
+                SelectedOperation = operations.FirstOrDefault(x => x.Id == selectedOperation.Id);
+            }
         }
 
         private void Init()
@@ -51,8 +60,8 @@ namespace VisionProcess.Models
                 c.Input!.IsConnected = true;
                 c.Output!.IsConnected = true;
                 //当连接时反射设值。。。
-                var outputOperationMode = operations.First(x => x.Guid == c.Output.OwnerGuid);
-                var inputOperationMode = operations.First(x => x.Guid == c.Input.OwnerGuid);
+                var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerGuid);
+                var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerGuid);
                 var outputValue = PropertyMisc.GetValue(outputOperationMode.Operation, c.Output.ValuePath);
                 PropertyMisc.SetValue(inputOperationMode.Operation, c.Input.ValuePath, outputValue);
                 inputOperationMode.Operation!.Execute();
@@ -112,7 +121,7 @@ namespace VisionProcess.Models
                 var outputValue = PropertyMisc.GetValue(operationModel.Operation, output.ValuePath);
                 output.ValueObservers.ForEach(x =>
                 {
-                    var targetOperationModel = operations.First(o => o.Guid == x.OwnerGuid);
+                    var targetOperationModel = operations.First(o => o.Id == x.OwnerGuid);
                     targetOperationModelList.Add(targetOperationModel);
                     PropertyMisc.SetValue(targetOperationModel.Operation, x.ValuePath, outputValue);
                 });
@@ -124,7 +133,7 @@ namespace VisionProcess.Models
 
         private NodifyObservableCollection<OperationModel> operations;
         private OperationModel? selectedOperation;
-        private NodifyObservableCollection<OperationModel> selectedOperations = new();
+        private NodifyObservableCollection<OperationModel> selectedOperations;
         public NodifyObservableCollection<ConnectionModel> Connections { get; } = new();
 
         public NodifyObservableCollection<OperationModel> Operations
@@ -139,7 +148,6 @@ namespace VisionProcess.Models
         [JsonIgnore]
         public PendingConnectionModel PendingConnection { get; set; } = new();
 
-        [JsonIgnore]
         public OperationModel? SelectedOperation
         {
             get => selectedOperation;
@@ -157,7 +165,6 @@ namespace VisionProcess.Models
             }
         }
 
-        [JsonIgnore]
         public NodifyObservableCollection<OperationModel> SelectedOperations
         {
             get => selectedOperations;

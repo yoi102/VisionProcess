@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Windows;
 using VisionProcess.Core.Attributes;
@@ -13,7 +12,7 @@ namespace VisionProcess.Models
 {
     public partial class OperationModel : ObservableObject
     {
-        private readonly Guid guid;
+        private readonly Guid id;
         private bool isSelected = false;
         private Point location;
         private IOperation? operation;
@@ -21,19 +20,19 @@ namespace VisionProcess.Models
 
         public OperationModel()
         {
-            guid = Guid.NewGuid();
+            id = Guid.NewGuid();
         }
 
         [JsonConstructor]
         public OperationModel(IOperation operation, NodifyObservableCollection<ConnectorModel> inputs,
-            NodifyObservableCollection<ConnectorModel> outputs, Point location, bool isSelected, Size size, Guid guid)
+            NodifyObservableCollection<ConnectorModel> outputs, Point location, bool isSelected, Size size, Guid id)
         {
             this.operation = operation;
             this.operation.Executed += Operation_Executed;
             this.isSelected = isSelected;
             this.location = location;
             this.size = size;
-            this.guid = guid;
+            this.id = id;
 
             foreach (var input in inputs)
             {
@@ -57,7 +56,7 @@ namespace VisionProcess.Models
 
         public event EventHandler? OperationExecuted;
 
-        public Guid Guid => guid;
+        public Guid Id => id;
         public NodifyObservableCollection<ConnectorModel> Inputs { get; } = new();
 
         public bool IsSelected
@@ -92,11 +91,11 @@ namespace VisionProcess.Models
                         }
                         if (item.IsInput)
                         {
-                            Inputs.Add(new ConnectorModel(item.Title, type, item.Path, true, Guid));
+                            Inputs.Add(new ConnectorModel(item.Title, type, item.Path, true, Id));
                         }
                         else
                         {
-                            Outputs.Add(new ConnectorModel(item.Title, type, item.Path, false, Guid));
+                            Outputs.Add(new ConnectorModel(item.Title, type, item.Path, false, Id));
                         }
                     }
                 }
@@ -108,6 +107,7 @@ namespace VisionProcess.Models
                 SetProperty(ref operation, value);
             }
         }
+
         public NodifyObservableCollection<ConnectorModel> Outputs { get; } = new();
 
         public Size Size

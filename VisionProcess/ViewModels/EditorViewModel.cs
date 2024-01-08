@@ -15,17 +15,19 @@ namespace VisionProcess.ViewModels
         public EditorViewModel()
         {
             process = new ProcessModel();
+            Id = Guid.NewGuid();
         }
 
         [JsonConstructor]
-        public EditorViewModel(ProcessModel process)
+        public EditorViewModel(ProcessModel process, Guid id)
         {
             this.process = process;
+            Id = id;
         }
 
         public event Action<EditorViewModel, ProcessModel>? OnOpenInnerProcess;
 
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid Id { get; }
 
         public string? Name
         {
@@ -33,7 +35,6 @@ namespace VisionProcess.ViewModels
             set => SetProperty(ref name, value);
         }
 
-        [JsonIgnore]//暂时
         public EditorViewModel? Parent { get; set; }
 
         public ProcessModel Process
