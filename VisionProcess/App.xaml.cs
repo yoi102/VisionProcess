@@ -125,7 +125,7 @@ namespace VisionProcess
                 });
                 if (editors is null)
                     throw new ArgumentNullException();
-                services.AddSingleton(o => new MainViewModel() { Editors = editors });
+                services.AddSingleton(o => new MainViewModel() { Editors = editors, SelectedEditor = editors.FirstOrDefault() });
             }
             else
             {
