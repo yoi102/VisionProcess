@@ -18,6 +18,7 @@ namespace VisionProcess.Core.ToolBase
         //子类可依赖注入
         protected OperationBase()
         {
+            RunStatus = new();
         }
 
         protected OperationBase(string name,TGraphic graphic, TInputs inputs,
@@ -62,7 +63,7 @@ namespace VisionProcess.Core.ToolBase
 
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
-        public RunStatus RunStatus { get; } = new RunStatus();
+        public RunStatus RunStatus { get; } 
 
         public void Execute()
         {

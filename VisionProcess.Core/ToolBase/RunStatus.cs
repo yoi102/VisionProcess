@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
 namespace VisionProcess.Core.ToolBase
 {
@@ -17,13 +18,21 @@ namespace VisionProcess.Core.ToolBase
         {
             this.exception = exception;
         }
+        [JsonConstructor]
+        public RunStatus(DateTime lastTime, string message, double processingTime, bool result)
+        {
+            this.lastTime = lastTime;
+            this.message = message;
+            this.processingTime = processingTime;
+            this.result = result;
+        }
 
         private Exception? exception;
         private DateTime lastTime = DateTime.Now;
-        private string message = Strings.Strings.Success;
+        private string message = "";
         private double processingTime = 0;
         private bool result = false;
-
+        [JsonIgnore]
         public Exception? Exception
         {
             get { return exception; }
