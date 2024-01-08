@@ -11,7 +11,7 @@ namespace VisionProcess.Tools.ViewModels
 {
     [DefaultToolConnector(true, "Image", "Inputs.Image")]
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
-    public class ColorConvertViewModel : OperationBase<ColorConvertInputs, ColorConvertOutputs, GraphicsEmpty>
+    public class ColorConvertViewModel : OperatorBase<ColorConvertInputs, ColorConvertOutputs, GraphicsEmpty>
     {
         public ColorConvertViewModel() : base()
         {

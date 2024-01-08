@@ -256,8 +256,9 @@
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <Image Source="{Binding Operation.Records[0].DisplayImage}" />
-                                <controls:EditableTextBlock Grid.Row="1" Text="{Binding Operation.Name}" />
+                                <Image Source="{Binding Operator.Records[0].DisplayImage}" />
+                                <controls:EditableTextBlock Grid.Row="1"
+                                                            Text="{Binding Operator.Name}" />
                             </Grid>
                         </GroupBox>
                     </DataTemplate>

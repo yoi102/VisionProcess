@@ -3,34 +3,45 @@ using CommunityToolkit.Mvvm.Input;
 using OpenCvSharp;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace VisionProcess.Core.ToolBase
 {
-    public abstract partial class OperationBase<TInputs, TOutputs, TGraphics> : ObservableObject, IOperation where TInputs : InputsBase, new() where TOutputs : OutputsBase, new() where TGraphics : GraphicsBase, new()
+    public abstract partial class OperatorBase<TInputs, TOutputs, TGraphics>
+        : ObservableObject, IOperator
+        where TInputs : IInputs, new() where TOutputs : IOutputs, new() where TGraphics : IGraphics, new()
     {
         [ObservableProperty]
         public string? name;
 
-        private readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly Stopwatch stopwatch = new();
         private bool isRealTime;
 
         //子类可依赖注入
-        protected OperationBase()
+        protected OperatorBase()
         {
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
+            Outputs.PropertyChanged += Outputs_PropertyChanged;
         }
 
-        protected OperationBase(TInputs inputs, TOutputs outputs, TGraphics graphics, RunStatus runStatus)
+        protected OperatorBase(TInputs inputs, TOutputs outputs, TGraphics graphics, RunStatus runStatus)
         {
             Inputs = inputs;
             Outputs = outputs;
             Graphics = graphics;
             RunStatus = runStatus;
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
+            Outputs.PropertyChanged += Outputs_PropertyChanged;
         }
 
         public event EventHandler? Executed;
 
         public event EventHandler? Executing;
+
+        public event PropertyChangedEventHandler? InputsPropertyChanged;
+
+        public event PropertyChangedEventHandler? OutputsPropertyChanged;
 
         public TGraphics Graphics { get; protected set; } = new TGraphics();
 
@@ -43,12 +54,12 @@ namespace VisionProcess.Core.ToolBase
             {
                 if (value)
                 {
-                    Inputs.PropertyChanged -= Inputs_PropertyChanged;
-                    Inputs.PropertyChanged += Inputs_PropertyChanged;
+                    Inputs.PropertyChanged -= ExecuteWhenInputs_PropertyChanged;
+                    Inputs.PropertyChanged += ExecuteWhenInputs_PropertyChanged;
                 }
                 else
                 {
-                    Inputs.PropertyChanged -= Inputs_PropertyChanged;
+                    Inputs.PropertyChanged -= ExecuteWhenInputs_PropertyChanged;
                 }
                 SetProperty(ref isRealTime, value);
             }
@@ -120,9 +131,19 @@ namespace VisionProcess.Core.ToolBase
             await Task.Run(() => Execute());
         }
 
-        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ExecuteWhenInputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Execute();
+        }
+
+        private void Inputs_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            InputsPropertyChanged?.Invoke(sender, e);
+        }
+
+        private void Outputs_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            OutputsPropertyChanged?.Invoke(sender, e);
         }
     }
 }

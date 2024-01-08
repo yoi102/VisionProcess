@@ -14,7 +14,7 @@ using VisionProcess.Tools.Models;
 namespace VisionProcess.Tools.ViewModels
 {
     [DefaultToolConnector(false, "Image", "Outputs.Image")]
-    public partial class AcquireImageViewModel : OperationBase<InputsEmpty, AcquireImageOutputs, GraphicsEmpty>
+    public partial class AcquireImageViewModel : OperatorBase<InputsEmpty, AcquireImageOutputs, GraphicsEmpty>
     {
         public AcquireImageViewModel() : base()
         {

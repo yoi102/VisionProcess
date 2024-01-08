@@ -58,7 +58,7 @@ namespace VisionProcess.ViewModels
             var instance = App.Current.Services.GetService(type);
             //var instance = Activator.CreateInstance(type!);
 
-            processModel.Operations.Add(new OperationModel() { Operation = (IOperation)instance!, Location = Location });
+            processModel.Operations.Add(new OperationModel() { Operator = (IOperator)instance!, Location = Location });
             IsVisible = false;
         }
     }

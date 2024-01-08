@@ -32,7 +32,7 @@ namespace VisionProcess.Models
             this.operations = operations;
             foreach (var item in operations)
             {
-                item.OperationExecuted += OperationExecuted;
+                item.OperatorExecuted += OperatorExecuted;
             }
             foreach (var connection in connections)
             {
@@ -62,9 +62,9 @@ namespace VisionProcess.Models
                 //当连接时反射设值。。。
                 var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerGuid);
                 var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerGuid);
-                var outputValue = PropertyMisc.GetValue(outputOperationMode.Operation, c.Output.ValuePath);
-                PropertyMisc.SetValue(inputOperationMode.Operation, c.Input.ValuePath, outputValue);
-                inputOperationMode.Operation!.Execute();
+                var outputValue = PropertyMisc.GetValue(outputOperationMode.Operator, c.Output.ValuePath);
+                PropertyMisc.SetValue(inputOperationMode.Operator, c.Input.ValuePath, outputValue);
+                inputOperationMode.Operator!.Execute();
                 c.Output.ValueObservers.Add(c.Input);
             })
             .WhenRemoved(c =>
@@ -84,7 +84,7 @@ namespace VisionProcess.Models
 
             Operations.WhenAdded(x =>
             {
-                x.OperationExecuted += OperationExecuted;
+                x.OperatorExecuted += OperatorExecuted;
 
                 x.Inputs.WhenRemoved(RemoveConnection);
                 void RemoveConnection(ConnectorModel i)
@@ -95,7 +95,7 @@ namespace VisionProcess.Models
             })
             .WhenRemoved(x =>
             {
-                x.OperationExecuted -= OperationExecuted;
+                x.OperatorExecuted -= OperatorExecuted;
 
                 foreach (var input in x.Inputs)
                 {
@@ -109,7 +109,7 @@ namespace VisionProcess.Models
             });
         }
 
-        private void OperationExecuted(object? sender, EventArgs e)
+        private void OperatorExecuted(object? sender, EventArgs e)
         {   //一个操作运行完时，修改连接上的操作的输入并运行
             if (sender is not OperationModel operationModel)
                 return;
@@ -118,15 +118,15 @@ namespace VisionProcess.Models
             {
                 if (!output.IsConnected)
                     continue;
-                var outputValue = PropertyMisc.GetValue(operationModel.Operation, output.ValuePath);
+                var outputValue = PropertyMisc.GetValue(operationModel.Operator, output.ValuePath);
                 output.ValueObservers.ForEach(x =>
                 {
                     var targetOperationModel = operations.First(o => o.Id == x.OwnerGuid);
                     targetOperationModelList.Add(targetOperationModel);
-                    PropertyMisc.SetValue(targetOperationModel.Operation, x.ValuePath, outputValue);
+                    PropertyMisc.SetValue(targetOperationModel.Operator, x.ValuePath, outputValue);
                 });
             }
-            targetOperationModelList.ForEach(x => x.Operation!.Execute());
+            targetOperationModelList.ForEach(x => x.Operator!.Execute());
         }
 
         #region Properties
@@ -153,13 +153,13 @@ namespace VisionProcess.Models
             get => selectedOperation;
             set
             {
-                if (selectedOperation is not null && selectedOperation.Operation is not null)
+                if (selectedOperation is not null && selectedOperation.Operator is not null)
                 {
-                    selectedOperation.Operation.IsRealTime = false;
+                    selectedOperation.Operator.IsRealTime = false;
                 }
-                if (value is not null && value.Operation is not null)
+                if (value is not null && value.Operator is not null)
                 {
-                    value.Operation.IsRealTime = true;
+                    value.Operator.IsRealTime = true;
                 }
                 SetProperty(ref selectedOperation, value);
             }

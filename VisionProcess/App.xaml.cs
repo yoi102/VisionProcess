@@ -30,7 +30,7 @@ namespace VisionProcess
             List<Type> viewModels = new List<Type>();
             foreach (var asm in assemblies)
             {
-                var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.IsAssignableTo(typeof(IOperation)));
+                var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.IsAssignableTo(typeof(IOperator)));
                 viewModels.AddRange(types);
             }
             return viewModels;

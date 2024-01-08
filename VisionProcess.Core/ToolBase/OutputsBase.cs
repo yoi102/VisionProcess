@@ -1,9 +1,11 @@
-﻿namespace VisionProcess.Core.ToolBase
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace VisionProcess.Core.ToolBase
 {
     /// <summary>
     /// To be added
     /// </summary>
-    public abstract class OutputsBase : IOutputs
+    public abstract class OutputsBase : ObservableObject, IOutputs
     {
     }
 

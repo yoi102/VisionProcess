@@ -190,7 +190,7 @@
                         Input="{Binding Inputs}"
                         Output="{Binding Outputs}">
                         <nodify:Node.Header>
-                            <controls:EditableTextBlock Text="{Binding Operation.Name}" />
+                            <controls:EditableTextBlock Text="{Binding Operator.Name}" />
                         </nodify:Node.Header>
 
                         <nodify:Node.ContextMenu>
@@ -216,21 +216,25 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Left"
-                                    Text="{Binding Operation.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
+                                           Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
                                 <Ellipse
                                     Width="10"
                                     Height="10"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     DockPanel.Dock="Right"
-                                    Fill="{Binding Operation.RunStatus.Result, Converter={converter:BooleanToBrush}}" />
+                                         Fill="{Binding Operator.RunStatus.Result, Converter={converter:BooleanToBrush}}" />
 
                                 <DockPanel.ToolTip>
                                     <StackPanel>
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operation.RunStatus.ProcessingTime, StringFormat={}ProcessingTime: {0} ms}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operation.RunStatus.LastTime, StringFormat={}LastTime: {0}}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operation.RunStatus.Result, StringFormat={}Result: {0}}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operation.RunStatus.Message, StringFormat={}Message: {0}}" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}ProcessingTime: {0} ms}" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Operator.RunStatus.LastTime, StringFormat={}LastTime: {0}}" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Operator.RunStatus.Result, StringFormat={}Result: {0}}" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Operator.RunStatus.Message, StringFormat={}Message: {0}}" />
                                     </StackPanel>
                                 </DockPanel.ToolTip>
                             </DockPanel>
