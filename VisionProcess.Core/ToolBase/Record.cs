@@ -52,7 +52,7 @@ namespace VisionProcess.Core.ToolBase
             {
                 if (value is not null)
                 {
-                    using var mat = Mat.FromArray(value);
+                    using var mat = Cv2.ImDecode(value, ImreadModes.Unchanged);
                     DisplayImage = mat.ToBitmapSource();
                 }
             }

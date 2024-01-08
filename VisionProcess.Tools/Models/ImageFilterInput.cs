@@ -75,7 +75,7 @@ namespace VisionProcess.Tools.Models
             {
                 if (value is not null)
                 {
-                    Image = Mat.FromArray(value);
+                    Image = Cv2.ImDecode(value, ImreadModes.Unchanged);
                 }
             }
         }
