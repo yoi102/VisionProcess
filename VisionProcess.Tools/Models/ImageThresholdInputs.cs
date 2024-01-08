@@ -29,7 +29,7 @@ namespace VisionProcess.Tools.Models
             }
         }
 
-        [JsonProperty("Image")]
+        [JsonProperty(nameof(Image))]
         public byte[]? ImageBytes
         {
             get { return Image?.ToBytes(); }

@@ -21,9 +21,9 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public ImageThresholdViewModel(GraphicsEmpty graphic, ImageThresholdInputs inputs,
+        public ImageThresholdViewModel(string name, GraphicsEmpty graphic, ImageThresholdInputs inputs,
                  ImageThresholdOutputs outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
-                 : base(graphic, inputs,
+                 : base(name,graphic, inputs,
                  outputs, isRealTime, records, runStatus)
         {
             Inputs.PropertyChanged += Inputs_PropertyChanged;

@@ -39,7 +39,7 @@ namespace VisionProcess.Core.ToolBase
             }
         }
 
-        [JsonProperty("DisplayImage")]
+        [JsonProperty(nameof(DisplayImage))]
         public byte[]? DisplayImageBytes
         {
             get

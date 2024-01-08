@@ -19,9 +19,9 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public ColorConvertViewModel(GraphicsEmpty graphic, ColorConvertInput inputs,
+        public ColorConvertViewModel(string name, GraphicsEmpty graphic, ColorConvertInput inputs,
             ColorConvertOutput outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
-            : base(graphic, inputs,
+            : base(name,graphic, inputs,
              outputs, isRealTime, records, runStatus)
         {
             Inputs.PropertyChanged += Inputs_PropertyChanged;

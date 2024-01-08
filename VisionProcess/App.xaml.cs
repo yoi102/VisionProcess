@@ -72,7 +72,15 @@ namespace VisionProcess
             if (File.Exists(@"configs\Editors.config"))
             {
                 // serialize JSON to a string and then write string to a file
-                File.WriteAllText(@"configs\Editors.config", JsonConvert.SerializeObject(mainViewModel.Editors));
+                JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    Formatting = Formatting.Indented,
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    DateParseHandling = DateParseHandling.DateTime
+                };
+                File.WriteAllText(@"configs\Editors.config", JsonConvert.SerializeObject(mainViewModel.Editors, jsonSerializerSettings));
             }
             else
             {

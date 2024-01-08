@@ -22,9 +22,9 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public AcquireImageViewModel(GraphicsEmpty graphic, InputsEmpty inputs,
+        public AcquireImageViewModel(string name, GraphicsEmpty graphic, InputsEmpty inputs,
                  AcquireImageOutput outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
-                 : base(graphic, inputs,
+                 : base(name,graphic, inputs,
         outputs, isRealTime, records, runStatus)
         {
         }

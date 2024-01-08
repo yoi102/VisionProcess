@@ -20,9 +20,10 @@ namespace VisionProcess.Core.ToolBase
         {
         }
 
-        protected OperationBase(TGraphic graphic, TInputs inputs,
+        protected OperationBase(string name,TGraphic graphic, TInputs inputs,
             TOutputs outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
         {
+            Name = name;
             Graphic = graphic;
             Inputs = inputs;
             Outputs = outputs;
