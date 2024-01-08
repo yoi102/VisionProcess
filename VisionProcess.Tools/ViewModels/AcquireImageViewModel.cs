@@ -22,15 +22,23 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public AcquireImageViewModel(string name, GraphicsEmpty graphic, InputsEmpty inputs,
-                 AcquireImageOutput outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
-                 : base(name,graphic, inputs,
-        outputs, isRealTime, records, runStatus)
+        public AcquireImageViewModel(RunStatus runStatus) : base(runStatus)
         {
         }
 
         private int currentIndex = 0;
         private List<string>? imagePaths;
+
+        public int CurrentIndex
+        {
+            get { return currentIndex; }
+            set { currentIndex = value; }
+        }
+        public List<string>? ImagePaths
+        {
+            get { return imagePaths; }
+            set { imagePaths = value; }
+        }
 
         protected override bool InternalExecute(out string message)
         {

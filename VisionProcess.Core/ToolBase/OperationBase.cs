@@ -18,18 +18,10 @@ namespace VisionProcess.Core.ToolBase
         //子类可依赖注入
         protected OperationBase()
         {
-            RunStatus = new();
         }
 
-        protected OperationBase(string name,TGraphic graphic, TInputs inputs,
-            TOutputs outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
+        protected OperationBase(RunStatus runStatus)
         {
-            Name = name;
-            Graphic = graphic;
-            Inputs = inputs;
-            Outputs = outputs;
-            IsRealTime = isRealTime;
-            Records = records;
             RunStatus = runStatus;
         }
 
@@ -63,7 +55,7 @@ namespace VisionProcess.Core.ToolBase
 
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
-        public RunStatus RunStatus { get; } 
+        public RunStatus RunStatus { get; } = new RunStatus();
 
         public void Execute()
         {

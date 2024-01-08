@@ -20,10 +20,7 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public ImageFilterViewModel(string name, GraphicsEmpty graphic, ImageFilterInput inputs,
-              ImageFilterOutput outputs, bool isRealTime, ObservableCollection<Record> records, RunStatus runStatus)
-              : base(name,graphic, inputs,
-                outputs, isRealTime, records, runStatus)
+        public ImageFilterViewModel(RunStatus runStatus) : base(runStatus)
         {
             Inputs.PropertyChanged += Inputs_PropertyChanged;
         }
