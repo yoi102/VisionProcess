@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using VisionProcess.Core.ToolBase;
 
-namespace VisionProcess.Core.Controls
+namespace VisionProcess.Controls.UserControls
 {
     /// <summary>
     /// ImageRecord.xaml 的交互逻辑

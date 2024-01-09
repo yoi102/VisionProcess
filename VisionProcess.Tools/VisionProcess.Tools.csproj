@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VisionProcess.Core\VisionProcess.Core.csproj" />
+    <ProjectReference Include="..\VisionProcess.Controls\VisionProcess.Controls.csproj" />
   </ItemGroup>
 
 </Project>

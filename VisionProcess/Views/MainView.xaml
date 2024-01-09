@@ -2,9 +2,7 @@
     x:Class="VisionProcess.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
     xmlns:core="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Core"
-    xmlns:coreControls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -15,6 +13,7 @@
     xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
     xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
     xmlns:viewModels="clr-namespace:VisionProcess.ViewModels"
+    xmlns:yr="https://github.com/yoi102/xaml/controls"
     Title="VisionProcess"
     Width="1400"
     Height="850"
@@ -148,20 +147,20 @@
 
             <Grid Grid.Column="1" Margin="5,0">
 
-                <coreControls:TabControlEx
+                <yr:TabControlEx
                     AddTabCommand="{Binding AddEditorCommand}"
                     AutoScrollToEnd="{Binding AutoSelectNewEditor}"
                     ItemsSource="{Binding Editors}"
                     SelectedItem="{Binding SelectedEditor}">
-                    <coreControls:TabControlEx.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource {x:Type coreControls:TabItemEx}}" TargetType="{x:Type coreControls:TabItemEx}">
+                    <yr:TabControlEx.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type yr:TabItemEx}}" TargetType="{x:Type yr:TabItemEx}">
                             <Setter Property="Header" Value="{Binding Name}" />
                             <Setter Property="CloseTabCommand" Value="{Binding DataContext.CloseEditorCommand, Source={StaticResource Proxy}}" />
                             <Setter Property="CloseTabCommandParameter" Value="{Binding Id}" />
                             <Setter Property="Background" Value="{DynamicResource ResourceKey=MaterialDesignDarkBackground}" />
                         </Style>
-                    </coreControls:TabControlEx.ItemContainerStyle>
-                </coreControls:TabControlEx>
+                    </yr:TabControlEx.ItemContainerStyle>
+                </yr:TabControlEx>
 
                 <!--<local:EditorView />-->
 
@@ -257,8 +256,7 @@
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
                                 <Image Source="{Binding Operator.Records[0].DisplayImage}" />
-                                <controls:EditableTextBlock Grid.Row="1"
-                                                            Text="{Binding Operator.Name}" />
+                                <yr:EditableTextBlock Grid.Row="1" Text="{Binding Operator.Name}" />
                             </Grid>
                         </GroupBox>
                     </DataTemplate>

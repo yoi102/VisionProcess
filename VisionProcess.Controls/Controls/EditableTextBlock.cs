@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace VisionProcess.Core.Controls
+namespace VisionProcess.Controls.Controls
 {
     [TemplatePart(Name = ElementTextBox, Type = typeof(TextBox))]
     public class EditableTextBlock : Control

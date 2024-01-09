@@ -9,9 +9,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using VisionProcess.Core.Strings;
 using Point = System.Windows.Point;
 
-namespace VisionProcess.Core.Controls
+namespace VisionProcess.Controls.UserControls
 {
     /// <summary>
     /// ImageEx.xaml 的交互逻辑
@@ -243,11 +244,11 @@ namespace VisionProcess.Core.Controls
         {
             var dialog = new SaveFileDialog();
             // 设置对话框标题
-            dialog.Title = Strings.Strings.SaveFile;
+            dialog.Title = Strings.SaveFile;
             // 设置默认文件名和文件类型
-            dialog.FileName = Strings.Strings.SaveImage;
+            dialog.FileName = Strings.SaveImage;
             dialog.DefaultExt = ".bmp";
-            dialog.Filter = Strings.Strings.SaveImage + " (*.bmp)|*.bmp| (*.jpeg)|*.jpeg| (*.png)|*.png";
+            dialog.Filter = Strings.SaveImage + " (*.bmp)|*.bmp| (*.jpeg)|*.jpeg| (*.png)|*.png";
 
             // 显示对话框并获取用户选择的文件路径
             bool? result = dialog.ShowDialog();

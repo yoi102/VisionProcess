@@ -20,12 +20,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml" />
                 <!--  Material Design  -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-
+                <!--  Nodify  -->
                 <ResourceDictionary Source="pack://application:,,,/Nodify;component/Themes/Dark.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/VisionProcess.Core;component/Themes/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/VisionProcess.Core;component/Themes/Generic.xaml" />
-                <!--<ResourceDictionary Source="pack://application:,,,/VisionProcess.Core;component/Themes/Brushes.xaml" />-->
-                <!--<ResourceDictionary Source="pack://application:,,,/VisionProcess.Core;component/Themes/Dark.xaml" />-->
+
+                <!--  VisionProcess.Controls  -->
+                <ResourceDictionary Source="pack://application:,,,/VisionProcess.Controls;component/Styles/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

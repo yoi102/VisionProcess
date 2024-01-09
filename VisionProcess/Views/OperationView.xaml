@@ -1,19 +1,20 @@
-﻿<UserControl x:Class="VisionProcess.Views.OperationView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:VisionProcess.Core.Controls;assembly=VisionProcess.Core"
-             xmlns:converter="clr-namespace:VisionProcess.Core.Converters;assembly=VisionProcess.Core"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:models="clr-namespace:VisionProcess.Models"
-             xmlns:tv="clr-namespace:VisionProcess.Tools.Views;assembly=VisionProcess.Tools"
-             xmlns:tvm="clr-namespace:VisionProcess.Tools.ViewModels;assembly=VisionProcess.Tools"
-             d:Background="Wheat"
-             d:DataContext="{d:DesignInstance Type=models:OperationModel}"
-             d:DesignHeight="450"
-             d:DesignWidth="400"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="VisionProcess.Views.OperationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:VisionProcess.Core.Converters;assembly=VisionProcess.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:models="clr-namespace:VisionProcess.Models"
+    xmlns:tv="clr-namespace:VisionProcess.Tools.Views;assembly=VisionProcess.Tools"
+    xmlns:tvm="clr-namespace:VisionProcess.Tools.ViewModels;assembly=VisionProcess.Tools"
+    xmlns:yr="https://github.com/yoi102/xaml/controls"
+    d:Background="Wheat"
+    d:DataContext="{d:DesignInstance Type=models:OperationModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type tvm:AcquireImageViewModel}">
@@ -40,67 +41,66 @@
         </Grid.RowDefinitions>
 
         <DockPanel Margin="3">
-            <Button Command="{Binding Operator.ExecuteCommand}"
-                    Content="{md:PackIcon Kind=ArrowRightDropCircleOutline,
+            <Button
+                Command="{Binding Operator.ExecuteCommand}"
+                Content="{md:PackIcon Kind=ArrowRightDropCircleOutline,
                                       Size=25}"
-                    DockPanel.Dock="Left"
-                    Style="{StaticResource MaterialDesignToolForegroundButton}" />
-            <ToggleButton Width="20"
-                          Height="20"
-                          Margin="10,0,0,0"
-                          Content="{md:PackIcon Kind=LightningBolt}"
-                          IsChecked="{Binding Operator.IsRealTime}"
-                          Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}" />
+                DockPanel.Dock="Left"
+                Style="{StaticResource MaterialDesignToolForegroundButton}" />
+            <ToggleButton
+                Width="20"
+                Height="20"
+                Margin="10,0,0,0"
+                Content="{md:PackIcon Kind=LightningBolt}"
+                IsChecked="{Binding Operator.IsRealTime}"
+                Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}" />
 
-            <Ellipse Width="10"
-                     Height="10"
-                     HorizontalAlignment="Right"
-                     VerticalAlignment="Center"
-                     DockPanel.Dock="Right"
-                     Fill="{Binding Operator.RunStatus.Result, Converter={converter:BooleanToBrush}}" />
-            <TextBlock Margin="10,0"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center"
-                       DockPanel.Dock="Right"
-                       Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
+            <Ellipse
+                Width="10"
+                Height="10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Fill="{Binding Operator.RunStatus.Result, Converter={converter:BooleanToBrush}}" />
+            <TextBlock
+                Margin="10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
             <!--  Fill="{Binding SpinCtrl.IsCamAvailable, Converter={StaticResource ConnectionColorConverter}}" />  -->
 
             <DockPanel.ToolTip>
                 <StackPanel>
-                    <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}ProcessingTime: {0} ms}" />
-                    <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Operator.RunStatus.LastTime, StringFormat={}LastTime: {0}}" />
-                    <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Operator.RunStatus.Result, StringFormat={}Result: {0}}" />
-                    <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Operator.RunStatus.Message, StringFormat={}Message: {0}}" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}ProcessingTime: {0} ms}" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.LastTime, StringFormat={}LastTime: {0}}" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.Result, StringFormat={}Result: {0}}" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.Message, StringFormat={}Message: {0}}" />
                 </StackPanel>
             </DockPanel.ToolTip>
         </DockPanel>
 
-        <controls:ImageRecord Grid.Row="1"
-                              RecordSource="{Binding Operator.Records, Mode=OneWay}" />
-        <!--<controls:imageEx Grid.Row="1"
+        <yr:ImageRecord Grid.Row="1" RecordSource="{Binding Operator.Records, Mode=OneWay}" />
+        <!--<yr:imageEx Grid.Row="1"
                            ImageSource="{Binding Operator.Records[0].DisplayImage}" />-->
 
-        <GroupBox Grid.Row="2"
-                  Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox Grid.Row="2" Style="{StaticResource MaterialDesignCardGroupBox}">
             <GroupBox.Header>
-                <controls:EditableTextBlock Grid.Row="1"
-                                            Text="{Binding Operator.Name}" />
+                <yr:EditableTextBlock Grid.Row="1" Text="{Binding Operator.Name}" />
             </GroupBox.Header>
             <ContentControl Content="{Binding Operator}" />
         </GroupBox>
 
-        <ScrollViewer Grid.Row="3"
-                      md:ScrollViewerAssist.IsAutoHideEnabled="True"
-                      HorizontalScrollBarVisibility="Disabled"
-                      ToolTip="{Binding ElementName=textblock, Path=Text}"
-                      VerticalScrollBarVisibility="Auto">
-            <TextBlock x:Name="textblock"
-                       Text="{Binding Operator.RunStatus.Message}"
-                       TextWrapping="Wrap" />
+        <ScrollViewer
+            Grid.Row="3"
+            md:ScrollViewerAssist.IsAutoHideEnabled="True"
+            HorizontalScrollBarVisibility="Disabled"
+            ToolTip="{Binding ElementName=textblock, Path=Text}"
+            VerticalScrollBarVisibility="Auto">
+            <TextBlock
+                x:Name="textblock"
+                Text="{Binding Operator.RunStatus.Message}"
+                TextWrapping="Wrap" />
         </ScrollViewer>
     </Grid>
 </UserControl>

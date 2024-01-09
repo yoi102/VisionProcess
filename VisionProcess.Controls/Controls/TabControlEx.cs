@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace VisionProcess.Core.Controls
+namespace VisionProcess.Controls.Controls
 {
     [TemplatePart(Name = ElementScrollViewer, Type = typeof(ScrollViewer))]
     public class TabControlEx : TabControl
