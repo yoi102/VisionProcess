@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Windows;
 using VisionProcess.Core.Extentions;
 
@@ -11,7 +12,7 @@ namespace VisionProcess.Models
     {
         private readonly bool isInput;
 
-        private readonly OperationModel owner;
+        private readonly OperationModel? owner;
         private readonly string valueName;
         private Point anchor;
 
@@ -34,21 +35,39 @@ namespace VisionProcess.Models
             var p = valuePath.Split(".");
             valueName = p[^1];
             owner = operationModel;
-            if (owner.Operator != null)
+            if (owner.Operator == null)
+                throw new ArgumentNullException(nameof(owner.Operator));
+            if (isInput)
             {
-                if (isInput)
-                {
-                    owner.Operator.InputsPropertyChanged += Inputs_PropertyChanged;
-                }
-                else
-                {
-                    owner.Operator.OutputsPropertyChanged += Outputs_PropertyChanged;
-                }
+                owner.Operator.InputsPropertyChanged += Inputs_PropertyChanged;
             }
+            else
+            {
+                owner.Operator.OutputsPropertyChanged += Outputs_PropertyChanged;
+            }
+            //当前节点被移除时取消订阅，以免内存泄露
+            owner.Inputs.WhenRemoved(x =>
+            {
+                if (x == this)
+                {
+                    owner.Operator.InputsPropertyChanged -= Inputs_PropertyChanged;
+
+                }
+            });
+            owner.Outputs.WhenRemoved(x =>
+            {
+                if (x == this)
+                {
+                    owner.Operator.OutputsPropertyChanged -= Outputs_PropertyChanged;
+
+                }
+            });
+
         }
         [JsonConstructor]
         public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerGuid)
         {
+            //由于反序列化时会重新 new，所以只需基础信息
             this.title = title;
             this.valueType = valueType;
             this.valuePath = valuePath;
@@ -93,6 +112,10 @@ namespace VisionProcess.Models
         {
             get
             {
+                if (owner is null || owner.Operator is null)
+                {
+                    return null;
+                }
                 return PropertyMisc.GetValue(owner.Operator, valuePath);
             }
         }
