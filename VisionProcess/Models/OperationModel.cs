@@ -38,25 +38,23 @@ namespace VisionProcess.Models
             foreach (var input in inputs)
             {
                 var type = PropertyMisc.GetType(@operator, input.ValuePath);
-                Inputs.Add(
-                    new ConnectorModel(input.Title, type,
+                Inputs.Add(new ConnectorModel(input.Title, type,
                     input.ValuePath, input.IsInput, input.OwnerGuid, this)
-                    { Anchor = input.Anchor, IsConnected = input.IsConnected });
+                { Anchor = input.Anchor, IsConnected = input.IsConnected });
             }
             foreach (var output in outputs)
             {
                 var type = PropertyMisc.GetType(@operator, output.ValuePath);
-                Outputs.Add(
-                    new ConnectorModel(output.Title, type,
+                Outputs.Add(new ConnectorModel(output.Title, type,
                     output.ValuePath, output.IsInput, output.OwnerGuid, this)
-                    { Anchor = output.Anchor, IsConnected = output.IsConnected });
+                { Anchor = output.Anchor, IsConnected = output.IsConnected });
             }
         }
 
         public event EventHandler? OperatorExecuted;
 
         public Guid Id => id;
-        public NodifyObservableCollection<ConnectorModel> Inputs { get; } = new();
+        public NodifyObservableCollection<ConnectorModel> Inputs { get; } = [];
 
         public bool IsSelected
         {
@@ -102,7 +100,7 @@ namespace VisionProcess.Models
 
 
 
-        public NodifyObservableCollection<ConnectorModel> Outputs { get; } = new();
+        public NodifyObservableCollection<ConnectorModel> Outputs { get; } = [];
 
         public Size Size
         {
