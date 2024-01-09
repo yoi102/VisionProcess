@@ -17,7 +17,7 @@ namespace VisionProcess.Models
         private Point anchor;
 
         private bool isConnected = false;
-        private Guid ownerGuid;
+        private Guid ownerId;
 
         private string title;
 
@@ -25,13 +25,13 @@ namespace VisionProcess.Models
 
         private Type valueType;
 
-        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerGuid, OperationModel operationModel)
+        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerId, OperationModel operationModel)
         {
             this.title = title;
             this.valueType = valueType;
             this.valuePath = valuePath;
             this.isInput = isInput;
-            this.ownerGuid = ownerGuid;
+            this.ownerId = ownerId;
             var p = valuePath.Split(".");
             valueName = p[^1];
             owner = operationModel;
@@ -72,7 +72,7 @@ namespace VisionProcess.Models
             this.valueType = valueType;
             this.valuePath = valuePath;
             this.isInput = isInput;
-            this.ownerGuid = ownerGuid;
+            this.ownerId = ownerGuid;
             var p = valuePath.Split(".");
             valueName = p[^1];
         }
@@ -92,13 +92,12 @@ namespace VisionProcess.Models
         public bool IsInput
         {
             get => isInput;
-            //set => SetProperty(ref isInput, value);
         }
 
-        public Guid OwnerGuid
+        public Guid OwnerId
         {
-            get => ownerGuid;
-            set => SetProperty(ref ownerGuid, value);
+            get => ownerId;
+            set => SetProperty(ref ownerId, value);
         }
 
         public string Title
