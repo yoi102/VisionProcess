@@ -4,8 +4,8 @@
     xmlns:controls="clr-namespace:VisionProcess.Controls.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-
-        <!--<ResourceDictionary Source="Brushes.xaml" />-->
+        <ResourceDictionary Source="Dark.xaml" />
+        <ResourceDictionary Source="Brushes.xaml" />
         <ResourceDictionary Source="Controls.xaml" />
         <ResourceDictionary Source="Icons.xaml" />
     </ResourceDictionary.MergedDictionaries>

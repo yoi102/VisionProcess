@@ -97,6 +97,7 @@ namespace VisionProcess.ViewModels
             {
                 Name = $"Editor {Editors.Count + 1}"
             });
+            SelectedEditor = Editors[^1];
         }
 
         [property: JsonIgnore]
