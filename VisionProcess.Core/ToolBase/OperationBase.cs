@@ -21,8 +21,7 @@ namespace VisionProcess.Core.ToolBase
         //子类可依赖注入
         protected OperatorBase()
         {
-            Inputs.PropertyChanged += Inputs_PropertyChanged;
-            Outputs.PropertyChanged += Outputs_PropertyChanged;
+            SubscribePropertyChanged();
         }
 
         protected OperatorBase(TInputs inputs, TOutputs outputs, TGraphics graphics, RunStatus runStatus)
@@ -31,21 +30,22 @@ namespace VisionProcess.Core.ToolBase
             Outputs = outputs;
             Graphics = graphics;
             RunStatus = runStatus;
-            Inputs.PropertyChanged += Inputs_PropertyChanged;
-            Outputs.PropertyChanged += Outputs_PropertyChanged;
+            SubscribePropertyChanged();
         }
 
         public event EventHandler? Executed;
 
         public event EventHandler? Executing;
 
+        public event PropertyChangedEventHandler? GraphicsPropertyChanged;
+
         public event PropertyChangedEventHandler? InputsPropertyChanged;
 
         public event PropertyChangedEventHandler? OutputsPropertyChanged;
 
-        public TGraphics Graphics { get; protected set; } = new TGraphics();
+        public TGraphics Graphics { get; } = new TGraphics();
 
-        public TInputs Inputs { get; protected set; } = new TInputs();
+        public TInputs Inputs { get; } = new TInputs();
 
         public bool IsRealTime
         {
@@ -65,7 +65,7 @@ namespace VisionProcess.Core.ToolBase
             }
         }
 
-        public TOutputs Outputs { get; protected set; } = new TOutputs();
+        public TOutputs Outputs { get; } = new TOutputs();
 
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
@@ -136,6 +136,11 @@ namespace VisionProcess.Core.ToolBase
             Execute();
         }
 
+        private void Graphics_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            GraphicsPropertyChanged?.Invoke(sender, e);
+        }
+
         private void Inputs_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             InputsPropertyChanged?.Invoke(sender, e);
@@ -144,6 +149,14 @@ namespace VisionProcess.Core.ToolBase
         private void Outputs_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             OutputsPropertyChanged?.Invoke(sender, e);
+        }
+
+        private void SubscribePropertyChanged()
+        {
+            //生命周期一样，不需要取消订阅了
+            Inputs.PropertyChanged += Inputs_PropertyChanged;
+            Outputs.PropertyChanged += Outputs_PropertyChanged;
+            Graphics.PropertyChanged += Graphics_PropertyChanged; ;
         }
     }
 }

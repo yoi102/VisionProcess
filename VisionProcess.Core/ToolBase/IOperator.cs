@@ -10,6 +10,8 @@ namespace VisionProcess.Core.ToolBase
 
         event EventHandler? Executing;
 
+        event PropertyChangedEventHandler? GraphicsPropertyChanged;
+
         event PropertyChangedEventHandler? InputsPropertyChanged;
 
         event PropertyChangedEventHandler? OutputsPropertyChanged;
@@ -23,6 +25,7 @@ namespace VisionProcess.Core.ToolBase
         //IInputs Inputs { get; }
         //IOutputs Outputs { get; }
         RunStatus RunStatus { get; }
+
         void Execute();
     }
 }

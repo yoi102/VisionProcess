@@ -34,6 +34,7 @@ namespace VisionProcess.Models
             {
                 item.OperatorExecuted += OperatorExecuted;
             }
+
             foreach (var connection in connections)
             {
                 //不出错的话必然是存在的
@@ -81,7 +82,7 @@ namespace VisionProcess.Models
                 }
                 c.Output!.ValueObservers.Remove(c.Input!);
             });
-
+            
             Operations.WhenAdded(x =>
             {
                 x.OperatorExecuted += OperatorExecuted;
@@ -95,7 +96,7 @@ namespace VisionProcess.Models
             })
             .WhenRemoved(x =>
             {
-                x.OperatorExecuted -= OperatorExecuted;
+                x.OperatorExecuted -= OperatorExecuted;//当移除时，取消订阅
 
                 foreach (var input in x.Inputs)
                 {

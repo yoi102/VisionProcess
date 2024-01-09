@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Extentions;
@@ -73,6 +72,8 @@ namespace VisionProcess.Models
             get => @operator;
             init
             {
+                if (@operator != null)
+                    @operator.Executed -= Operation_Executed;
                 SetProperty(ref @operator, value);
                 if (value is null)
                 {
