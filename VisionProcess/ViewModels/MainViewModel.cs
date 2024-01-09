@@ -36,6 +36,7 @@ namespace VisionProcess.ViewModels
             {
                 this.selectedEditor = editors.First(x => x.Id == selectedEditor.Id);
             }
+            Init();
         }
 
         private void Init()
