@@ -1,27 +1,26 @@
-﻿<mah:MetroWindow
-    x:Class="VisionProcess.Views.MainView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Core"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dd="urn:gong-wpf-dragdrop"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:VisionProcess.Views"
-    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
-    xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
-    xmlns:viewModels="clr-namespace:VisionProcess.ViewModels"
-    xmlns:yr="https://github.com/yoi102/xaml/controls"
-    Title="VisionProcess"
-    Width="1400"
-    Height="850"
-    d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
-    mah:ControlsHelper.CornerRadius="0"
-    ResizeMode="CanResizeWithGrip"
-    TitleCharacterCasing="Normal"
-    mc:Ignorable="d">
+﻿<mah:MetroWindow x:Class="VisionProcess.Views.MainView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:core="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Core"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:dd="urn:gong-wpf-dragdrop"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:local="clr-namespace:VisionProcess.Views"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+                 xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
+                 xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
+                 xmlns:viewModels="clr-namespace:VisionProcess.ViewModels"
+                 xmlns:yr="https://github.com/yoi102/xaml/controls"
+                 Title="VisionProcess"
+                 Width="1400"
+                 Height="850"
+                 d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
+                 mah:ControlsHelper.CornerRadius="0"
+                 ResizeMode="CanResizeWithGrip"
+                 TitleCharacterCasing="Normal"
+                 mc:Ignorable="d">
 
     <!--<tb:TaskbarIcon ToolTipText="ToolTip"
 
@@ -33,12 +32,12 @@
                     TrayToolTip="{StaticResource TrayToolTip}" />-->
     <Window.Resources>
 
-        <md:NullableToVisibilityConverter
-            x:Key="NotNullValueToVisibility"
-            NotNullValue="Visible"
-            NullValue="Collapsed" />
+        <md:NullableToVisibilityConverter x:Key="NotNullValueToVisibility"
+                                          NotNullValue="Visible"
+                                          NullValue="Collapsed" />
 
-        <core:BindingProxy x:Key="Proxy" DataContext="{Binding}" />
+        <core:BindingProxy x:Key="Proxy"
+                           DataContext="{Binding}" />
 
         <DataTemplate DataType="{x:Type viewModels:EditorViewModel}">
             <local:EditorView />
@@ -48,10 +47,9 @@
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
             <Button>
-                <iconPacks:PackIconModern
-                    Width="22"
-                    Height="22"
-                    Kind="SocialGithubOctocat" />
+                <iconPacks:PackIconModern Width="22"
+                                          Height="22"
+                                          Kind="SocialGithubOctocat" />
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
@@ -88,17 +86,15 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Expander
-                Margin="0,0,5,0"
-                VerticalContentAlignment="Top"
-                md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6"
-                ExpandDirection="Right"
-                Style="{StaticResource MaterialDesignExpander}">
+            <Expander Margin="0,0,5,0"
+                      VerticalContentAlignment="Top"
+                      md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6"
+                      ExpandDirection="Right"
+                      Style="{StaticResource MaterialDesignExpander}">
                 <Expander.Header>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        RenderTransformOrigin=".5,.5"
-                        Text="{x:Static strings:Strings.Toolbox}">
+                    <TextBlock HorizontalAlignment="Center"
+                               RenderTransformOrigin=".5,.5"
+                               Text="{x:Static strings:Strings.Toolbox}">
                         <TextBlock.LayoutTransform>
                             <RotateTransform Angle="90" />
                         </TextBlock.LayoutTransform>
@@ -119,45 +115,47 @@
                           Width="5"
                           HorizontalAlignment="Left"
                           d:Background="Red" />-->
-            <Expander
-                Grid.Column="2"
-                Margin="5,0,0,0"
-                VerticalContentAlignment="Top"
-                md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6"
-                ExpandDirection="Left"
-                IsExpanded="True"
-                Style="{StaticResource MaterialDesignExpander}">
+            <Expander Grid.Column="2"
+                      Margin="5,0,0,0"
+                      VerticalContentAlignment="Top"
+                      md:ExpanderAssist.VerticalHeaderPadding="0,25,0,6"
+                      ExpandDirection="Left"
+                      IsExpanded="True"
+                      Style="{StaticResource MaterialDesignExpander}">
                 <Expander.Header>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        RenderTransformOrigin=".5,.5"
-                        Text="{x:Static strings:Strings.Property}">
+                    <TextBlock HorizontalAlignment="Center"
+                               RenderTransformOrigin=".5,.5"
+                               Text="{x:Static strings:Strings.Property}">
                         <TextBlock.LayoutTransform>
                             <RotateTransform Angle="90" />
                         </TextBlock.LayoutTransform>
                     </TextBlock>
                 </Expander.Header>
 
-                <local:OperationView
-                    Width="440"
-                    HorizontalAlignment="Left"
-                    DataContext="{Binding SelectedEditor.Process.SelectedOperation}"
-                    Visibility="{Binding Converter={StaticResource NotNullValueToVisibility}}" />
+                <local:OperationView Width="440"
+                                     HorizontalAlignment="Left"
+                                     DataContext="{Binding SelectedEditor.Process.SelectedOperation}"
+                                     Visibility="{Binding Converter={StaticResource NotNullValueToVisibility}}" />
             </Expander>
 
-            <Grid Grid.Column="1" Margin="5,0">
+            <Grid Grid.Column="1"
+                  Margin="5,0">
 
-                <yr:TabControlEx
-                    AddTabCommand="{Binding AddEditorCommand}"
-                    AutoScrollToEnd="{Binding AutoSelectNewEditor}"
-                    ItemsSource="{Binding Editors}"
-                    SelectedItem="{Binding SelectedEditor}">
+                <yr:TabControlEx AddTabCommand="{Binding AddEditorCommand}"
+                                 AutoScrollToEnd="{Binding AutoSelectNewEditor}"
+                                 ItemsSource="{Binding Editors}"
+                                 SelectedItem="{Binding SelectedEditor}">
                     <yr:TabControlEx.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource {x:Type yr:TabItemEx}}" TargetType="{x:Type yr:TabItemEx}">
-                            <Setter Property="Header" Value="{Binding Name}" />
-                            <Setter Property="CloseTabCommand" Value="{Binding DataContext.CloseEditorCommand, Source={StaticResource Proxy}}" />
-                            <Setter Property="CloseTabCommandParameter" Value="{Binding Id}" />
-                            <Setter Property="Background" Value="{DynamicResource ResourceKey=MaterialDesignDarkBackground}" />
+                        <Style BasedOn="{StaticResource {x:Type yr:TabItemEx}}"
+                               TargetType="{x:Type yr:TabItemEx}">
+                            <Setter Property="Header"
+                                    Value="{Binding Name}" />
+                            <Setter Property="CloseTabCommand"
+                                    Value="{Binding DataContext.CloseEditorCommand, Source={StaticResource Proxy}}" />
+                            <Setter Property="CloseTabCommandParameter"
+                                    Value="{Binding Id}" />
+                            <Setter Property="Background"
+                                    Value="{DynamicResource ResourceKey=MaterialDesignDarkBackground}" />
                         </Style>
                     </yr:TabControlEx.ItemContainerStyle>
                 </yr:TabControlEx>
@@ -175,42 +173,41 @@
             </Grid>
         </Grid>
 
-        <GridSplitter
-            Grid.Row="1"
-            Height="5"
-            HorizontalAlignment="Stretch"
-            d:Background="Red" />
+        <GridSplitter Grid.Row="1"
+                      Height="5"
+                      HorizontalAlignment="Stretch"
+                      d:Background="Red" />
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <md:ColorZone
-                Height="30"
-                VerticalContentAlignment="Center"
-                md:ElevationAssist.Elevation="Dp3">
+            <md:ColorZone Height="30"
+                          VerticalContentAlignment="Center"
+                          md:ElevationAssist.Elevation="Dp3">
                 <md:ColorZone.Content>
-                    <TextBlock Margin="10,0,0,0" Text="{x:Static strings:Strings.Operations}" />
+                    <TextBlock Margin="10,0,0,0"
+                               Text="{x:Static strings:Strings.Operations}" />
                 </md:ColorZone.Content>
             </md:ColorZone>
 
-            <ListBox
-                Grid.Row="1"
-                Margin="3"
-                dd:DragDrop.DropTargetAdornerBrush="Coral"
-                dd:DragDrop.IsDragSource="True"
-                dd:DragDrop.IsDropTarget="True"
-                dd:DragDrop.UseDefaultDragAdorner="True"
-                dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                ItemsSource="{Binding SelectedEditor.Process.Operations}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SelectedItem="{Binding SelectedEditor.Process.SelectedOperation}"
-                SelectionMode="Single"
-                Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
+            <ListBox Grid.Row="1"
+                     Margin="3"
+                     dd:DragDrop.DropTargetAdornerBrush="Coral"
+                     dd:DragDrop.IsDragSource="True"
+                     dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.UseDefaultDragAdorner="True"
+                     dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                     ItemsSource="{Binding SelectedEditor.Process.Operations}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     SelectedItem="{Binding SelectedEditor.Process.SelectedOperation}"
+                     SelectionMode="Single"
+                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                        <WrapPanel IsItemsHost="True"
+                                   Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <!--<ListBox.ItemContainerStyle>
@@ -246,17 +243,17 @@
                 </ListBox.ItemContainerStyle>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <GroupBox
-                            Width="200"
-                            Height="180"
-                            Style="{StaticResource ResourceKey=MaterialDesignCardGroupBox}">
+                        <GroupBox Width="200"
+                                  Height="180"
+                                  Style="{StaticResource ResourceKey=MaterialDesignCardGroupBox}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
                                 <Image Source="{Binding Operator.Records[0].DisplayImage}" />
-                                <yr:EditableTextBlock Grid.Row="1" Text="{Binding Operator.Name}" />
+                                <yr:EditableTextBlock Grid.Row="1"
+                                                      Text="{Binding Operator.Name}" />
                             </Grid>
                         </GroupBox>
                     </DataTemplate>

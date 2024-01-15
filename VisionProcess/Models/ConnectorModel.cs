@@ -39,18 +39,18 @@ namespace VisionProcess.Models
                 throw new ArgumentNullException(nameof(owner.Operator));
             if (isInput)
             {
-                owner.Operator.InputsPropertyChanged += Inputs_PropertyChanged;
+                owner.Operator.Inputs.PropertyChanged += Inputs_PropertyChanged;
             }
             else
             {
-                owner.Operator.OutputsPropertyChanged += Outputs_PropertyChanged;
+                owner.Operator.Outputs.PropertyChanged += Outputs_PropertyChanged;
             }
             //当前节点被移除时取消订阅，以免内存泄露
             owner.Inputs.WhenRemoved(x =>
             {
                 if (x == this)
                 {
-                    owner.Operator.InputsPropertyChanged -= Inputs_PropertyChanged;
+                    owner.Operator.Inputs.PropertyChanged -= Inputs_PropertyChanged;
 
                 }
             });
@@ -58,7 +58,7 @@ namespace VisionProcess.Models
             {
                 if (x == this)
                 {
-                    owner.Operator.OutputsPropertyChanged -= Outputs_PropertyChanged;
+                    owner.Operator.Outputs.PropertyChanged -= Outputs_PropertyChanged;
 
                 }
             });

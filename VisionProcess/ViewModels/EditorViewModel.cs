@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
+using System.Xml.Linq;
 using VisionProcess.Models;
 
 namespace VisionProcess.ViewModels
@@ -19,10 +20,11 @@ namespace VisionProcess.ViewModels
         }
 
         [JsonConstructor]
-        public EditorViewModel(ProcessModel process, Guid id)
+        public EditorViewModel(ProcessModel process, Guid id, string? name)
         {
             this.process = process;
             Id = id;
+            this.name = name;
         }
 
         public event Action<EditorViewModel, ProcessModel>? OnOpenInnerProcess;

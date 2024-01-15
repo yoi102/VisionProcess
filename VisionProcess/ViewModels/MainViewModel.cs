@@ -13,8 +13,7 @@ namespace VisionProcess.ViewModels
     {
         public MainViewModel()
         {
-            Editors = new NodifyObservableCollection<EditorViewModel>();
-
+            Editors = [];
             Init();
             Editors.Add(new EditorViewModel
             {
