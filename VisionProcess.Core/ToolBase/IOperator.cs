@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace VisionProcess.Core.ToolBase
 {
@@ -11,13 +10,12 @@ namespace VisionProcess.Core.ToolBase
         event EventHandler? Executing;
 
         IAsyncRelayCommand? ExecuteCommand { get; }
-        bool IsRealTime { get; set; }
-        string? Name { get; set; }
-        ObservableCollection<Record> Records { get; }
-
         IGraphics Graphics { get; }
         IInputs Inputs { get; }
+        bool IsRealTime { get; set; }
+        string? Name { get; set; }
         IOutputs Outputs { get; }
+        ObservableCollection<Record> Records { get; }
         RunStatus RunStatus { get; }
 
         void Execute();

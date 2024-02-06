@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using OpenCvSharp;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace VisionProcess.Core.ToolBase
@@ -35,15 +34,11 @@ namespace VisionProcess.Core.ToolBase
 
         public event EventHandler? Executing;
 
-
         public TGraphics Graphics { get; } = new TGraphics();
 
-        public TInputs Inputs { get; } = new TInputs();
         IGraphics IOperator.Graphics => Graphics;
-
-        IInputs IOperator.Inputs =>  Inputs;
-
-        IOutputs IOperator.Outputs => Outputs;
+        public TInputs Inputs { get; } = new TInputs();
+        IInputs IOperator.Inputs => Inputs;
 
         public bool IsRealTime
         {
@@ -63,13 +58,12 @@ namespace VisionProcess.Core.ToolBase
             }
         }
 
+        IOutputs IOperator.Outputs => Outputs;
         public TOutputs Outputs { get; } = new TOutputs();
 
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
         public RunStatus RunStatus { get; } = new RunStatus();
-
-       
 
         public void Execute()
         {
@@ -135,9 +129,5 @@ namespace VisionProcess.Core.ToolBase
         {
             Execute();
         }
-
- 
-
-     
     }
 }
