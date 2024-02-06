@@ -1,378 +1,231 @@
-﻿using System.IO;
-using System.Reflection;
-
-#nullable disable
+﻿using System.Reflection;
 
 namespace VisionProcess.Core.Extentions
 {
     public class PropertyMisc
     {
-        private static List<string> SplitFullPath(string fullPath, params char[] spiltChars)
+        /// <summary>
+        /// 获取类对应属性名称的属性信息
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns></returns>
+        public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
         {
-            string[] array = ((spiltChars.Length == 0) ? fullPath.Split('.', '\\', '/') : fullPath.Split(spiltChars));//默认设置
-            return array.ToList();
-            //List<string> list = new();
-            //bool flag = false;
-            //for (int i = 0; i < array.Length; i++)
-            //{
-            //    if (array[i].Contains('(') && array[i].Contains(')'))
-            //    {
-            //        list.Add(array[i]);
-            //    }
-            //    else if (array[i].Contains('('))
-            //    {
-            //        flag = true;
-            //        list.Add(array[i]);
-            //    }
-            //    else if (flag && array[i].Contains(')'))
-            //    {
-            //        flag = false;
-            //        List<string> list2 = list;
-            //        int index = list.Count - 1;
-            //        list2[index] = list2[index] + "." + array[i];
-            //    }
-            //    else if (flag)
-            //    {
-            //        List<string> list2 = list;
-            //        int index = list.Count - 1;
-            //        list2[index] = list2[index] + "." + array[i];
-            //    }
-            //    else
-            //    {
-            //        list.Add(array[i]);
-            //    }
-            //}
-
-            //return list;
+            string[] array = propertyName.Split('[', ']');//防止引锁问题
+            return type.GetProperty(array.First());
         }
 
-        public static object GetValue(object ob, string fullPath, params char[] spiltChars)
+        /// <summary>
+        /// 获取实例所对应的属性的值
+        /// </summary>
+        /// <param name="instance">实例</param>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns></returns>
+        public static object? GetPropertyValue(object instance, string propertyName)
         {
-            List<string> list = SplitFullPath(fullPath, spiltChars);
-            if (list.Count == 0)
+            ArgumentNullException.ThrowIfNull(instance);
+            PropertyInfo? propertyInfo = GetPropertyInfo(instance.GetType(), propertyName);
+            if (propertyInfo == null)
             {
                 return null;
             }
-            object o = ob;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                string[] array = list[i].Split('[', ']', '<', '>', '(', '=');
-                if (list[i].Contains('(') && list[i].Contains(')'))//如果是方法
-                {
-                    if (list[i].IndexOf('(') != 0)
-                    {
-                        try
-                        {
-                            o = RunMethod(o!, array[0]);
-                        }
-                        catch
-                        {
-                            o = null;
-                        }
-                    }
-                }
-                else//如果是属性
-                {
-                    o = GetPropertyValue(o, list[i]);
-                }
-            }
-
-            return o;
+            string[] array = propertyName.Split('[', ']');
+            return propertyName.Contains('[')
+                ? int.TryParse(array[1], out int index)
+                    ? propertyInfo.GetValue(instance, [index])//
+                    : propertyInfo.GetValue(instance, [array[1]])//若不是 int ，将是为 sting
+                : propertyInfo.GetValue(instance);
         }
 
-        public static bool SetValue(object ob, string fullPath, object value, params char[] spiltChars)
+        public static Type? GetType(object instance, string fullPath, params char[] spiltChars)
         {
-            List<string> list = SplitFullPath(fullPath, spiltChars);
-            if (list.Count == 0)
+            ArgumentNullException.ThrowIfNull(instance);
+            ArgumentNullException.ThrowIfNull(fullPath);
+
+            string[] propertyNames = SplitFullPath(fullPath, spiltChars);
+            if (propertyNames.Count() == 0)
             {
-                return false;
+                return instance.GetType();
             }
-            object o = ob;
-            try
+
+            Type? type = instance.GetType();
+            for (int i = 0; i < propertyNames.Count(); i++)
             {
-                for (int i = 0; i < list.Count; i++)
+                string[] array = propertyNames[i].Split('(', ')');
+                if (propertyNames[i].Contains('(') && propertyNames[i].Contains(')'))//如有（）则为方法
                 {
-                    if (!list[i].Contains('('))
-                    {
-                        if (i == list.Count - 1)
-                        {
-                            SetPropertyValue(o, list[i], value);
-                        }
-                        else
-                        {
-                            o = GetPropertyValue(o, list[i]);
-                        }
-
-                        if (o == null)
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public static Type GetType(object ob, string fullPath, params char[] spiltChars)
-        {
-            List<string> list = SplitFullPath(fullPath, spiltChars);//默认为 "."
-            if (list.Count == 0)
-            {
-                return typeof(object);
-            }
-
-            Type type = ob.GetType();
-            for (int i = 0; i < list.Count; i++)
-            {
-                string[] array = list[i].Split('[', ']', '<', '>', '(', ')', '=');
-                if (list[i].Contains('(') && list[i].Contains(')'))//如有（）则为方法
-                {
-                    if (list[i].IndexOf('(') == 0)//如果（ 在第一位置
-                    {
-                        type = GetType(array[1]);
-                        continue;
-                    }
-
                     MethodInfo[] methods = type.GetMethods();
-                    foreach (MethodInfo methodInfo in methods)
-                    {
-                        if (methodInfo.Name == array[0])
-                        {
-                            type = methodInfo.ReturnType;
-                            break;
-                        }
-                    }
+                    type = methods.First(x => x.Name == array[0]).ReturnType;//若找不到将抛异常
                 }
                 else//如没有（）则为属性
                 {
-                    PropertyInfo propertyInfo = GetPropertyInfo(type, array[0]);
-                    if (propertyInfo == null)
+                    var p = GetPropertyInfo(type, propertyNames[i]);
+                    if (p is null)
                     {
-                        //return typeof(object);
                         return null;
                     }
-
-                    type = propertyInfo.PropertyType;
+                    type = p.PropertyType;
                 }
             }
-
             return type;
         }
 
-        public static Type GetType(string typeName)//不清楚这干嘛的，获取方法的type？
+        /// <summary>
+        /// 获取 instance 对象中 fullPath 位置的 Value
+        /// </summary>
+        /// <param name="instance">对象</param>
+        /// <param name="fullPath">全地址</param>
+        /// <param name="spiltChars">全地址分割符号，如果 spiltChars 没有，默认点</param>
+        /// <returns></returns>
+        public static object? GetValue(object instance, string fullPath, params char[] spiltChars)
         {
-            Type type = null;
-            List<Assembly> list = AppDomain.CurrentDomain.GetAssemblies().ToList();
-            List<string> list2 = Directory.EnumerateFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll").ToList();
-            foreach (string item2 in list2)
+            ArgumentNullException.ThrowIfNull(instance);
+            ArgumentNullException.ThrowIfNull(fullPath);
+            string[] propertyNames = SplitFullPath(fullPath, spiltChars);
+            if (propertyNames.Count() == 0)
             {
-                if (!File.Exists(item2) || Path.GetFileName(item2) == "Cognex.VisionPro.Interop.Core.dll")
-                {
-                    continue;
-                }
+                return instance;
+            }
+            object? targetValue = instance;
 
-                try
+            for (int i = 0; i < propertyNames.Count(); i++)
+            {
+                if (targetValue is null)
+                    return null;
+                if (propertyNames[i].Contains('(') && propertyNames[i].Contains(')'))//若为方法
                 {
-                    Assembly item = Assembly.LoadFile(item2);
-                    if (!list.Contains(item))
-                    {
-                        list.Add(item);
-                    }
+                    targetValue = RunMethod(targetValue, propertyNames[i].Split('(')[0]);
                 }
-                catch
+                else//若为属性
                 {
+                    targetValue = GetPropertyValue(targetValue, propertyNames[i]);
                 }
             }
 
-            string[] array = typeName.Split(',');
-            if (array.Length == 1)
-            {
-                int count = list.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    try
-                    {
-                        type = list[i].GetType(typeName);
-                        if (type != null)
-                        {
-                            return type;
-                        }
-
-                        Type[] types = list[i].GetTypes();
-                        int num = types.Length;
-                        for (int j = 0; j < num; j++)
-                        {
-                            if (types[j].Name.Equals(typeName))
-                            {
-                                return types[j];
-                            }
-                        }
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-            else
-            {
-                Assembly assembly = null;
-                int k = 0;
-                for (int count2 = list.Count; k < count2; k++)
-                {
-                    if (list[k].FullName.Split(',')[0].Trim() == array[1].Trim())
-                    {
-                        assembly = list[k];
-                        break;
-                    }
-                }
-
-                if (assembly != null)
-                {
-                    type = assembly.GetType(array[0]);
-                }
-            }
-
-            return type;
+            return targetValue;
         }
 
-        public static List<Type> GetTypes(string path, Predicate<Type> match)
+        /// <summary>
+        /// 执行无参方法，需确认是否有该方法否则抛异常
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public static object? RunMethod(object instance, string methodName)
         {
-            List<Type> list = new();
-            path = Path.GetFullPath(path);
-            Assembly assembly = Assembly.LoadFile(path);
-            Type[] types = assembly.GetTypes();
-            Type[] array = types;
-            foreach (Type type in array)
-            {
-                if (match(type))
-                {
-                    list.Add(type);
-                }
-            }
-
-            return list;
+            MethodInfo? method = instance.GetType().GetMethod(methodName);
+            return method?.Invoke(instance, null);
         }
 
-        public static PropertyInfo GetPropertyInfo(Type type, string propertyName)
+        /// <summary>
+        /// 运行方法（带有形参，不允许含特殊修饰符，如 ref,out 等）
+        /// </summary>
+        /// <param name="instance">当前对象</param>
+        /// <param name="methodName">对象的方法名</param>
+        /// <param name="paramType">方法的参数类型</param>
+        /// <param name="param">方法的参数</param>
+        /// <returns></returns>
+        public static object? RunMethod(object instance, string methodName, Type[] paramType, params object[] param)
         {
-            string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            PropertyInfo result = null;
-            try
-            {
-                //这个应该没错
-                result = type.GetProperty(array.First());
-            }
-            catch (AmbiguousMatchException)
-            {
-                if (propertyName.Contains('['))
-                {
-                    bool flag = int.TryParse(array[1], out int result2);
-                    PropertyInfo[] properties = type.GetProperties();
-                    foreach (var propertyInfo in properties)
-                    {
-                        if (propertyInfo.Name == array[0])
-                        {
-                            string text = propertyInfo.ToString();
-                            if (propertyInfo.ToString()!.Contains("System.String") && !flag)
-                            {
-                                result = propertyInfo;
-                                break;
-                            }
-
-                            if (propertyInfo.ToString()!.Contains("Int32") && flag)
-                            {
-                                result = propertyInfo;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    result = type.GetProperty(array.First(), BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
-                }
-            }
-
-            return result;
+            MethodInfo? method = instance.GetType().GetMethod(methodName, paramType);
+            return method?.Invoke(instance, param);
         }
 
-        public static object GetPropertyValue(object ob, string propertyName)
+        /// <summary>
+        /// 获取 instance 中 fullPath 位置的Type
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="fullPath"></param>
+        /// <returns></returns>
+        /// <summary>
+        /// 设置实例所对应的属性的值
+        /// </summary>
+        /// <param name="instance">实例</param>
+        /// <param name="propertyName">属性名称</param>
+        /// <param name="value">值</param>
+        /// <returns></returns>
+        public static bool TrySetPropertyValue(object instance, string propertyName, object? value)
         {
-            PropertyInfo propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
-            if (propertyInfo == null)
-            {
-                return null;
-            }
-            object o;
-            string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
-            o = propertyName.Contains('[')
-                ? int.TryParse(array[1], out int result)
-                    ? propertyInfo.GetValue(ob, new object[1] { result })
-                    : propertyInfo.GetValue(ob, new object[1] { array[1] })
-                : propertyInfo.GetValue(ob, null);
-
-            return o;
-        }
-
-        public static bool SetPropertyValue(object ob, string propertyName, object objValue)
-        {
-            PropertyInfo propertyInfo = GetPropertyInfo(ob.GetType(), propertyName);
-            if (propertyInfo == null)
-            {
+            ArgumentNullException.ThrowIfNull(instance);
+            PropertyInfo? propertyInfo = GetPropertyInfo(instance.GetType(), propertyName);
+            if (propertyInfo is null)
                 return false;
-            }
-
-            string[] array = propertyName.Split('[', ']', '<', '>', '(', '=');
+            string[] array = propertyName.Split('[', ']');
             if (propertyName.Contains('['))
             {
-                if (int.TryParse(array[1], out int result))
+                if (int.TryParse(array[1], out int index))
                 {
-                    propertyInfo.SetValue(ob, objValue, [result]);
+                    propertyInfo.SetValue(instance, value, [index]);
                 }
                 else
                 {
-                    propertyInfo.SetValue(ob, objValue, [array[1]]);
+                    propertyInfo.SetValue(instance, value, [array[1]]);//若不是 int ，将是为 sting
                 }
             }
             else
             {
-                propertyInfo.SetValue(ob, objValue);
+                propertyInfo.SetValue(instance, value);
             }
 
             return true;
         }
 
-        public static object RunMethod(object ob, string methodName)
+        /// <summary>
+        /// 设置 instance 对象中 fullPath 位置的Value
+        /// </summary>
+        /// <param name="instance">对象</param>
+        /// <param name="fullPath">全地址</param>
+        /// <param name="value">值</param>
+        /// <param name="spiltChars">全地址分割符号，如果 spiltChars 没有，默认点</param>
+        /// <returns></returns>
+        public static bool TrySetValue(object instance, string fullPath, object? value, params char[] spiltChars)
         {
+            if (instance == null)
+            {
+                return false;
+            }
+            object? targetInstance = instance;
             try
             {
-                MethodInfo method = ob.GetType().GetMethod(methodName, Type.EmptyTypes);
-                return method.Invoke(ob, null);
+                string[] propertyNames = SplitFullPath(fullPath, spiltChars);
+                if (propertyNames.Count() == 0)
+                {
+                    return false;
+                }
+                for (int i = 0; i < propertyNames.Count(); i++)
+                {
+                    if (i == propertyNames.Count() - 1)
+                    {
+                        TrySetPropertyValue(targetInstance, propertyNames[i], value);
+                    }
+                    else
+                    {
+                        targetInstance = GetPropertyValue(targetInstance, propertyNames[i]);
+                    }
+
+                    if (targetInstance == null)
+                        return false;
+                }
+                return true;
             }
-            catch (Exception)
+            catch
             {
-                //throw ex.InnerException;
-                return null;
+                return false;
             }
         }
 
-        public static object RunMethod(object ob, string methodName, Type[] paramType, params object[] param)
+        /// <summary>
+        /// 分割 fullPath 的地址，
+        /// 如果未设置 spiltChars ，默认点
+        /// </summary>
+        /// <param name="fullPath"></param>
+        /// <param name="spiltChars"></param>
+        /// <returns></returns>
+        private static string[] SplitFullPath(string fullPath, params char[] spiltChars)
         {
-            try
-            {
-                MethodInfo method = ob.GetType().GetMethod(methodName, paramType);
-                return method?.Invoke(ob, param);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            string[] propertyNames = spiltChars.Length == 0 ? fullPath.Split('.') : fullPath.Split(spiltChars);   //使用.或者/来进行分割
+            return propertyNames;
         }
     }
 }

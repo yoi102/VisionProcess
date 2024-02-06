@@ -35,7 +35,6 @@ namespace VisionProcess.Core.ToolBase
         public event EventHandler? Executing;
 
         public TGraphics Graphics { get; } = new TGraphics();
-
         IGraphics IOperator.Graphics => Graphics;
         public TInputs Inputs { get; } = new TInputs();
         IInputs IOperator.Inputs => Inputs;

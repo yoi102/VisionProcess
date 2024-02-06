@@ -13,9 +13,9 @@ namespace VisionProcess.Models
     public partial class OperationModel : ObservableObject
     {
         private readonly Guid id;
+        private IOperator? @operator;
         private bool isSelected = false;
         private Point location;
-        private IOperator? @operator;
         private Size size;
 
         public OperationModel()
@@ -36,14 +36,14 @@ namespace VisionProcess.Models
 
             foreach (var input in inputs)
             {
-                var type = PropertyMisc.GetType(@operator, input.ValuePath);
+                var type = PropertyMisc.GetType(@operator, input.ValuePath)!;
                 Inputs.Add(new ConnectorModel(input.Title, type,
                     input.ValuePath, input.IsInput, input.OwnerId, this)
                 { Anchor = input.Anchor, IsConnected = input.IsConnected });
             }
             foreach (var output in outputs)
             {
-                var type = PropertyMisc.GetType(@operator, output.ValuePath);
+                var type = PropertyMisc.GetType(@operator, output.ValuePath)!;
                 Outputs.Add(new ConnectorModel(output.Title, type,
                     output.ValuePath, output.IsInput, output.OwnerId, this)
                 { Anchor = output.Anchor, IsConnected = output.IsConnected });
@@ -99,8 +99,6 @@ namespace VisionProcess.Models
             }
         }
 
-
-
         public NodifyObservableCollection<ConnectorModel> Outputs { get; } = [];
 
         public Size Size
@@ -115,15 +113,15 @@ namespace VisionProcess.Models
         {
         }
 
+        private void Operation_Executed(object? sender, EventArgs e)
+        {
+            OperatorExecuted?.Invoke(this, e);
+        }
+
         [property: JsonIgnore]
         [RelayCommand]
         private void RemoveIO()
         {
-        }
-
-        private void Operation_Executed(object? sender, EventArgs e)
-        {
-            OperatorExecuted?.Invoke(this, e);
         }
     }
 }

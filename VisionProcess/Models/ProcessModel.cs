@@ -63,8 +63,8 @@ namespace VisionProcess.Models
                 //当连接时反射设值。。。
                 var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerId);
                 var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerId);
-                var outputValue = PropertyMisc.GetValue(outputOperationMode.Operator, c.Output.ValuePath);
-                PropertyMisc.SetValue(inputOperationMode.Operator, c.Input.ValuePath, outputValue);
+                var outputValue = PropertyMisc.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
+                PropertyMisc.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
                 inputOperationMode.Operator!.Execute();
                 c.Output.ValueObservers.Add(c.Input);
             })
@@ -82,7 +82,7 @@ namespace VisionProcess.Models
                 }
                 c.Output!.ValueObservers.Remove(c.Input!);
             });
-            
+
             Operations.WhenAdded(x =>
             {
                 x.OperatorExecuted += OperatorExecuted;
@@ -111,20 +111,20 @@ namespace VisionProcess.Models
         }
 
         private void OperatorExecuted(object? sender, EventArgs e)
-        {   //一个操作运行完时，修改连接上的操作的输入并运行
+        {   //一个操作运行完时，将当前输出节点所连接的操作输入赋值，并运行。。可能导致运行多次。。
             if (sender is not OperationModel operationModel)
                 return;
-            List<OperationModel> targetOperationModelList = new(); ;
+            List<OperationModel> targetOperationModelList = new();
             foreach (var output in operationModel.Outputs)
             {
                 if (!output.IsConnected)
                     continue;
-                var outputValue = PropertyMisc.GetValue(operationModel.Operator, output.ValuePath);
+                var outputValue = PropertyMisc.GetValue(operationModel.Operator!, output.ValuePath);
                 output.ValueObservers.ForEach(x =>
                 {
                     var targetOperationModel = operations.First(o => o.Id == x.OwnerId);
                     targetOperationModelList.Add(targetOperationModel);
-                    PropertyMisc.SetValue(targetOperationModel.Operator, x.ValuePath, outputValue);
+                    PropertyMisc.TrySetValue(targetOperationModel.Operator!, x.ValuePath, outputValue);
                 });
             }
             targetOperationModelList.ForEach(x => x.Operator!.Execute());
