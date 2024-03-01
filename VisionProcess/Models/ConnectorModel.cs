@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Security.Permissions;
 using System.Windows;
 using VisionProcess.Core.Extentions;
 
