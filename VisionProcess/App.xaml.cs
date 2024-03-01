@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using VisionProcess.Core.Helpers;
 using VisionProcess.Core.ToolBase;
+using VisionProcess.Services;
 using VisionProcess.ViewModels;
 
 namespace VisionProcess
@@ -22,18 +23,16 @@ namespace VisionProcess
     {
         private static Mutex? appMutex;
 
-        //查找，启动可能会慢
-        public static readonly IEnumerable<Type> ToolViewModelTypes = GetToolViewModels(ReflectionHelper.GetAllReferencedAssemblies());
-
-        public static IEnumerable<Type> GetToolViewModels(IEnumerable<Assembly> assemblies)
+        public App()
         {
-            List<Type> viewModels = new List<Type>();
-            foreach (var asm in assemblies)
-            {
-                var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.IsAssignableTo(typeof(IOperator)));
-                viewModels.AddRange(types);
-            }
-            return viewModels;
+            string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
+            //lang = "ja-jp";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang); ;
+            InfoService.Instance.ToolViewModelTypes = GetToolViewModels(ReflectionHelper.GetAllReferencedAssemblies());
+            Services = ConfigureServices();
+            InfoService.Instance.Services = Services;
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -46,22 +45,26 @@ namespace VisionProcess
         /// </summary>
         public IServiceProvider Services { get; }
 
-        public App()
-        {
-            string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
-            //lang = "ja-jp";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang); ;
+        [DllImport("User32.dll", EntryPoint = "FindWindow")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-            Services = ConfigureServices();
-            this.InitializeComponent();
+        [DllImport("User32.dll", CharSet = CharSet.Unicode, EntryPoint = "FlashWindow")]
+        public static extern void FlashWindow(IntPtr hwnd, bool bInvert);
+
+        //查找，启动可能会慢
+        public static IEnumerable<Type> GetToolViewModels(IEnumerable<Assembly> assemblies)
+        {
+            List<Type> viewModels = new List<Type>();
+            foreach (var asm in assemblies)
+            {
+                var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.IsAssignableTo(typeof(IOperator)));
+                viewModels.AddRange(types);
+            }
+            return viewModels;
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            CheckMutex(e);
-        }
+        [DllImport("User32.DLL")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         protected override void OnExit(ExitEventArgs e)
         {
@@ -100,6 +103,12 @@ namespace VisionProcess
             base.OnExit(e);
         }
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            CheckMutex(e);
+        }
+
         /// <summary>
         /// Configures the services for the application.
         /// </summary>
@@ -132,7 +141,7 @@ namespace VisionProcess
             }
             services.AddTransient<EditorViewModel>();
 
-            foreach (var itemType in ToolViewModelTypes)//遍历所有类型进行查找
+            foreach (var itemType in InfoService.Instance.ToolViewModelTypes!)//遍历所有类型进行查找
             {
                 services.AddTransient(itemType);
                 //list.Add(itemType.Name.Replace("ViewModel", string.Empty));
@@ -140,6 +149,9 @@ namespace VisionProcess
 
             return services.BuildServiceProvider();
         }
+
+        [DllImport("User32.dll")]
+        private static extern int ShowWindow(IntPtr hwnd, uint nCmdShow);
 
         private void CheckMutex(StartupEventArgs e)
         {
@@ -151,21 +163,21 @@ namespace VisionProcess
             }
             else
             {
-                foreach (Process proc in Process.GetProcessesByName(currentProc.ProcessName))
+                var proc = Process.GetProcessesByName(currentProc.ProcessName)
+                                         .FirstOrDefault(x => x.Id != currentProc.Id);
+                if (proc != null)
                 {
-                    if (proc.Id != currentProc.Id)
-                    {
-                        //这里不作用。PID是正确的
-                        //IntPtr handle = proc.Handle;
-                        //这里也能起作用，也是用的是主窗口名称
-                        IntPtr handle = proc.MainWindowHandle;
-                        //var ffi = Create_FLASHWINFO(handle, FlashWindowFlag.FLASHW_TIMERNOFG, 500, 5000);
-                        //FlashWindowEx(ref ffi);
-                        ShowWindow(handle, 9);
-                        SetForegroundWindow(handle);
-                        break;
-                    }
+                    //这里不作用。PID是正确的
+                    //IntPtr handle = proc.Handle;
+                    //这里也能起作用，也是用的是主窗口名称
+                    IntPtr handle = proc.MainWindowHandle;
+                    //var ffi = Create_FLASHWINFO(handle, FlashWindowFlag.FLASHW_TIMERNOFG, 500, 5000);
+                    //FlashWindowEx(ref ffi);
+                    ShowWindow(handle, 9);
+                    SetForegroundWindow(handle);
+
                 }
+
                 //var hwnd = FindWindow(null, currentProc.ProcessName);//找string的窗口
                 ////var fi = User32Api.Create_FLASHWINFO(hwnd, FlashWindowFlag.FLASHW_TIMERNOFG, 1, 2000);
                 ////FlashWindowEx(ref fi);
@@ -178,20 +190,8 @@ namespace VisionProcess
             }
         }
 
-        [DllImport("User32.dll", EntryPoint = "FindWindow")]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("User32.dll")]
-        private static extern int ShowWindow(IntPtr hwnd, uint nCmdShow);
-
-        [DllImport("User32.DLL")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
         //[DllImport("User32.dll")]
         //[return: MarshalAs(UnmanagedType.Bool)]
         //public static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
-
-        [DllImport("User32.dll", CharSet = CharSet.Unicode, EntryPoint = "FlashWindow")]
-        public static extern void FlashWindow(IntPtr hwnd, bool bInvert);
     }
 }

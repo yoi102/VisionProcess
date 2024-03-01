@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using VisionProcess.Core.Extentions;
+using VisionProcess.Core.Extensions;
 using VisionProcess.Core.Mvvm;
-using VisionProcess.Extentions;
+using VisionProcess.Extensions;
 using VisionProcess.ViewModels;
 
 namespace VisionProcess.Models

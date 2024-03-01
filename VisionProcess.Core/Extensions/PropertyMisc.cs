@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace VisionProcess.Core.Extentions
+namespace VisionProcess.Core.Extensions
 {
     public class PropertyMisc
     {

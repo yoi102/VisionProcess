@@ -1,23 +1,23 @@
 ﻿using System.Windows.Markup;
 
-namespace VisionProcess.Core.Extentions
+namespace VisionProcess.Core.Extensions
 {
     /// <summary>
-    /// 用于combobox枚举源的绑定
+    /// 用于 combobox 枚举源的绑定
     /// </summary>
     public class EnumBindingSourceExtension : MarkupExtension
     {
-        private Type? _enumType;
+        private Type? enumType;
 
         public Type? EnumType
         {
             get
             {
-                return _enumType;
+                return enumType;
             }
             set
             {
-                if (value != _enumType)
+                if (value != enumType)
                 {
                     if (null != value)
                     {
@@ -27,7 +27,7 @@ namespace VisionProcess.Core.Extentions
                             throw new ArgumentException("Type must be for an Enum.");
                     }
 
-                    _enumType = value;
+                    enumType = value;
                 }
             }
         }
@@ -42,13 +42,13 @@ namespace VisionProcess.Core.Extentions
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            if (null == _enumType)
+            if (null == enumType)
                 throw new InvalidOperationException("The EnumType must be specified.");
 
-            Type actualEnumType = Nullable.GetUnderlyingType(_enumType) ?? _enumType;
+            Type actualEnumType = Nullable.GetUnderlyingType(enumType) ?? enumType;
             Array enumValues = Enum.GetValues(actualEnumType);
 
-            if (actualEnumType == _enumType)
+            if (actualEnumType == enumType)
                 return enumValues;
 
             Array tempArray = Array.CreateInstance(actualEnumType, enumValues.Length + 1);

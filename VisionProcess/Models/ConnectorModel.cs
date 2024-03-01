@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using VisionProcess.Core.Extentions;
+using VisionProcess.Core.Extensions;
 
 namespace VisionProcess.Models
 {

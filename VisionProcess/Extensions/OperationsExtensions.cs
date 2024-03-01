@@ -2,7 +2,7 @@
 using System.Windows;
 using VisionProcess.Models;
 
-namespace VisionProcess.Extentions
+namespace VisionProcess.Extensions
 {
     public static class OperationsExtensions
     {

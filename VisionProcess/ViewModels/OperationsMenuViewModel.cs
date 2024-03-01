@@ -7,6 +7,7 @@ using System.Windows;
 using Newtonsoft.Json;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Models;
+using VisionProcess.Services;
 
 namespace VisionProcess.ViewModels
 {
@@ -15,7 +16,7 @@ namespace VisionProcess.ViewModels
         public OperationsMenuViewModel(ProcessModel processModel)
         {
             List<string> list = new();
-            foreach (var itemType in App.ToolViewModelTypes)//遍历所有类型进行查找
+            foreach (var itemType in InfoService.Instance.ToolViewModelTypes!)//遍历所有类型进行查找
             {
                 list.Add(itemType.Name.Replace("ViewModel", string.Empty));
             }
@@ -50,12 +51,12 @@ namespace VisionProcess.ViewModels
         private void CreateOperation(string operationName)
         {
             //前提，需要规范命名
-            var type = App.ToolViewModelTypes.FirstOrDefault(t => t.Name == operationName + "ViewModel") ??
+            var type = InfoService.Instance.ToolViewModelTypes!.FirstOrDefault(t => t.Name == operationName + "ViewModel") ??
                    throw new ArgumentNullException($"{operationName} + ViewModel");
 
             //var type = App.ToolsAssembly.GetType("VisionProcess.Tools.ViewModels." + operationName + "ViewModel");
 
-            var instance = App.Current.Services.GetService(type);
+            var instance = InfoService.Instance.Services!.GetService(type);
             //var instance = Activator.CreateInstance(type!);
 
             processModel.Operations.Add(new OperationModel() { Operator = (IOperator)instance!, Location = Location });

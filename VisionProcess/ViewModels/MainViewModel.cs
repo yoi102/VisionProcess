@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-using VisionProcess.Core.Extentions;
+using VisionProcess.Core.Extensions;
 using VisionProcess.Core.Mvvm;
 using VisionProcess.Models;
 

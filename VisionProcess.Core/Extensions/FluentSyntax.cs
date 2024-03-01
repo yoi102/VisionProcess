@@ -1,4 +1,4 @@
-﻿namespace VisionProcess.Core.Extentions
+﻿namespace VisionProcess.Core.Extensions
 {
     public static class FluentSyntax
     {
