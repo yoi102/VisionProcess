@@ -122,12 +122,11 @@ namespace VisionProcess.Models
                 var outputValue = PropertyMisc.GetValue(operationModel.Operator!, output.ValuePath);
                 output.ValueObservers.ForEach(x =>
                 {
-                    var targetOperationModel = operations.First(o => o.Id == x.OwnerId);
-                    targetOperationModelList.Add(targetOperationModel);
-                    PropertyMisc.TrySetValue(targetOperationModel.Operator!, x.ValuePath, outputValue);
+                    x.TrySetValue(outputValue);
+                    targetOperationModelList.Add(x.Owner);
                 });
             }
-            targetOperationModelList.ForEach(x => x.Operator!.Execute());
+            targetOperationModelList.ForEach(x => x.RunOperatorByConnection());
         }
 
         #region Properties

@@ -1,56 +1,60 @@
-﻿<UserControl x:Class="VisionProcess.Views.EditorView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converter="clr-namespace:VisionProcess.Core.Converters;assembly=VisionProcess.Core"
-             xmlns:core="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Core"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:VisionProcess.Views"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:models="clr-namespace:VisionProcess.Models"
-             xmlns:nodify="https://miroiu.github.io/nodify"
-             xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
-             xmlns:viewmodels="clr-namespace:VisionProcess.ViewModels"
-             xmlns:yr="https://github.com/yoi102/xaml/controls"
-             d:Background="Wheat"
-             d:DataContext="{d:DesignInstance Type=viewmodels:EditorViewModel}"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="VisionProcess.Views.EditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:VisionProcess.Core.Converters;assembly=VisionProcess.Core"
+    xmlns:core="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:VisionProcess.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:models="clr-namespace:VisionProcess.Models"
+    xmlns:nodify="https://miroiu.github.io/nodify"
+    xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
+    xmlns:viewmodels="clr-namespace:VisionProcess.ViewModels"
+    xmlns:yr="https://github.com/yoi102/xaml/controls"
+    d:Background="Wheat"
+    d:DataContext="{d:DesignInstance Type=viewmodels:EditorViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.Resources>
-        <core:BindingProxy x:Key="Proxy"
-                           DataContext="{Binding}" />
+        <core:BindingProxy x:Key="Proxy" DataContext="{Binding}" />
         <!--<GeometryDrawing x:Key="SmallGridGeometry"
                          Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z"
                          Brush="{DynamicResource GridLinesBrush}" />-->
-        <GeometryDrawing x:Key="SmallGridGeometry"
-                         Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}"
-                         Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z" />
+        <GeometryDrawing
+            x:Key="SmallGridGeometry"
+            Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}"
+            Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z" />
 
         <!--  Brush="{DynamicResource GridLinesBrush}" />  -->
         <!--  Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}" />  -->
 
-        <GeometryDrawing x:Key="LargeGridGeometry"
-                         Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}"
-                         Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z" />
+        <GeometryDrawing
+            x:Key="LargeGridGeometry"
+            Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}"
+            Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z" />
 
         <!--  Brush="{DynamicResource GridLinesBrush}" />  -->
         <!--  Brush="{StaticResource NodifyEditor.SelectionRectangleBackgroundBrush}" />  -->
 
-        <DrawingBrush x:Key="SmallGridLinesDrawingBrush"
-                      Drawing="{StaticResource SmallGridGeometry}"
-                      TileMode="Tile"
-                      Transform="{Binding ViewportTransform, ElementName=Editor}"
-                      Viewport="0 0 15 15"
-                      ViewportUnits="Absolute" />
+        <DrawingBrush
+            x:Key="SmallGridLinesDrawingBrush"
+            Drawing="{StaticResource SmallGridGeometry}"
+            TileMode="Tile"
+            Transform="{Binding ViewportTransform, ElementName=Editor}"
+            Viewport="0 0 15 15"
+            ViewportUnits="Absolute" />
 
-        <DrawingBrush x:Key="LargeGridLinesDrawingBrush"
-                      Drawing="{StaticResource LargeGridGeometry}"
-                      Opacity="0.5"
-                      TileMode="Tile"
-                      Transform="{Binding ViewportTransform, ElementName=Editor}"
-                      Viewport="0 0 150 150"
-                      ViewportUnits="Absolute" />
+        <DrawingBrush
+            x:Key="LargeGridLinesDrawingBrush"
+            Drawing="{StaticResource LargeGridGeometry}"
+            Opacity="0.5"
+            TileMode="Tile"
+            Transform="{Binding ViewportTransform, ElementName=Editor}"
+            Viewport="0 0 150 150"
+            ViewportUnits="Absolute" />
 
         <!--<converter:ItemToListConverter x:Key="ItemToListConverter" />-->
 
@@ -60,80 +64,75 @@
                                       Target="{Binding Input.Anchor}" />
         </DataTemplate>-->
 
-        <DataTemplate x:Key="PendingConnectionTemplate"
-                      DataType="{x:Type models:PendingConnectionModel}">
-            <nodify:PendingConnection CompletedCommand="{Binding DataContext.CreateConnectionCommand, RelativeSource={RelativeSource AncestorType={x:Type nodify:NodifyEditor}}}"
-                                      IsVisible="{Binding IsVisible}"
-                                      Source="{Binding Source, Mode=OneWayToSource}"
-                                      StartedCommand="{Binding DataContext.StartConnectionCommand, RelativeSource={RelativeSource AncestorType={x:Type nodify:NodifyEditor}}}"
-                                      Target="{Binding Target, Mode=OneWayToSource}"
-                                      TargetAnchor="{Binding TargetLocation, Mode=OneWayToSource}" />
+        <DataTemplate x:Key="PendingConnectionTemplate" DataType="{x:Type models:PendingConnectionModel}">
+            <nodify:PendingConnection
+                CompletedCommand="{Binding DataContext.CreateConnectionCommand, RelativeSource={RelativeSource AncestorType={x:Type nodify:NodifyEditor}}}"
+                IsVisible="{Binding IsVisible}"
+                Source="{Binding Source, Mode=OneWayToSource}"
+                StartedCommand="{Binding DataContext.StartConnectionCommand, RelativeSource={RelativeSource AncestorType={x:Type nodify:NodifyEditor}}}"
+                Target="{Binding Target, Mode=OneWayToSource}"
+                TargetAnchor="{Binding TargetLocation, Mode=OneWayToSource}" />
         </DataTemplate>
 
-        <Style x:Key="ItemContainerStyle"
-               BasedOn="{StaticResource {x:Type nodify:ItemContainer}}"
-               TargetType="{x:Type nodify:ItemContainer}">
-            <Setter Property="Location"
-                    Value="{Binding Location}" />
-            <Setter Property="IsSelected"
-                    Value="{Binding IsSelected}" />
-            <Setter Property="ActualSize"
-                    Value="{Binding Size, Mode=OneWayToSource}" />
+        <Style
+            x:Key="ItemContainerStyle"
+            BasedOn="{StaticResource {x:Type nodify:ItemContainer}}"
+            TargetType="{x:Type nodify:ItemContainer}">
+            <Setter Property="Location" Value="{Binding Location}" />
+            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+            <Setter Property="ActualSize" Value="{Binding Size, Mode=OneWayToSource}" />
         </Style>
 
-        <DataTemplate x:Key="ConnectionTemplate"
-                      DataType="{x:Type models:ConnectionModel}">
-            <nodify:Connection Source="{Binding Output.Anchor}"
-                               SourceOffset="10 0"
-                               Target="{Binding Input.Anchor}"
-                               TargetOffset="20 0">
+        <DataTemplate x:Key="ConnectionTemplate" DataType="{x:Type models:ConnectionModel}">
+            <nodify:Connection
+                Source="{Binding Output.Anchor}"
+                SourceOffset="10 0"
+                Target="{Binding Input.Anchor}"
+                TargetOffset="20 0">
                 <nodify:Connection.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Command="{Binding DataContext.DisconnectCommand, Source={StaticResource Proxy}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.DataContext}"
-                                  Header="{x:Static strings:Strings.Disconnect}"
-                                  Icon="{md:PackIcon Kind=PipeDisconnected}" />
+                        <MenuItem
+                            Command="{Binding DataContext.DisconnectCommand, Source={StaticResource Proxy}}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.DataContext}"
+                            Header="{x:Static strings:Strings.Disconnect}"
+                            Icon="{md:PackIcon Kind=PipeDisconnected}" />
                     </ContextMenu>
                 </nodify:Connection.ContextMenu>
             </nodify:Connection>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <Grid Panel.ZIndex="-2"
-              Background="{StaticResource LargeGridLinesDrawingBrush}" />
+        <Grid Panel.ZIndex="-2" Background="{StaticResource LargeGridLinesDrawingBrush}" />
 
         <!--  ItemsSource="{Binding Operations}"  -->
 
-        <nodify:NodifyEditor x:Name="Editor"
-                             Background="{StaticResource SmallGridLinesDrawingBrush}"
-                             ConnectionTemplate="{StaticResource ConnectionTemplate}"
-                             Connections="{Binding Connections}"
-                             DataContext="{Binding Process}"
-                             DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}"
-                             GridCellSize="15"
-                             ItemContainerStyle="{StaticResource ItemContainerStyle}"
-                             ItemsSource="{Binding Operations}"
-                             PendingConnection="{Binding PendingConnection}"
-                             PendingConnectionTemplate="{StaticResource PendingConnectionTemplate}"
-                             SelectedItem="{Binding SelectedOperation}"
-                             SelectedItems="{Binding SelectedOperations}">
+        <nodify:NodifyEditor
+            x:Name="Editor"
+            Background="{StaticResource SmallGridLinesDrawingBrush}"
+            ConnectionTemplate="{StaticResource ConnectionTemplate}"
+            Connections="{Binding Connections}"
+            DataContext="{Binding Process}"
+            DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}"
+            GridCellSize="15"
+            ItemContainerStyle="{StaticResource ItemContainerStyle}"
+            ItemsSource="{Binding Operations}"
+            PendingConnection="{Binding PendingConnection}"
+            PendingConnectionTemplate="{StaticResource PendingConnectionTemplate}"
+            SelectedItem="{Binding SelectedOperation}"
+            SelectedItems="{Binding SelectedOperations}">
             <nodify:NodifyEditor.Resources>
 
                 <Style TargetType="{x:Type nodify:NodeInput}">
-                    <Setter Property="Header"
-                            Value="{Binding}" />
-                    <Setter Property="IsConnected"
-                            Value="{Binding IsConnected}" />
-                    <Setter Property="Anchor"
-                            Value="{Binding Anchor, Mode=OneWayToSource}" />
+                    <Setter Property="Header" Value="{Binding}" />
+                    <Setter Property="IsConnected" Value="{Binding IsConnected}" />
+                    <Setter Property="Anchor" Value="{Binding Anchor, Mode=OneWayToSource}" />
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate DataType="{x:Type models:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="DeleteInput"
-                                                      Icon="{md:PackIcon Kind=Dead}" />
+                                            <MenuItem Header="DeleteInput" Icon="{md:PackIcon Kind=Dead}" />
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <!--<TextBlock VerticalAlignment="Center"
@@ -148,38 +147,31 @@
                             <StackPanel d:DataContext="{d:DesignInstance models:ConnectorModel}">
                                 <!--<TextBlock Margin="0,0,5,0"
                                            Text="{Binding Title, StringFormat=Title：{0}}" />-->
-                                <TextBlock Margin="0,0,5,0"
-                                           Text="{Binding ValuePath, StringFormat=ValuePath：{0}}" />
-                                <TextBlock Margin="0,0,5,0"
-                                           Text="{Binding ValueType, StringFormat=Type：{0}}" />
+                                <TextBlock Margin="0,0,5,0" Text="{Binding ValuePath, StringFormat=ValuePath：{0}}" />
+                                <TextBlock Margin="0,0,5,0" Text="{Binding ValueType, StringFormat=Type：{0}}" />
                                 <TextBlock Text="{Binding Value, StringFormat=Value：{0}}" />
                             </StackPanel>
                         </Setter.Value>
                     </Setter>
                 </Style>
 
-                <Style BasedOn="{StaticResource {x:Type nodify:NodeOutput}}"
-                       TargetType="{x:Type nodify:NodeOutput}">
-                    <Setter Property="Header"
-                            Value="{Binding}" />
-                    <Setter Property="IsConnected"
-                            Value="{Binding IsConnected}" />
-                    <Setter Property="Anchor"
-                            Value="{Binding Anchor, Mode=OneWayToSource}" />
+                <Style BasedOn="{StaticResource {x:Type nodify:NodeOutput}}" TargetType="{x:Type nodify:NodeOutput}">
+                    <Setter Property="Header" Value="{Binding}" />
+                    <Setter Property="IsConnected" Value="{Binding IsConnected}" />
+                    <Setter Property="Anchor" Value="{Binding Anchor, Mode=OneWayToSource}" />
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate DataType="{x:Type models:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="DeleteOutput"
-                                                      Icon="{md:PackIcon Kind=Dead}" />
+                                            <MenuItem Header="DeleteOutput" Icon="{md:PackIcon Kind=Dead}" />
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <!--<TextBlock VerticalAlignment="Center"
                                                Text=" O-" />-->
                                     <yr:EditableTextBlock Text="{Binding Title}" />
-                              
+
                                 </StackPanel>
                             </DataTemplate>
                         </Setter.Value>
@@ -189,10 +181,8 @@
                             <StackPanel d:DataContext="{d:DesignInstance models:ConnectorModel}">
                                 <!--<TextBlock Margin="0,0,5,0"
                                            Text="{Binding Title, StringFormat=Title：{0}}" />-->
-                                <TextBlock Margin="0,0,5,0"
-                                           Text="{Binding ValuePath, StringFormat=ValuePath：{0}}" />
-                                <TextBlock Margin="0,0,5,0"
-                                           Text="{Binding ValueType, StringFormat=Type：{0}}" />
+                                <TextBlock Margin="0,0,5,0" Text="{Binding ValuePath, StringFormat=ValuePath：{0}}" />
+                                <TextBlock Margin="0,0,5,0" Text="{Binding ValueType, StringFormat=Type：{0}}" />
                                 <TextBlock Text="{Binding Value, StringFormat=Value：{0}}" />
                             </StackPanel>
                         </Setter.Value>
@@ -200,51 +190,53 @@
                 </Style>
 
                 <DataTemplate DataType="{x:Type models:OperationModel}">
-                    <nodify:Node HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch"
-                                 Input="{Binding Inputs}"
-                                 Output="{Binding Outputs}">
+                    <nodify:Node
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Input="{Binding Inputs}"
+                        Output="{Binding Outputs}">
                         <nodify:Node.Header>
                             <yr:EditableTextBlock Text="{Binding Operator.Name}" />
                         </nodify:Node.Header>
 
                         <nodify:Node.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{Binding DataContext.Process.DeleteSelectionCommand, Source={StaticResource Proxy}}"
-                                          Header="Delete"
-                                          Icon="{md:PackIcon Kind=Delete}" />
-                                <MenuItem Command="{Binding AddIOCommand}"
-                                          Header="Add I/O"
-                                          Icon="{md:PackIcon Kind=Add}" />
-                                <MenuItem Command="{Binding RemoveIOCommand}"
-                                          Header="Remove I/O"
-                                          Icon="{md:PackIcon Kind=Remove}" />
+                                <MenuItem
+                                    Command="{Binding DataContext.Process.DeleteSelectionCommand, Source={StaticResource Proxy}}"
+                                    Header="Delete"
+                                    Icon="{md:PackIcon Kind=Delete}" />
+                                <MenuItem
+                                    Command="{Binding AddIOCommand}"
+                                    Header="Add I/O"
+                                    Icon="{md:PackIcon Kind=Add}" />
+                                <MenuItem
+                                    Command="{Binding RemoveIOCommand}"
+                                    Header="Remove I/O"
+                                    Icon="{md:PackIcon Kind=Remove}" />
                             </ContextMenu>
                         </nodify:Node.ContextMenu>
                         <nodify:Node.Footer>
                             <DockPanel>
-                                <TextBlock Margin="10,0"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"
-                                           DockPanel.Dock="Left"
-                                           Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
-                                <Ellipse Width="10"
-                                         Height="10"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Center"
-                                         DockPanel.Dock="Right"
-                                         Fill="{Binding Operator.RunStatus.Result, Converter={converter:BooleanToBrush}}" />
+                                <TextBlock
+                                    Margin="10,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    DockPanel.Dock="Left"
+                                    Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
+                                <Ellipse
+                                    Width="10"
+                                    Height="10"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    DockPanel.Dock="Right"
+                                    Fill="{Binding Operator.RunStatus.Result, Converter={converter:BooleanToBrush}}" />
 
                                 <DockPanel.ToolTip>
                                     <StackPanel>
-                                        <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}ProcessingTime: {0} ms}" />
-                                        <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Operator.RunStatus.LastTime, StringFormat={}LastTime: {0}}" />
-                                        <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Operator.RunStatus.Result, StringFormat={}Result: {0}}" />
-                                        <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Operator.RunStatus.Message, StringFormat={}Message: {0}}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}ProcessingTime: {0} ms}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.LastTime, StringFormat={}LastTime: {0}}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.Result, StringFormat={}Result: {0}}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Operator.RunStatus.Message, StringFormat={}Message: {0}}" />
                                     </StackPanel>
                                 </DockPanel.ToolTip>
                             </DockPanel>
@@ -254,15 +246,13 @@
             </nodify:NodifyEditor.Resources>
 
             <nodify:NodifyEditor.InputBindings>
-                <KeyBinding Key="Delete"
-                            Command="{Binding DeleteSelectionCommand}" />
+                <KeyBinding Key="Delete" Command="{Binding DeleteSelectionCommand}" />
                 <!--<KeyBinding Key="C"
                             Command="{Binding GroupSelectionCommand}" />-->
             </nodify:NodifyEditor.InputBindings>
 
             <CompositeCollection>
-                <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}"
-                                           Location="{Binding Location}">
+                <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}" Location="{Binding Location}">
                     <local:OperationsMenuView />
                 </nodify:DecoratorContainer>
             </CompositeCollection>

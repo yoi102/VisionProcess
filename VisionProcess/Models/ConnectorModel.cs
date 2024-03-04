@@ -38,31 +38,29 @@ namespace VisionProcess.Models
                 throw new ArgumentNullException(nameof(owner.Operator));
             if (isInput)
             {
-                owner.Operator.Inputs.PropertyChanged += Inputs_PropertyChanged;
+                owner.Operator.Inputs.PropertyChanged += Connector_PropertyChanged;
             }
             else
             {
-                owner.Operator.Outputs.PropertyChanged += Outputs_PropertyChanged;
+                owner.Operator.Outputs.PropertyChanged += Connector_PropertyChanged;
             }
             //当前节点被移除时取消订阅，以免内存泄露
             owner.Inputs.WhenRemoved(x =>
             {
                 if (x == this)
                 {
-                    owner.Operator.Inputs.PropertyChanged -= Inputs_PropertyChanged;
-
+                    owner.Operator.Inputs.PropertyChanged -= Connector_PropertyChanged;
                 }
             });
             owner.Outputs.WhenRemoved(x =>
             {
                 if (x == this)
                 {
-                    owner.Operator.Outputs.PropertyChanged -= Outputs_PropertyChanged;
-
+                    owner.Operator.Outputs.PropertyChanged -= Connector_PropertyChanged;
                 }
             });
-
         }
+
         [JsonConstructor]
         public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerGuid)
         {
@@ -82,6 +80,9 @@ namespace VisionProcess.Models
             set => SetProperty(ref anchor, value);
         }
 
+        [JsonIgnore]
+        public bool HadAssigned { get; set; } = false;
+
         public bool IsConnected
         {
             get => isConnected;
@@ -93,6 +94,7 @@ namespace VisionProcess.Models
             get => isInput;
         }
 
+        public OperationModel Owner => owner!;
         public Guid OwnerId
         {
             get => ownerId;
@@ -134,15 +136,13 @@ namespace VisionProcess.Models
             protected set => SetProperty(ref valueType, value);
         }
 
-        private void Inputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        public bool TrySetValue(object? value)
         {
-            if (e.PropertyName == valueName)
-            {
-                OnPropertyChanged(nameof(Value));
-            }
+            HadAssigned = true;
+            return PropertyMisc.TrySetValue(owner!.Operator!, ValuePath, value);
         }
 
-        private void Outputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Connector_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == valueName)
             {

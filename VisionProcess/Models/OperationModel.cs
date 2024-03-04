@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Extensions;
@@ -105,6 +106,18 @@ namespace VisionProcess.Models
         {
             get => size;
             set => SetProperty(ref size, value);
+        }
+
+        public void RunOperatorByConnection()
+        {
+            //当全部已经链接的Inputs被赋值后才运行
+            var connectedInputsCount = Inputs.Count(x => x.IsConnected);
+            var assignedInputsCount = Inputs.Count(x => x.HadAssigned);
+            if (connectedInputsCount == assignedInputsCount)
+            {
+                Operator?.Execute();
+                Inputs.ForEach(x => x.HadAssigned = false);
+            }
         }
 
         [property: JsonIgnore]
