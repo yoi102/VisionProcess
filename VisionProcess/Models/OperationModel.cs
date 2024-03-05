@@ -104,6 +104,8 @@ namespace VisionProcess.Models
             }
         }
 
+
+
         public NodifyObservableCollection<ConnectorModel> Outputs { get; } = [];
 
         public Size Size

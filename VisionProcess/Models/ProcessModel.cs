@@ -267,16 +267,14 @@ namespace VisionProcess.Models
         [RelayCommand]
         private void RemoveIO(ConnectorModel connector)
         {
-            OperationModel? operation = Operations.FirstOrDefault(x => x.Id == connector.OwnerGuid);
-            if (operation == null) return;
             DisconnectConnector(connector);
             if (connector.IsInput)
             {
-                operation.Inputs.Remove(connector);
+                connector.Owner.Inputs.Remove(connector);
             }
             else
             {
-                operation.Outputs.Remove(connector);
+                connector.Owner.Outputs.Remove(connector);
             }
         }
         [property: JsonIgnore]

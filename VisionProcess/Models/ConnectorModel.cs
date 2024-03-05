@@ -25,7 +25,7 @@ namespace VisionProcess.Models
 
         private Type valueType;
 
-        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerId, OperationModel operationModel)
+        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerId, OperationModel owner)
         {
             this.title = title;
             this.valueType = valueType;
@@ -34,30 +34,30 @@ namespace VisionProcess.Models
             this.ownerGuid = ownerId;
             var p = valuePath.Split(".");
             valueName = p[^1];
-            owner = operationModel;
-            if (owner.Operator == null)
-                throw new ArgumentNullException(nameof(owner.Operator));
+            this.owner = owner;
+            if (this.owner.Operator == null)
+                throw new ArgumentNullException(nameof(ConnectorModel.owner.Operator));
             if (isInput)
             {
-                owner.Operator.Inputs.PropertyChanged += Connector_PropertyChanged;
+                this.owner.Operator.Inputs.PropertyChanged += Connector_PropertyChanged;
             }
             else
             {
-                owner.Operator.Outputs.PropertyChanged += Connector_PropertyChanged;
+                this.owner.Operator.Outputs.PropertyChanged += Connector_PropertyChanged;
             }
             //当前节点被移除时取消订阅，以免内存泄露
-            owner.Inputs.WhenRemoved(x =>
+            this.owner.Inputs.WhenRemoved(x =>
             {
                 if (x == this)
                 {
-                    owner.Operator.Inputs.PropertyChanged -= Connector_PropertyChanged;
+                    this.owner.Operator.Inputs.PropertyChanged -= Connector_PropertyChanged;
                 }
             });
-            owner.Outputs.WhenRemoved(x =>
+            this.owner.Outputs.WhenRemoved(x =>
             {
                 if (x == this)
                 {
-                    owner.Operator.Outputs.PropertyChanged -= Connector_PropertyChanged;
+                    this.owner.Operator.Outputs.PropertyChanged -= Connector_PropertyChanged;
                 }
             });
         }
