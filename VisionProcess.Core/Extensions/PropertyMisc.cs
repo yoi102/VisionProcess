@@ -15,29 +15,29 @@ namespace VisionProcess.Core.Extensions
         public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
         {
             string[] array = propertyName.Split('[', ']');//防止引锁问题
-            if (!propertyName.Contains('['))
-                return type.GetProperty(array.First());
-            if (type.IsAssignableTo(typeof(IList)))
+
+            if (type.IsAssignableTo(typeof(IList)) && propertyName.Contains('['))
             {
                 return type.GetProperty("Item");
             }
-            return null;
+            return type.GetProperty(array.First());
         }
 
         public static Type? GetPropertyType(Type type, string propertyName)
         {
             string[] array = propertyName.Split('[', ']');//防止引锁问题
-            if (!propertyName.Contains('['))
-                return type.GetProperty(array.First())?.PropertyType;
-            if (type.IsAssignableTo(typeof(IList)))
+            if (propertyName.Contains('['))
             {
-                return type.GetProperty("Item")?.PropertyType;
+                if (type.IsAssignableTo(typeof(IList)))
+                {
+                    return type.GetProperty("Item")?.PropertyType;
+                }
+                if (type.IsArray)
+                {
+                    return type.GetElementType();
+                }
             }
-            if (type.IsArray)
-            {
-                return type.GetElementType();
-            }
-            return null;
+            return type.GetProperty(array.First())?.PropertyType;
         }
         /// <summary>
         /// 获取实例所对应的属性的值
