@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Extensions;
 using VisionProcess.Core.Mvvm;
+using VisionProcess.Core.ToolBase;
 using VisionProcess.Extensions;
 using VisionProcess.ViewModels;
 
@@ -262,6 +263,22 @@ namespace VisionProcess.Models
             });
         }
 
+        [property: JsonIgnore]
+        [RelayCommand]
+        private void RemoveIO(ConnectorModel connector)
+        {
+            OperationModel? operation = Operations.FirstOrDefault(x => x.Id == connector.OwnerGuid);
+            if (operation == null) return;
+            DisconnectConnector(connector);
+            if (connector.IsInput)
+            {
+                operation.Inputs.Remove(connector);
+            }
+            else
+            {
+                operation.Outputs.Remove(connector);
+            }
+        }
         [property: JsonIgnore]
         [RelayCommand]
         private void StartConnection()

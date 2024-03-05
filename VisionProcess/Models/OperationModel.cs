@@ -2,11 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Extensions;
 using VisionProcess.Core.Mvvm;
 using VisionProcess.Core.ToolBase;
+using VisionProcess.Services;
 
 namespace VisionProcess.Models
 {
@@ -21,6 +23,7 @@ namespace VisionProcess.Models
         public OperationModel()
         {
             id = Guid.NewGuid();
+            Init();
         }
 
         [JsonConstructor]
@@ -48,11 +51,13 @@ namespace VisionProcess.Models
                     output.ValuePath, output.IsInput, output.OwnerGuid, this)
                 { Anchor = output.Anchor, IsConnected = output.IsConnected });
             }
+            Init();
         }
 
         public event EventHandler? OperatorExecuted;
 
         public Guid Id => id;
+
         public NodifyObservableCollection<ConnectorModel> Inputs { get; } = [];
 
         public bool IsSelected
@@ -111,17 +116,26 @@ namespace VisionProcess.Models
         [RelayCommand]
         private void AddIO()
         {
+            WindowDialogService.OpenIOConnectorDialog(this);
+        }
+
+        private void Init()
+        {
+            Inputs.WhenAdded(x =>
+            {
+                if (Inputs.FirstOrDefault(y => y.ValuePath == x.ValuePath) != null)
+                    Inputs.Remove(x);
+            });
+            Outputs.WhenAdded(x =>
+            {
+                if (Outputs.FirstOrDefault(y => y.ValuePath == x.ValuePath) != null)
+                    Outputs.Remove(x);
+            });
         }
 
         private void Operation_Executed(object? sender, EventArgs e)
         {
             OperatorExecuted?.Invoke(this, e);
-        }
-
-        [property: JsonIgnore]
-        [RelayCommand]
-        private void RemoveIO()
-        {
         }
     }
 }

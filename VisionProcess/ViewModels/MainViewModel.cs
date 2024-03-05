@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using VisionProcess.Core.Extensions;
 using VisionProcess.Core.Mvvm;
-using VisionProcess.Models;
 
 namespace VisionProcess.ViewModels
 {
@@ -25,10 +24,6 @@ namespace VisionProcess.ViewModels
         public MainViewModel(NodifyObservableCollection<EditorViewModel> editors,
             bool autoSelectNewEditor, EditorViewModel? selectedEditor)
         {
-            foreach (var editor in editors)
-            {
-                editor.OnOpenInnerProcess += OnOpenInnerProcess;
-            }
             Editors = editors;
             this.autoSelectNewEditor = autoSelectNewEditor;
             if (selectedEditor is not null)
@@ -46,33 +41,12 @@ namespace VisionProcess.ViewModels
                 {
                     SelectedEditor = editor;
                 }
-                editor.OnOpenInnerProcess += OnOpenInnerProcess;
             })
             .WhenRemoved((editor) =>
             {
-                editor.OnOpenInnerProcess -= OnOpenInnerProcess;
                 var childEditors = Editors.Where(ed => ed.Parent == editor).ToArray();
                 childEditors.ForEach(ed => Editors.Remove(ed));
             });
-        }
-
-        private void OnOpenInnerProcess(EditorViewModel parentEditor, ProcessModel process)
-        {
-            var editor = Editors.FirstOrDefault(e => e.Process == process);
-            if (editor != null)
-            {
-                SelectedEditor = editor;
-            }
-            else
-            {
-                var childEditor = new EditorViewModel
-                {
-                    Parent = parentEditor,
-                    Process = process,
-                    Name = $"[Inner] Editor {Editors.Count + 1}"
-                };
-                Editors.Add(childEditor);
-            }
         }
 
         #region Properties
@@ -100,18 +74,17 @@ namespace VisionProcess.ViewModels
             SelectedEditor = Editors[^1];
         }
 
+        private bool CanCloseEditor()
+        {
+            return Editors.Count > 0 && SelectedEditor != null;
+        }
+
         [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanCloseEditor))]
         private void CloseEditor(Guid id)
         {
             Editors.RemoveOne(editor => editor.Id == id);
         }
-
-        private bool CanCloseEditor()
-        {
-            return Editors.Count > 0 && SelectedEditor != null;
-        }
-
         #endregion Commands
     }
 }

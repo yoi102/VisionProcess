@@ -121,20 +121,26 @@
             SelectedItem="{Binding SelectedOperation}"
             SelectedItems="{Binding SelectedOperations}">
             <nodify:NodifyEditor.Resources>
-
+                <core:BindingProxy x:Key="Process" DataContext="{Binding}" />
                 <Style TargetType="{x:Type nodify:NodeInput}">
                     <Setter Property="Header" Value="{Binding}" />
                     <Setter Property="IsConnected" Value="{Binding IsConnected}" />
                     <Setter Property="Anchor" Value="{Binding Anchor, Mode=OneWayToSource}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem
+                                    Command="{Binding DataContext.RemoveIOCommand, Source={StaticResource Process}}"
+                                    CommandParameter="{Binding}"
+                                    Header="DeleteOutput"
+                                    Icon="{md:PackIcon Kind=Dead}" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate DataType="{x:Type models:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="DeleteInput" Icon="{md:PackIcon Kind=Dead}" />
-                                        </ContextMenu>
-                                    </StackPanel.ContextMenu>
                                     <!--<TextBlock VerticalAlignment="Center"
                                                Text=" I-" />-->
                                     <yr:EditableTextBlock Text="{Binding Title}" />
@@ -159,15 +165,22 @@
                     <Setter Property="Header" Value="{Binding}" />
                     <Setter Property="IsConnected" Value="{Binding IsConnected}" />
                     <Setter Property="Anchor" Value="{Binding Anchor, Mode=OneWayToSource}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem
+                                    Command="{Binding DataContext.RemoveIOCommand, Source={StaticResource Process}}"
+                                    CommandParameter="{Binding}"
+                                    Header="DeleteOutput"
+                                    Icon="{md:PackIcon Kind=Dead}" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate DataType="{x:Type models:ConnectorModel}">
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="DeleteOutput" Icon="{md:PackIcon Kind=Dead}" />
-                                        </ContextMenu>
-                                    </StackPanel.ContextMenu>
+
                                     <!--<TextBlock VerticalAlignment="Center"
                                                Text=" O-" />-->
                                     <yr:EditableTextBlock Text="{Binding Title}" />
@@ -209,10 +222,6 @@
                                     Command="{Binding AddIOCommand}"
                                     Header="Add I/O"
                                     Icon="{md:PackIcon Kind=Add}" />
-                                <MenuItem
-                                    Command="{Binding RemoveIOCommand}"
-                                    Header="Remove I/O"
-                                    Icon="{md:PackIcon Kind=Remove}" />
                             </ContextMenu>
                         </nodify:Node.ContextMenu>
                         <nodify:Node.Footer>

@@ -17,7 +17,7 @@ namespace VisionProcess.Models
         private Point anchor;
 
         private bool isConnected = false;
-        private Guid ownerGuid;
+        private readonly Guid ownerGuid;
 
         private string title;
 

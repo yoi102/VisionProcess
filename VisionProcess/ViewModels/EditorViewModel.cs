@@ -27,8 +27,6 @@ namespace VisionProcess.ViewModels
             this.name = name;
         }
 
-        public event Action<EditorViewModel, ProcessModel>? OnOpenInnerProcess;
-
         public Guid Id { get; }
 
         public string? Name
@@ -52,13 +50,6 @@ namespace VisionProcess.ViewModels
             connection.Input!.IsConnected = false;
             connection.Output!.IsConnected = false;
             Process.Connections.Remove(connection);
-        }
-
-        [property: JsonIgnore]
-        [RelayCommand]
-        private void OpenProcess(ProcessModel process)
-        {
-            OnOpenInnerProcess?.Invoke(this, process);
         }
     }
 }
