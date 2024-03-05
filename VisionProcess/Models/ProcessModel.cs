@@ -121,7 +121,7 @@ namespace VisionProcess.Models
                 var outputValue = PropertyMisc.GetValue(operationModel.Operator!, output.ValuePath);
                 output.ValueObservers.ForEach(x =>
                 {
-                    x.TrySetValue(outputValue);
+                    x.SetInputValue(outputValue);
                 });
             }
         }
