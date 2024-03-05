@@ -112,11 +112,11 @@ namespace VisionProcess.Models
         {
             //当全部已经链接的Inputs被赋值后才运行
             var connectedInputsCount = Inputs.Count(x => x.IsConnected);
-            var assignedInputsCount = Inputs.Count(x => x.HadAssigned);
+            var assignedInputsCount = Inputs.Count(x => x.IsAssigned);
             if (connectedInputsCount == assignedInputsCount)
             {
                 Operator?.Execute();
-                Inputs.ForEach(x => x.HadAssigned = false);
+                Inputs.ForEach(x => x.IsAssigned = false);
             }
         }
 

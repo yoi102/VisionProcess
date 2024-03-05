@@ -81,7 +81,7 @@ namespace VisionProcess.Models
         }
 
         [JsonIgnore]
-        public bool HadAssigned { get; set; } = false;
+        public bool IsAssigned { get; set; } = false;
 
         public bool IsConnected
         {
@@ -138,7 +138,7 @@ namespace VisionProcess.Models
 
         public bool TrySetValue(object? value)
         {
-            HadAssigned = true;
+            IsAssigned = true;
             return PropertyMisc.TrySetValue(owner!.Operator!, ValuePath, value);
         }
 
