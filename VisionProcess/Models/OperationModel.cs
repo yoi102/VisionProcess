@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Extensions;
@@ -39,14 +38,14 @@ namespace VisionProcess.Models
             {
                 var type = PropertyMisc.GetType(@operator, input.ValuePath)!;
                 Inputs.Add(new ConnectorModel(input.Title, type,
-                    input.ValuePath, input.IsInput, input.OwnerId, this)
+                    input.ValuePath, input.IsInput, input.OwnerGuid, this)
                 { Anchor = input.Anchor, IsConnected = input.IsConnected });
             }
             foreach (var output in outputs)
             {
                 var type = PropertyMisc.GetType(@operator, output.ValuePath)!;
                 Outputs.Add(new ConnectorModel(output.Title, type,
-                    output.ValuePath, output.IsInput, output.OwnerId, this)
+                    output.ValuePath, output.IsInput, output.OwnerGuid, this)
                 { Anchor = output.Anchor, IsConnected = output.IsConnected });
             }
         }
@@ -106,18 +105,6 @@ namespace VisionProcess.Models
         {
             get => size;
             set => SetProperty(ref size, value);
-        }
-
-        public void RunOperatorByConnection()
-        {
-            //当全部已经链接的Inputs被赋值后才运行
-            var connectedInputsCount = Inputs.Count(x => x.IsConnected);
-            var assignedInputsCount = Inputs.Count(x => x.IsAssigned);
-            if (connectedInputsCount == assignedInputsCount)
-            {
-                Operator?.Execute();
-                Inputs.ForEach(x => x.IsAssigned = false);
-            }
         }
 
         [property: JsonIgnore]

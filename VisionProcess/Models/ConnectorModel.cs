@@ -2,8 +2,10 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Extensions;
+using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Models
 {
@@ -16,7 +18,7 @@ namespace VisionProcess.Models
         private Point anchor;
 
         private bool isConnected = false;
-        private Guid ownerId;
+        private Guid ownerGuid;
 
         private string title;
 
@@ -30,7 +32,7 @@ namespace VisionProcess.Models
             this.valueType = valueType;
             this.valuePath = valuePath;
             this.isInput = isInput;
-            this.ownerId = ownerId;
+            this.ownerGuid = ownerId;
             var p = valuePath.Split(".");
             valueName = p[^1];
             owner = operationModel;
@@ -69,7 +71,7 @@ namespace VisionProcess.Models
             this.valueType = valueType;
             this.valuePath = valuePath;
             this.isInput = isInput;
-            this.ownerId = ownerGuid;
+            this.ownerGuid = ownerGuid;
             var p = valuePath.Split(".");
             valueName = p[^1];
         }
@@ -94,11 +96,12 @@ namespace VisionProcess.Models
             get => isInput;
         }
 
+        [JsonIgnore]
         public OperationModel Owner => owner!;
-        public Guid OwnerId
+
+        public Guid OwnerGuid
         {
-            get => ownerId;
-            set => SetProperty(ref ownerId, value);
+            get => ownerGuid;
         }
 
         public string Title
@@ -139,7 +142,16 @@ namespace VisionProcess.Models
         public bool TrySetValue(object? value)
         {
             IsAssigned = true;
-            return PropertyMisc.TrySetValue(owner!.Operator!, ValuePath, value);
+            bool result = PropertyMisc.TrySetValue(owner!.Operator!, ValuePath, value);
+            //当全部已经链接的Inputs被赋值后才运行
+            var connectedInputsCount = owner!.Inputs.Count(x => x.IsConnected);
+            var assignedInputsCount = owner.Inputs.Count(x => x.IsAssigned);
+            if (connectedInputsCount == assignedInputsCount)
+            {
+                owner.Operator?.Execute();
+                owner.Inputs.ForEach(x => x.IsAssigned = false);
+            }
+            return result;
         }
 
         private void Connector_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

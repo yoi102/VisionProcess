@@ -38,8 +38,8 @@ namespace VisionProcess.Models
             foreach (var connection in connections)
             {
                 //不出错的话必然是存在的
-                var inputOperation = operations.First(x => x.Id == connection.Input!.OwnerId);
-                var outputOperation = operations.First(x => x.Id == connection.Output!.OwnerId);
+                var inputOperation = operations.First(x => x.Id == connection.Input!.OwnerGuid);
+                var outputOperation = operations.First(x => x.Id == connection.Output!.OwnerGuid);
                 var inputConnector = inputOperation.Inputs.First(x => x.ValuePath == connection.Input!.ValuePath);
                 var outputConnector = outputOperation.Outputs.First(x => x.ValuePath == connection.Output!.ValuePath);
                 outputConnector.ValueObservers.Add(inputConnector);
@@ -61,8 +61,8 @@ namespace VisionProcess.Models
                 c.Input!.IsConnected = true;
                 c.Output!.IsConnected = true;
                 //当连接时反射设值。。。
-                var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerId);
-                var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerId);
+                var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerGuid);
+                var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerGuid);
                 var outputValue = PropertyMisc.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
                 PropertyMisc.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
                 inputOperationMode.Operator!.Execute();
@@ -114,7 +114,6 @@ namespace VisionProcess.Models
         {   //一个操作运行完时，将当前输出节点所连接的操作输入赋值，并运行。。可能导致运行多次。。
             if (sender is not OperationModel operationModel)
                 return;
-            List<OperationModel> targetOperationModelList = new();
             foreach (var output in operationModel.Outputs)
             {
                 if (!output.IsConnected)
@@ -123,10 +122,8 @@ namespace VisionProcess.Models
                 output.ValueObservers.ForEach(x =>
                 {
                     x.TrySetValue(outputValue);
-                    targetOperationModelList.Add(x.Owner);
                 });
             }
-            targetOperationModelList.ForEach(x => x.RunOperatorByConnection());
         }
 
         #region Properties
@@ -181,7 +178,7 @@ namespace VisionProcess.Models
 
         internal static bool IsCanCreateConnection(ConnectorModel source, ConnectorModel? target) => target == null ||
                     (source != target &&
-                    source.OwnerId != target.OwnerId &&
+                    source.OwnerGuid != target.OwnerGuid &&
                     source.IsInput != target.IsInput &&
                     source.ValueType.IsAssignableTo(target.ValueType));
 
