@@ -125,12 +125,13 @@ namespace VisionProcess.Models
         {
             Inputs.WhenAdded(x =>
             {
-                if (Inputs.FirstOrDefault(y => y.ValuePath == x.ValuePath) != null)
+                if (Inputs.Where(y => y.ValuePath == x.ValuePath).Count() > 1)
                     Inputs.Remove(x);
             });
             Outputs.WhenAdded(x =>
             {
-                if (Outputs.FirstOrDefault(y => y.ValuePath == x.ValuePath) != null)
+                
+                if (Outputs.Where(y => y.ValuePath == x.ValuePath).Count() > 1)
                     Outputs.Remove(x);
             });
         }
