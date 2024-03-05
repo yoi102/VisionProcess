@@ -7,7 +7,7 @@ using System.Reflection.PortableExecutable;
 
 namespace VisionProcess.Core.Helpers;
 
-public static class ReflectionHelper
+public static class AssemblyReflectionHelper
 {
     /// <summary>
     /// 据产品名称获取程序集
@@ -16,8 +16,8 @@ public static class ReflectionHelper
     /// <returns></returns>
     public static IEnumerable<Assembly> GetAssembliesByProductName(string productName)
     {
-        var asms = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var asm in asms)
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var asm in assemblies)
         {
             var asmCompanyAttr = asm.GetCustomAttribute<AssemblyProductAttribute>();
             if (asmCompanyAttr != null && asmCompanyAttr.Product == productName)
@@ -64,7 +64,7 @@ public static class ReflectionHelper
     }
 
     /// <summary>
-    /// 判断file这个文件是否是程序集
+    /// 判断 file 这个文件是否是程序集
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
@@ -157,9 +157,9 @@ public static class ReflectionHelper
                 }
             }
         }
-        var asmsInBaseDir = Directory.EnumerateFiles(AppContext.BaseDirectory,
+        var assembliesInBaseDir = Directory.EnumerateFiles(AppContext.BaseDirectory,
             "*.dll", new EnumerationOptions { RecurseSubdirectories = true });
-        foreach (var asmPath in asmsInBaseDir)
+        foreach (var asmPath in assembliesInBaseDir)
         {
             if (!IsManagedAssembly(asmPath))
             {

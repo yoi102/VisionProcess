@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Extensions;
+using VisionProcess.Core.Helpers;
 
 namespace VisionProcess.Models
 {
@@ -118,7 +119,7 @@ namespace VisionProcess.Models
                 {
                     return null;
                 }
-                return PropertyMisc.GetValue(owner.Operator, valuePath);
+                return PropertyReflectionHelper.GetValue(owner.Operator, valuePath);
             }
         }
 
@@ -143,7 +144,7 @@ namespace VisionProcess.Models
             if (!isInput)
                 return;
             IsAssigned = true;
-            PropertyMisc.TrySetValue(owner!.Operator!, ValuePath, value);
+            PropertyReflectionHelper.TrySetValue(owner!.Operator!, ValuePath, value);
             //当全部已经链接的Inputs被赋值后才运行
             var connectedInputsCount = owner!.Inputs.Count(x => x.IsConnected);
             var assignedInputsCount = owner.Inputs.Count(x => x.IsAssigned);

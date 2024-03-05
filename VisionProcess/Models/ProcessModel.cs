@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Extensions;
+using VisionProcess.Core.Helpers;
 using VisionProcess.Core.Mvvm;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Extensions;
@@ -64,8 +65,8 @@ namespace VisionProcess.Models
                 //当连接时反射设值。。。
                 var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerGuid);
                 var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerGuid);
-                var outputValue = PropertyMisc.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
-                PropertyMisc.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
+                var outputValue = PropertyReflectionHelper.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
+                PropertyReflectionHelper.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
                 inputOperationMode.Operator!.Execute();
                 c.Output.ValueObservers.Add(c.Input);
             })
@@ -119,7 +120,7 @@ namespace VisionProcess.Models
             {
                 if (!output.IsConnected)
                     continue;
-                var outputValue = PropertyMisc.GetValue(operationModel.Operator!, output.ValuePath);
+                var outputValue = PropertyReflectionHelper.GetValue(operationModel.Operator!, output.ValuePath);
                 output.ValueObservers.ForEach(x =>
                 {
                     x.SetInputValue(outputValue);

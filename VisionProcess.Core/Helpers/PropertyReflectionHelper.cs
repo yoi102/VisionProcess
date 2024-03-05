@@ -1,10 +1,9 @@
-﻿using OpenCvSharp;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
 
-namespace VisionProcess.Core.Extensions
+namespace VisionProcess.Core.Helpers
 {
-    public class PropertyMisc
+    public static class PropertyReflectionHelper
     {
         /// <summary>
         /// 获取类对应属性名称的属性信息
@@ -14,31 +13,41 @@ namespace VisionProcess.Core.Extensions
         /// <returns></returns>
         public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
         {
-            string[] array = propertyName.Split('[', ']');//防止引锁问题
-
-            if (type.IsAssignableTo(typeof(IList)) && propertyName.Contains('['))
+            string[] strings = propertyName.Split('[', ']');//防止引锁问题
+            var propertyType = type.GetProperty(strings.First())?.PropertyType;
+            if (propertyType == null) return null;
+            if (propertyType.IsAssignableTo(typeof(IList)) && propertyName.Contains('['))
             {
-                return type.GetProperty("Item");
+                return propertyType.GetProperty("Item");
             }
-            return type.GetProperty(array.First());
+            return type.GetProperty(strings.First());
         }
 
+        /// <summary>
+        /// 获取类对应属性名称的类型信息
+        /// </summary>
+        /// <param strings="instanceType">类型</param>
+        /// <param strings="propertyName">属性名称</param>
+        /// <returns></returns>
         public static Type? GetPropertyType(Type type, string propertyName)
         {
-            string[] array = propertyName.Split('[', ']');//防止引锁问题
+            string[] strings = propertyName.Split('[', ']');//防止引锁问题
             if (propertyName.Contains('['))
             {
-                if (type.IsAssignableTo(typeof(IList)))
+                var propertyType = type.GetProperty(strings.First())?.PropertyType;
+                if (propertyType == null) return null;
+                if (propertyType.IsArray)//先数组。因为数组也继承了 IList
                 {
-                    return type.GetProperty("Item")?.PropertyType;
+                    return propertyType.GetElementType();
                 }
-                if (type.IsArray)
+                if (propertyType.IsAssignableTo(typeof(IList)))
                 {
-                    return type.GetElementType();
+                    return propertyType.GetProperty("Item")?.PropertyType;
                 }
             }
-            return type.GetProperty(array.First())?.PropertyType;
+            return type.GetProperty(strings.First())?.PropertyType;
         }
+
         /// <summary>
         /// 获取实例所对应的属性的值
         /// </summary>
@@ -50,34 +59,29 @@ namespace VisionProcess.Core.Extensions
             if (instance is null) return null;
             var instanceType = instance.GetType();
             PropertyInfo? propertyInfo = GetPropertyInfo(instanceType, propertyName);
-            if (propertyInfo == null)
-            {
-                return null;
-            }
             string[] strings = propertyName.Split('[', ']');
             if (!propertyName.Contains('['))
-            {
-                return propertyInfo.GetValue(instance);
-            }
+                return propertyInfo?.GetValue(instance);
+            //当有引锁器时、
+            //获取对象先
+            var propertyInstance = instanceType.GetProperty(strings.First())?.GetValue(instance);
+
             if (!int.TryParse(strings[1], out int index))
             {
-                return propertyInfo.GetValue(instance, [strings[1]]);
+                return propertyInfo?.GetValue(propertyInstance, [strings[1]]);
             }
 
-            if (instance is Array array)
+            if (propertyInstance is Array array)
             {
                 return array.GetValue(index);
             }
-            return propertyInfo.GetValue(instance, [index]);
-
+            return propertyInfo?.GetValue(propertyInstance, [index]);
         }
 
         public static Type? GetType(object instance, string fullPath, params char[] spiltChars)
         {
             if (instance is null) return null;
             if (fullPath is null || fullPath == string.Empty) return instance.GetType();
-
-
             //return GetPropertyValue(instance, fullPath)?.GetType();//由于 Arry 问题。。。
             string[] propertyNames = SplitFullPath(fullPath, spiltChars);
             if (propertyNames.Count() == 0)
@@ -102,7 +106,6 @@ namespace VisionProcess.Core.Extensions
             }
             return instanceType;
         }
-
 
         /// <summary>
         /// 获取 instance 对象中 fullPath 位置的 Value
@@ -182,19 +185,25 @@ namespace VisionProcess.Core.Extensions
         {
             if (instance is null) return false;
             var instanceType = instance.GetType();
+
             PropertyInfo? propertyInfo = GetPropertyInfo(instanceType, propertyName);
-            if (propertyInfo is null)
-                return false;
+
             string[] strings = propertyName.Split('[', ']');
             if (!propertyName.Contains('['))
-                propertyInfo.SetValue(instance, value);
-            else if (!int.TryParse(strings[1], out int index))
-                propertyInfo.SetValue(instance, value, [strings[1]]);//若不是 int ，将视为 sting
+            {
+                propertyInfo?.SetValue(instance, value);
+                return true;
+            }
 
-            else if (instance is Array array)
+            //当有引锁器时、
+            //获取对象先
+            var propertyInstance = instanceType.GetProperty(strings.First())?.GetValue(instance);
+            if (!int.TryParse(strings[1], out int index))
+                propertyInfo?.SetValue(propertyInstance, value, [strings[1]]);//若不是 int ，将视为 sting
+            else if (propertyInstance is Array array)
                 array.SetValue(value, index);
             else
-                propertyInfo.SetValue(instance, value, [index]);
+                propertyInfo?.SetValue(propertyInstance, value, [index]);
 
             return true;
         }

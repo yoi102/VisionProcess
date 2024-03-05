@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using VisionProcess.Core.Attributes;
-using VisionProcess.Core.Extensions;
+using VisionProcess.Core.Helpers;
 using VisionProcess.Core.Mvvm;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Services;
@@ -39,14 +39,14 @@ namespace VisionProcess.Models
 
             foreach (var input in inputs)
             {
-                var type = PropertyMisc.GetType(@operator, input.ValuePath)!;
+                var type = PropertyReflectionHelper.GetType(@operator, input.ValuePath)!;
                 Inputs.Add(new ConnectorModel(input.Title, type,
                     input.ValuePath, input.IsInput, input.OwnerGuid, this)
                 { Anchor = input.Anchor, IsConnected = input.IsConnected });
             }
             foreach (var output in outputs)
             {
-                var type = PropertyMisc.GetType(@operator, output.ValuePath)!;
+                var type = PropertyReflectionHelper.GetType(@operator, output.ValuePath)!;
                 Outputs.Add(new ConnectorModel(output.Title, type,
                     output.ValuePath, output.IsInput, output.OwnerGuid, this)
                 { Anchor = output.Anchor, IsConnected = output.IsConnected });
@@ -91,7 +91,7 @@ namespace VisionProcess.Models
                 var attributes = (DefaultToolConnectorAttribute[])value.GetType().GetCustomAttributes(typeof(DefaultToolConnectorAttribute), false);
                 foreach (var item in attributes)
                 {
-                    var type = PropertyMisc.GetType(value, item.Path) ?? throw new ArgumentException("Error, DefaultToolConnectorAttribute setting  error");
+                    var type = PropertyReflectionHelper.GetType(value, item.Path) ?? throw new ArgumentException("Error, DefaultToolConnectorAttribute setting  error");
                     if (item.IsInput)
                     {
                         Inputs.Add(new ConnectorModel(item.Title, type, item.Path, true, Id, this));

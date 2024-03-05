@@ -29,7 +29,7 @@ namespace VisionProcess
             //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang); ;
-            InfoService.Instance.ToolViewModelTypes = GetToolViewModels(ReflectionHelper.GetAllReferencedAssemblies());
+            InfoService.Instance.ToolViewModelTypes = GetToolViewModels(AssemblyReflectionHelper.GetAllReferencedAssemblies());
             Services = ConfigureServices();
             InfoService.Instance.Services = Services;
             this.InitializeComponent();
