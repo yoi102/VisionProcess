@@ -20,7 +20,7 @@
                   Margin="20"
                   ItemsSource="{Binding TreeNodes}">
             <i:Interaction.Triggers>
-                <i:EventTrigger>
+                <i:EventTrigger EventName="SelectedItemChanged">
                     <i:InvokeCommandAction Command="{Binding Path=TreeNodeSelectedCommand}"
                                            CommandParameter="{Binding ElementName=treeView, Path=SelectedItem}" />
                 </i:EventTrigger>

@@ -66,7 +66,7 @@ namespace VisionProcess.Tools.Models
                 }
             }
         }
-
+        [ThresholdIgnore]
         [JsonProperty(nameof(Image))]
         public byte[]? ImageBytes
         {

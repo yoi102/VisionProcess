@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.Windows.Media.Imaging;
+using VisionProcess.Core.Attributes;
 
 namespace VisionProcess.Core.ToolBase
 {
@@ -38,7 +39,7 @@ namespace VisionProcess.Core.ToolBase
                 }
             }
         }
-
+        [ThresholdIgnore]
         [JsonProperty(nameof(DisplayImage))]
         public byte[]? DisplayImageBytes
         {

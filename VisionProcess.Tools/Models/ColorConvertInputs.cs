@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OpenCvSharp;
+using VisionProcess.Core.Attributes;
 using VisionProcess.Core.ToolBase;
 
 namespace VisionProcess.Tools.Models
@@ -32,7 +33,7 @@ namespace VisionProcess.Tools.Models
                 }
             }
         }
-
+        [ThresholdIgnore]
         [JsonProperty(nameof(Image))]
         public byte[]? ImageBytes
         {

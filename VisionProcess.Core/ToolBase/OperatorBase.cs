@@ -59,7 +59,7 @@ namespace VisionProcess.Core.ToolBase
 
         IOutputs IOperator.Outputs => Outputs;
         public TOutputs Outputs { get; } = new TOutputs();
-        [ThresholdIgnore]
+        //[ThresholdIgnore]
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
         public RunStatus RunStatus { get; } = new RunStatus();
