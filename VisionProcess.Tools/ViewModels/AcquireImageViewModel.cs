@@ -22,7 +22,7 @@ namespace VisionProcess.Tools.ViewModels
         }
 
         [JsonConstructor]
-        public AcquireImageViewModel(InputsEmpty inputs, AcquireImageOutputs outputs, GraphicsEmpty graphics, RunStatus runStatus) 
+        public AcquireImageViewModel(InputsEmpty inputs, AcquireImageOutputs outputs, GraphicsEmpty graphics, RunStatus runStatus)
             : base(inputs, outputs, graphics, runStatus)
         {
         }
@@ -30,12 +30,12 @@ namespace VisionProcess.Tools.ViewModels
         private int currentIndex = 0;
         private List<string>? imagePaths;
 
-        public int CurrentIndex
+        internal int CurrentIndex
         {
             get { return currentIndex; }
             set { currentIndex = value; }
         }
-        public List<string>? ImagePaths
+        internal List<string>? ImagePaths
         {
             get { return imagePaths; }
             set { imagePaths = value; }

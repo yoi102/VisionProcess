@@ -18,7 +18,7 @@ namespace VisionProcess.Core.ToolBase
         }
 
         private BitmapSource? displayImage;
-        [ThresholdIgnore]
+        //[ThresholdIgnore]
         [JsonIgnore]
         public BitmapSource? DisplayImage
         {

@@ -1,15 +1,17 @@
-﻿<Application x:Class="VisionProcess.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="Views/MainView.xaml">
+﻿<Application
+    x:Class="VisionProcess.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    StartupUri="Views/MainView.xaml">
 
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:MahAppsBundledTheme BaseTheme="Dark"
-                                                    PrimaryColor="Blue"
-                                                    SecondaryColor="DeepPurple" />
+                <materialDesign:MahAppsBundledTheme
+                    BaseTheme="Dark"
+                    PrimaryColor="Blue"
+                    SecondaryColor="DeepPurple" />
                 <!--  MahApps  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />

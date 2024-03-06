@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:VisionProcess.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:viewmodels="clr-namespace:VisionProcess.ViewModels"
+             xmlns:strings="clr-namespace:VisionProcess.Core.Strings;assembly=VisionProcess.Core"
              d:DataContext="{d:DesignInstance Type=viewmodels:IOConnectorViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -28,17 +29,40 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vm:TreeNode}"
                                           ItemsSource="{Binding Path=ChildNodes}">
-                    <Label Content="{Binding Path=NodeTitle}" />
+                    <Grid>
+                        <Grid.ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Path=Path,StringFormat=Path：{0}}" />
+                                <TextBlock Text="{Binding Path=FullPath,StringFormat=FullPath：{0}}" />
+                                <TextBlock Text="{Binding Path=Type,StringFormat=Type：{0}}" />
+                                <TextBlock Text="{Binding Path=State,StringFormat=State：{0}}" />
+                                <TextBlock Text="{Binding Path=Value,StringFormat=Value：{0}}" />
+                            </StackPanel>
+                        </Grid.ToolTip>
+                        <Label Content="{Binding Path=Path}" />
+                        <!--<Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               Content="{Binding Path=Path}" />
+                        <Label Grid.Column="1"
+                               Content="{Binding Path=Type}" />
+                        <Label Grid.Column="2"
+                               Content="{Binding Path=Value}" />-->
+
+                    </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            <Button Content="添加致输入"
+            <Button Content="{x:Static strings:Strings.AddToInputs}"
                     Margin="0 0 30 0"
                     Command="{Binding AddInputCommand}" />
-            <Button Content="添加致输出"
+            <Button Content="{x:Static strings:Strings.AddToOutputs}"
                     Margin="30 0 0 0"
                     Command="{Binding AddOutputCommand}" />
 

@@ -345,4 +345,10 @@
   <data name="OpenInNewWindow" xml:space="preserve">
     <value>Open in new window</value>
   </data>
+  <data name="AddToInputs" xml:space="preserve">
+    <value>Add To Inputs</value>
+  </data>
+  <data name="AddToOutputs" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

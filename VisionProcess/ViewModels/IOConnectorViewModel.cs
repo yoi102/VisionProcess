@@ -1,20 +1,15 @@
-﻿using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using OpenCvSharp;
-using OpenCvSharp.Dnn;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Models;
-using static OpenCvSharp.ML.LogisticRegression;
 
 namespace VisionProcess.ViewModels
 {
@@ -27,15 +22,33 @@ namespace VisionProcess.ViewModels
         All = CanRead | CanWrite
     }
 
-    public class TreeNode(string fullPath, object? value, Type type, ValueStatus state)
+    public class TreeNode
     {
         public ObservableCollection<TreeNode> ChildNodes { get; } = [];
-        public string FullPath { get; } = fullPath;
-        //public string NodeTitle { get; } = "";
-        public string NodeTitle { get; } = fullPath.Split('.')[^1];
-        public ValueStatus State { get; } = state;
-        public Type Type { get; } = type;
-        public object? Value { get; } = value;
+        public string FullPath { get; }
+
+        public TreeNode(string path, object? value, Type type, ValueStatus state, TreeNode? parent)
+        {
+            Path = path;
+            State = state;
+            Type = type;
+            Value = value;
+            if (parent == null)
+            {
+                FullPath = path;
+            }
+            else
+            {
+                FullPath = path.StartsWith('[') ? parent.FullPath + path : parent.FullPath + "." + path;
+            }
+
+        }
+        public string Path { get; }
+        public ValueStatus State { get; }
+        public Type Type { get; }
+        public object? Value { get; }
+
+
     }
 
     internal partial class IOConnectorViewModel : ObservableObject
@@ -55,42 +68,48 @@ namespace VisionProcess.ViewModels
             this.operationModel = operationModel;
 
             if (operationModel.Operator is not null)
-                FetchPropertyAndMethodInfo(operationModel.Operator, TreeNodes);
+                FetchPropertyAndMethodInfo(operationModel.Operator, TreeNodes, null);
             visited = null;
         }
 
         [RelayCommand(CanExecute = nameof(CanAddInputCommand))]
         private void AddInput()
         {
+            if (SelectedNode == null) return;
+            operationModel.Inputs.Add(
+                new ConnectorModel(SelectedNode.FullPath.Split('.')[^1], SelectedNode.Type,
+                SelectedNode.FullPath, true, operationModel.Id, operationModel));
+            AddInputCommand.NotifyCanExecuteChanged();
         }
 
         [RelayCommand(CanExecute = nameof(CanAddOutputCommand))]
         private void AddOutput()
         {
+            if (SelectedNode == null) return;
+            operationModel.Outputs.Add(
+                new ConnectorModel(SelectedNode.FullPath.Split('.')[^1], SelectedNode.Type,
+                SelectedNode.FullPath, false, operationModel.Id, operationModel));
+            AddOutputCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanAddInputCommand()
         {
-            if (SelectedNode is not null)
-            {
-                return operationModel.Inputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) != null ?
-                       false :
-                       SelectedNode.FullPath.Contains('.')
-                       && (SelectedNode.State & ValueStatus.CanWrite) == ValueStatus.CanWrite;
-            }
-            return false;
+            if (SelectedNode is null)
+                return false;
+            return operationModel.Inputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
+                         (SelectedNode.State & ValueStatus.CanWrite) == ValueStatus.CanWrite &&
+                         !SelectedNode.FullPath.Contains('(');//如果是方法获得的就不能当作输入
+
         }
 
         private bool CanAddOutputCommand()
         {
-            if (SelectedNode is not null)
-            {
-                return operationModel.Outputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) != null ?
-                       false :
-                       SelectedNode.FullPath.Contains('.')
-                       && (SelectedNode.State & ValueStatus.CanRead) == ValueStatus.CanRead;
-            }
-            return false;
+            if (SelectedNode is null)
+                return false;
+            return operationModel.Outputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
+                         (SelectedNode.State & ValueStatus.CanRead) == ValueStatus.CanRead;
+
+
         }
         /// <summary>
         /// //只允许一些简单类型或当前项目类型
@@ -104,39 +123,44 @@ namespace VisionProcess.ViewModels
                    typeof(IList).IsAssignableFrom(type) ||
                    typeof(Mat).IsAssignableFrom(type) ||
                    (type.Namespace != null && (type.Namespace.Contains("VisionProcess") ||//当前项目的命名空间
-                   type.Namespace.Contains("System.Collections.Generic")))
-                   ;
+                   type.Namespace.Contains("System.Collections.Generic")));
 
         }
 
-        bool IsVisited(object instance)
+        bool IsVisited(object instance, bool isClass)
         {
-            var type = instance.GetType();
             bool result = visited!.Contains(instance);
-            if (!result && type.IsClass)
+            if (!result && isClass)
                 visited!.Add(instance);
             return result;
         }
-        void FetchPropertyAndMethodInfo(object? instance, ObservableCollection<TreeNode> treeNodes)
+        void FetchPropertyAndMethodInfo(object? instance, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            //array list  字典  好像都没问题。。。。？
-            if (instance is null || IsVisited(instance))
+            // 复杂度40+！！！！！！！返回方法的还没完成、 需要修改优化！！！！！
+            if (instance is null)
                 return;
-
             #region 获取所有属性
             Type instanceType = instance.GetType();
 
-            if (instanceType.IsPointer ||
+            if (IsVisited(instance, instanceType.IsClass) ||
+                instanceType.IsPointer ||
+                instanceType.IsNotPublic ||//若是不公开的类型都舍去
+                instance is DisposableObject disposable && disposable.IsDisposed ||
                 instanceType == typeof(IntPtr) ||
                 instanceType == typeof(UIntPtr) ||
                 instanceType == typeof(DateTime) ||
-                 instanceType == typeof(DateTimeOffset))
+                instanceType == typeof(DateTimeOffset) ||
+                instanceType.IsAssignableTo(typeof(IEnumerator)))
                 return;
 
             PropertyInfo[] propertyInfos = instanceType.GetProperties();
             if (propertyInfos.Length < 1)
                 return;
-            foreach (var propertyInfo in propertyInfos)
+            //GetMethod 必须为 Public；且不能为静态
+            var targetPropertyInfos = propertyInfos.Where(x => x.GetMethod is not null &&
+                                                                                x.GetMethod.IsPublic &&
+                                                                                !x.GetMethod.IsStatic);
+            foreach (var propertyInfo in targetPropertyInfos)
             {
                 if (Attribute.GetCustomAttribute(propertyInfo, typeof(ThresholdIgnoreAttribute)) is not null ||
                     Attribute.GetCustomAttribute(propertyInfo, typeof(JsonPropertyAttribute)) is not null)
@@ -148,16 +172,17 @@ namespace VisionProcess.ViewModels
                     if (propertyInstance is not Array array)   //上面判断了必然是Array的
                         continue;
                     //这里先将整个 Array 加入TreeNode中先、
-                    AssignTreeNodeByPropertyInfo(propertyInstance, propertyInfo, treeNodes);
+                    var newTreeNode = AssignTreeNodeByPropertyInfo(propertyInstance, propertyInfo, treeNodes, parent);
+                    if (newTreeNode is null)
+                        continue;
                     //再获取 Array 的所有属性、Length 等、
                     var arrayType = propertyInfo.PropertyType;
-                    foreach (var arrayPropertyInfo in arrayType.GetProperties())
+                    var targetArrayPropertyInfos = arrayType.GetProperties()
+                        .Where(x => x.GetMethod != null && x.GetMethod.IsPublic && !x.GetMethod.IsStatic);
+                    foreach (var arrayPropertyInfo in targetArrayPropertyInfos)
                     {
-
                         var arrayPropertyInstance = arrayPropertyInfo.GetValue(propertyInstance);
-
-
-                        AssignPropertyTreeNode(arrayPropertyInstance, arrayPropertyInfo, treeNodes[^1].ChildNodes);
+                        AssignPropertyTreeNode(arrayPropertyInstance, arrayPropertyInfo, treeNodes[^1].ChildNodes, newTreeNode);
                     }
                     //再将所有 item 加入
                     var lengthInfo = propertyInfo.PropertyType.GetProperty("Length");
@@ -172,8 +197,7 @@ namespace VisionProcess.ViewModels
                         var elementType = arrayType.GetElementType();
 
                         if (elementType != null)
-                            AssignItemToTreeNode(item, string.Empty, elementType, ValueStatus.All, treeNodes[^1].ChildNodes, i);
-
+                            AssignItemToTreeNode(item, string.Empty, elementType, ValueStatus.All, treeNodes[^1].ChildNodes, i, newTreeNode);
                     }
                 }
                 //如果是IList
@@ -181,15 +205,17 @@ namespace VisionProcess.ViewModels
                 {
                     //先将当前实例加入
                     var propertyInstance = propertyInfo.GetValue(instance);
-
-                    AssignTreeNodeByPropertyInfo(propertyInstance, propertyInfo, treeNodes);
+                    var newTreeNode = AssignTreeNodeByPropertyInfo(propertyInstance, propertyInfo, treeNodes, parent);
+                    if (newTreeNode is null)
+                        continue;
                     //再获取 IList 的所有属性、Count 等、
                     var listType = propertyInfo.PropertyType;
-                    foreach (var listPropertyInfo in listType.GetProperties().Where(x => x.Name != "Item"))
+                    var targetListPropertyInfos = listType.GetProperties()
+                                 .Where(x => x.GetMethod != null && x.Name != "Item" && x.GetMethod.IsPublic && !x.GetMethod.IsStatic);
+                    foreach (var listPropertyInfo in targetListPropertyInfos)
                     {
                         var listPropertyInstance = listPropertyInfo.GetValue(propertyInstance);
-
-                        AssignPropertyTreeNode(listPropertyInfo.GetValue(propertyInstance), listPropertyInfo, treeNodes[^1].ChildNodes);
+                        AssignPropertyTreeNode(listPropertyInfo.GetValue(propertyInstance), listPropertyInfo, treeNodes[^1].ChildNodes, newTreeNode);
                     }
                     //再将所有 item 加入
                     if (propertyInstance == null)
@@ -207,72 +233,84 @@ namespace VisionProcess.ViewModels
                     for (int i = 0; i < count; i++)
                     {
                         var item = itemPropertyInfo.GetValue(propertyInstance, [i]);
-                        AssignItemToTreeNode(item, string.Empty, itemPropertyInfo.PropertyType, ValueStatus.All, treeNodes[^1].ChildNodes, i);
+                        AssignItemToTreeNode(item, string.Empty, itemPropertyInfo.PropertyType, ValueStatus.All, treeNodes[^1].ChildNodes, i, newTreeNode);
                     }
                 }
                 else if (propertyInfo.GetIndexParameters().Length > 0)//如果自定义类带引锁器,过滤。。。
                     continue;
                 else//否则为普通object?
                 {
-                    //内部异常？
-                    //System.Reflection.TargetInvocationException:“Exception has been thrown by
-                    //    the target of an invocation.”
-                    //InvalidOperationException: Method may only be called on a Type for 
-                    //        which Type.IsGenericParameter is true.
                     var propertyInstance = propertyInfo.GetValue(instance);
-                    AssignPropertyTreeNode(propertyInstance, propertyInfo, treeNodes);
+                    AssignPropertyTreeNode(propertyInstance, propertyInfo, treeNodes, parent);
                 }
             }
 
             #endregion 获取所有属性
 
             #region 获取所有无参带返回值方法
-            //导致  System.StackOverflowException
-            MethodInfo[] methods = instanceType.GetMethods();
-            var targetMethods = methods.Where(x => x.IsPublic && !x.IsStatic && x.GetParameters().Length == 0 && x.ReturnType != typeof(void));
-            foreach (var method in targetMethods)
-            {
+            //////导致  System.StackOverflowException！！！！！需要修改！！！
+            //MethodInfo[] methods = instanceType.GetMethods();
+            //var targetMethods = methods.Where(x => x.IsPublic &&
+            //                                                             !x.IsStatic &&
+            //                                                              x.GetParameters().Length == 0 &&
+            //                                                              x.ReturnType != typeof(void) &&
+            //                                                              x.ReturnType.IsPublic &&
+            //                                                             !x.ReturnType.IsPointer &&
+            //                                                             !x.ReturnType.IsGenericParameter &&
+            //                                                              x.ReturnType != typeof(MatExpr) &&
+            //                                                             !x.IsSpecialName &&
+            //                                                             !x.Name.Contains("Clone", StringComparison.OrdinalIgnoreCase)&&
+            //                                                             !x.Name.Contains("Copy", StringComparison.OrdinalIgnoreCase));
+            //foreach (var method in targetMethods)
+            //{
+            //    //System.InvalidOperationException:
+            //    //“Late bound operations cannot be
+            //    //performed on types or methods for
+            //    //which ContainsGenericParameters is true.”
 
-
-                object? returnValue = method.Invoke(instance, null);
-                //if (returnValue is null || IsVisited(returnValue))
-                //    continue;
-                string path = method.Name + "()";
-                treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead));
-                FetchPropertyAndMethodInfo(returnValue, treeNodes[^1].ChildNodes);
-            }
+            //    object? returnValue = method.Invoke(instance, null);
+            //    //if (returnValue is null || IsVisited(returnValue))
+            //    //    continue;
+            //    string path = method.Name + "()";
+            //    treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead, parent));
+            //    FetchPropertyAndMethodInfo(returnValue, treeNodes[^1].ChildNodes, parent);
+            //}
 
             #endregion 获取所有无参带返回值方法
 
 
 
         }
-        void AssignItemToTreeNode(object? instance, string propertyName, Type type, ValueStatus state, ObservableCollection<TreeNode> treeNodes, int index)
+        void AssignItemToTreeNode(object? instance, string propertyName, Type type, ValueStatus state, ObservableCollection<TreeNode> treeNodes, int index, TreeNode? parent)
         {
             string fullPath = propertyName + $"[{index}]";
-            treeNodes.Add(new TreeNode(fullPath, instance, type, state));
+            var newTreeNode = new TreeNode(fullPath, instance, type, state, parent);
+            treeNodes.Add(newTreeNode);
             //获取当前的
-            FetchPropertyAndMethodInfo(instance, treeNodes[^1].ChildNodes);
+            FetchPropertyAndMethodInfo(instance, treeNodes[^1].ChildNodes, newTreeNode);
         }
-        void AssignPropertyTreeNode(object? instance, PropertyInfo propertyInfo, ObservableCollection<TreeNode> treeNodes)
+        void AssignPropertyTreeNode(object? instance, PropertyInfo propertyInfo, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            AssignTreeNodeByPropertyInfo(instance, propertyInfo, treeNodes);
+            var newTreeNode = AssignTreeNodeByPropertyInfo(instance, propertyInfo, treeNodes, parent);
+            if (newTreeNode is null)
+                return;
             //获取当前的
-            FetchPropertyAndMethodInfo(instance, treeNodes[^1].ChildNodes);
+            FetchPropertyAndMethodInfo(instance, treeNodes[^1].ChildNodes, newTreeNode);
         }
 
-        private static void AssignTreeNodeByPropertyInfo(object? instance, PropertyInfo propertyInfo, ObservableCollection<TreeNode> treeNodes)
+        private TreeNode? AssignTreeNodeByPropertyInfo(object? instance, PropertyInfo propertyInfo, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            if (propertyInfo.GetMethod is null)
-                return;
-            if (!propertyInfo.GetMethod.IsPublic && !propertyInfo.GetMethod.IsPublic)
-                return;
             ValueStatus state = ValueStatus.None;
-            if (propertyInfo.CanRead)
+            if (propertyInfo.GetMethod is null || propertyInfo.GetMethod.IsPublic && !propertyInfo.GetMethod.IsStatic)
                 state |= ValueStatus.CanRead;
-            if (propertyInfo.CanWrite)
+            if (propertyInfo.SetMethod is not null && propertyInfo.SetMethod.IsPublic)
                 state |= ValueStatus.CanWrite;
-            treeNodes.Add(new TreeNode(propertyInfo.Name, instance, propertyInfo.PropertyType, state));
+            if (state == ValueStatus.None)
+                return null;
+
+            var newTreeNode = new TreeNode(propertyInfo.Name, instance, propertyInfo.PropertyType, state, parent);
+            treeNodes.Add(newTreeNode);
+            return newTreeNode;
         }
 
         [RelayCommand]

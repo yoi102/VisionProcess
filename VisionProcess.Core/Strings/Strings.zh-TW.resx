@@ -300,4 +300,10 @@
   <data name="OpenInNewWindow" xml:space="preserve">
     <value>在新的窗口中打開</value>
   </data>
+  <data name="AddToInputs" xml:space="preserve">
+    <value>添加至輸入</value>
+  </data>
+  <data name="AddToOutputs" xml:space="preserve">
+    <value>添加至輸出</value>
+  </data>
 </root>

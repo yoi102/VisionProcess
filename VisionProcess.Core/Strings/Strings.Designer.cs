@@ -79,6 +79,24 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Add To Inputs 的本地化字符串。
+        /// </summary>
+        public static string AddToInputs {
+            get {
+                return ResourceManager.GetString("AddToInputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似  的本地化字符串。
+        /// </summary>
+        public static string AddToOutputs {
+            get {
+                return ResourceManager.GetString("AddToOutputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Bilateral 的本地化字符串。
         /// </summary>
         public static string Bilateral {

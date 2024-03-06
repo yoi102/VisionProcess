@@ -14,7 +14,10 @@ namespace VisionProcess.Core.Helpers
         public static PropertyInfo? GetPropertyInfo(Type type, string propertyName)
         {
             string[] strings = propertyName.Split('[', ']');//防止引锁问题
-            var propertyType = type.GetProperty(strings.First())?.PropertyType;
+            Type? propertyType;
+            if (propertyName.StartsWith('[')) propertyType = type;
+            else
+                propertyType = type.GetProperty(strings.First())?.PropertyType;
             if (propertyType == null) return null;
             if (propertyType.IsAssignableTo(typeof(IList)) && propertyName.Contains('['))
             {
@@ -34,7 +37,10 @@ namespace VisionProcess.Core.Helpers
             string[] strings = propertyName.Split('[', ']');//防止引锁问题
             if (propertyName.Contains('['))
             {
-                var propertyType = type.GetProperty(strings.First())?.PropertyType;
+                Type? propertyType;
+                if (propertyName.StartsWith('[')) propertyType = type;
+                else
+                    propertyType = type.GetProperty(strings.First())?.PropertyType;
                 if (propertyType == null) return null;
                 if (propertyType.IsArray)//先数组。因为数组也继承了 IList
                 {

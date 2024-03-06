@@ -318,4 +318,10 @@
   <data name="OpenInNewWindow" xml:space="preserve">
     <value>新しいウィンドウで開く</value>
   </data>
+  <data name="AddToInputs" xml:space="preserve">
+    <value>入力に加え</value>
+  </data>
+  <data name="AddToOutputs" xml:space="preserve">
+    <value>出力に加え</value>
+  </data>
 </root>
