@@ -1,10 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using VisionProcess.Core.Attributes;
 
 namespace VisionProcess.Core.ToolBase
 {
     public class RunStatus : ObservableObject
     {
+        private Exception? exception;
+
+        private DateTime lastTime = DateTime.Now;
+
+        private string message = "";
+
+        private double processingTime = 0;
+
+        private bool result = false;
+
         public RunStatus()
         {
         }
@@ -18,6 +29,7 @@ namespace VisionProcess.Core.ToolBase
         {
             this.exception = exception;
         }
+
         [JsonConstructor]
         public RunStatus(DateTime lastTime, string message, double processingTime, bool result)
         {
@@ -26,13 +38,8 @@ namespace VisionProcess.Core.ToolBase
             this.processingTime = processingTime;
             this.result = result;
         }
-
-        private Exception? exception;
-        private DateTime lastTime = DateTime.Now;
-        private string message = "";
-        private double processingTime = 0;
-        private bool result = false;
         [JsonIgnore]
+        [ThresholdIgnore]
         public Exception? Exception
         {
             get { return exception; }

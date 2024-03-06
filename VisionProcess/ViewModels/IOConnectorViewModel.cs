@@ -206,7 +206,7 @@ namespace VisionProcess.ViewModels
                             (index == -1 ?
                             string.Empty :
                             ('[' + index + ']'));
-            if (!propertyInfo.PropertyType.IsValueType)
+            if (propertyInfo.PropertyType.IsClass)
                 visited.Add(instance);
             treeNodes.Add(new TreeNode(fullPath, instance, propertyInfo.PropertyType, state));
             //获取当前的

@@ -33,6 +33,7 @@ namespace VisionProcess
             Services = ConfigureServices();
             InfoService.Instance.Services = Services;
             this.InitializeComponent();
+
         }
 
         /// <summary>

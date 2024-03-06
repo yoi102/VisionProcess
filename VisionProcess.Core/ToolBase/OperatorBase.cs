@@ -4,6 +4,7 @@ using OpenCvSharp;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using VisionProcess.Core.Attributes;
 
 namespace VisionProcess.Core.ToolBase
 {
@@ -29,11 +30,10 @@ namespace VisionProcess.Core.ToolBase
             Graphics = graphics;
             RunStatus = runStatus;
         }
-
         public event EventHandler? Executed;
 
         public event EventHandler? Executing;
-
+        [ThresholdIgnore]
         public TGraphics Graphics { get; } = new TGraphics();
         IGraphics IOperator.Graphics => Graphics;
         public TInputs Inputs { get; } = new TInputs();
@@ -59,7 +59,7 @@ namespace VisionProcess.Core.ToolBase
 
         IOutputs IOperator.Outputs => Outputs;
         public TOutputs Outputs { get; } = new TOutputs();
-
+        [ThresholdIgnore]
         public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
 
         public RunStatus RunStatus { get; } = new RunStatus();
