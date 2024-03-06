@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using OpenCvSharp;
+using OpenCvSharp.Dnn;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Models;
+using static OpenCvSharp.ML.LogisticRegression;
 
 namespace VisionProcess.ViewModels
 {
@@ -145,8 +147,6 @@ namespace VisionProcess.ViewModels
                     var propertyInstance = propertyInfo.GetValue(instance);
                     if (propertyInstance is not Array array)   //上面判断了必然是Array的
                         continue;
-                    if (IsVisited(propertyInstance))
-                        continue;
                     //这里先将整个 Array 加入TreeNode中先、
                     AssignTreeNodeByPropertyInfo(propertyInstance, propertyInfo, treeNodes);
                     //再获取 Array 的所有属性、Length 等、
@@ -155,9 +155,7 @@ namespace VisionProcess.ViewModels
                     {
 
                         var arrayPropertyInstance = arrayPropertyInfo.GetValue(propertyInstance);
-                        //需要判断、、、IsVisited
-                        if (arrayPropertyInstance is not null && IsVisited(arrayPropertyInstance))
-                            continue;
+
 
                         AssignPropertyTreeNode(arrayPropertyInstance, arrayPropertyInfo, treeNodes[^1].ChildNodes);
                     }
@@ -172,8 +170,7 @@ namespace VisionProcess.ViewModels
                     {
                         var item = array.GetValue(i);
                         var elementType = arrayType.GetElementType();
-                        if (item is not null && IsVisited(item))
-                            continue;
+
                         if (elementType != null)
                             AssignItemToTreeNode(item, string.Empty, elementType, ValueStatus.All, treeNodes[^1].ChildNodes, i);
 
@@ -184,16 +181,14 @@ namespace VisionProcess.ViewModels
                 {
                     //先将当前实例加入
                     var propertyInstance = propertyInfo.GetValue(instance);
-                    if (propertyInstance is not null && IsVisited(propertyInstance))
-                        continue;
+
                     AssignTreeNodeByPropertyInfo(propertyInstance, propertyInfo, treeNodes);
                     //再获取 IList 的所有属性、Count 等、
                     var listType = propertyInfo.PropertyType;
                     foreach (var listPropertyInfo in listType.GetProperties().Where(x => x.Name != "Item"))
                     {
                         var listPropertyInstance = listPropertyInfo.GetValue(propertyInstance);
-                        if (listPropertyInstance is not null && IsVisited(listPropertyInstance))
-                            continue;
+
                         AssignPropertyTreeNode(listPropertyInfo.GetValue(propertyInstance), listPropertyInfo, treeNodes[^1].ChildNodes);
                     }
                     //再将所有 item 加入
@@ -212,9 +207,6 @@ namespace VisionProcess.ViewModels
                     for (int i = 0; i < count; i++)
                     {
                         var item = itemPropertyInfo.GetValue(propertyInstance, [i]);
-                        //这将导致【】之后的没有、若无但会导致 over
-                        if (item is not null && IsVisited(item))
-                            continue;
                         AssignItemToTreeNode(item, string.Empty, itemPropertyInfo.PropertyType, ValueStatus.All, treeNodes[^1].ChildNodes, i);
                     }
                 }
@@ -222,6 +214,11 @@ namespace VisionProcess.ViewModels
                     continue;
                 else//否则为普通object?
                 {
+                    //内部异常？
+                    //System.Reflection.TargetInvocationException:“Exception has been thrown by
+                    //    the target of an invocation.”
+                    //InvalidOperationException: Method may only be called on a Type for 
+                    //        which Type.IsGenericParameter is true.
                     var propertyInstance = propertyInfo.GetValue(instance);
                     AssignPropertyTreeNode(propertyInstance, propertyInfo, treeNodes);
                 }
@@ -230,22 +227,20 @@ namespace VisionProcess.ViewModels
             #endregion 获取所有属性
 
             #region 获取所有无参带返回值方法
-
-            //MethodInfo[] methods = instanceType.GetMethods(BindingFlags.Public);
-            //var targetMethods = methods.Where(x => x.GetParameters().Length == 0 && x.ReturnType != typeof(void));
-            //if (targetMethods.Count() < 1)
-            //    return;
-            //foreach (var method in targetMethods)
-            //{
+            //导致  System.StackOverflowException
+            MethodInfo[] methods = instanceType.GetMethods();
+            var targetMethods = methods.Where(x => x.IsPublic && !x.IsStatic && x.GetParameters().Length == 0 && x.ReturnType != typeof(void));
+            foreach (var method in targetMethods)
+            {
 
 
-            //    object? returnValue = method.Invoke(instance, null);
-            //    if (returnValue is null || IsVisited(returnValue))
-            //        continue;
-            //    string path = method.Name + "()";
-            //    treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead));
-            //    FetchPropertyAndMethodInfo(returnValue, treeNodes[^1].ChildNodes);
-            //}
+                object? returnValue = method.Invoke(instance, null);
+                //if (returnValue is null || IsVisited(returnValue))
+                //    continue;
+                string path = method.Name + "()";
+                treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead));
+                FetchPropertyAndMethodInfo(returnValue, treeNodes[^1].ChildNodes);
+            }
 
             #endregion 获取所有无参带返回值方法
 
