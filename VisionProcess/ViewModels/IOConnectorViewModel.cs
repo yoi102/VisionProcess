@@ -87,7 +87,12 @@ namespace VisionProcess.ViewModels
             }
             return false;
         }
-        bool AllowFetchType(Type type)//只允许一些简单类型或当前项目类型
+        /// <summary>
+        /// //只允许一些简单类型或当前项目类型
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        bool AllowFetchType(Type type)
         {
             return type.IsPrimitive || type == typeof(string) ||
                    type == typeof(DateTime) || type.IsEnum ||
