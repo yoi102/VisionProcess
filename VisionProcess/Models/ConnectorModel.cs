@@ -18,7 +18,7 @@ namespace VisionProcess.Models
         private Point anchor;
 
         private bool isConnected = false;
-        private readonly Guid ownerGuid;
+        private readonly Guid ownerId;
 
         private string title;
 
@@ -32,7 +32,7 @@ namespace VisionProcess.Models
             this.valueType = valueType;
             this.valuePath = valuePath;
             this.isInput = isInput;
-            this.ownerGuid = ownerId;
+            this.ownerId = ownerId;
             var p = valuePath.Split(".");
             valueName = p[^1];
             this.owner = owner;
@@ -64,14 +64,14 @@ namespace VisionProcess.Models
         }
 
         [JsonConstructor]
-        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerGuid)
+        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerId)
         {
             //由于反序列化时会重新 new，所以只需基础信息
             this.title = title;
             this.valueType = valueType;
             this.valuePath = valuePath;
             this.isInput = isInput;
-            this.ownerGuid = ownerGuid;
+            this.ownerId = ownerId;
             var p = valuePath.Split(".");
             valueName = p[^1];
         }
@@ -99,9 +99,9 @@ namespace VisionProcess.Models
         [JsonIgnore]
         public OperationModel Owner => owner!;
 
-        public Guid OwnerGuid
+        public Guid OwnerId
         {
-            get => ownerGuid;
+            get => ownerId;
         }
 
         public string Title

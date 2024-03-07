@@ -41,14 +41,14 @@ namespace VisionProcess.Models
             {
                 var type = PropertyReflectionHelper.GetType(@operator, input.ValuePath)!;
                 Inputs.Add(new ConnectorModel(input.Title, type,
-                    input.ValuePath, input.IsInput, input.OwnerGuid, this)
+                    input.ValuePath, input.IsInput, input.OwnerId, this)
                 { Anchor = input.Anchor, IsConnected = input.IsConnected });
             }
             foreach (var output in outputs)
             {
                 var type = PropertyReflectionHelper.GetType(@operator, output.ValuePath)!;
                 Outputs.Add(new ConnectorModel(output.Title, type,
-                    output.ValuePath, output.IsInput, output.OwnerGuid, this)
+                    output.ValuePath, output.IsInput, output.OwnerId, this)
                 { Anchor = output.Anchor, IsConnected = output.IsConnected });
             }
             Init();

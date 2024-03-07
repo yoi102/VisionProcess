@@ -40,8 +40,8 @@ namespace VisionProcess.Models
             foreach (var connection in connections)
             {
                 //不出错的话必然是存在的
-                var inputOperation = operations.First(x => x.Id == connection.Input!.OwnerGuid);
-                var outputOperation = operations.First(x => x.Id == connection.Output!.OwnerGuid);
+                var inputOperation = operations.First(x => x.Id == connection.Input!.OwnerId);
+                var outputOperation = operations.First(x => x.Id == connection.Output!.OwnerId);
                 var inputConnector = inputOperation.Inputs.First(x => x.ValuePath == connection.Input!.ValuePath);
                 var outputConnector = outputOperation.Outputs.First(x => x.ValuePath == connection.Output!.ValuePath);
                 outputConnector.ValueObservers.Add(inputConnector);
@@ -63,8 +63,8 @@ namespace VisionProcess.Models
                 c.Input!.IsConnected = true;
                 c.Output!.IsConnected = true;
                 //当连接时反射设值。。。
-                var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerGuid);
-                var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerGuid);
+                var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerId);
+                var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerId);
                 var outputValue = PropertyReflectionHelper.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
                 PropertyReflectionHelper.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
                 inputOperationMode.Operator!.Execute();
@@ -180,7 +180,7 @@ namespace VisionProcess.Models
 
         internal static bool IsCanCreateConnection(ConnectorModel source, ConnectorModel? target) => target == null ||
                     (source != target &&
-                    source.OwnerGuid != target.OwnerGuid &&
+                    source.OwnerId != target.OwnerId &&
                     source.IsInput != target.IsInput &&
                     source.ValueType.IsAssignableTo(target.ValueType));
 
