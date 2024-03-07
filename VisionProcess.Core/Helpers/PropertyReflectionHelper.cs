@@ -88,7 +88,8 @@ namespace VisionProcess.Core.Helpers
         {
             if (instance is null) return null;
             if (fullPath is null || fullPath == string.Empty) return instance.GetType();
-            //return GetPropertyValue(instance, fullPath)?.GetType();//由于 Arry 问题。。。
+            //return GetPropertyValue(instance, fullPath)?.GetType();
+            //由于List Arry 问题。。。 可能无法访问到成员的真实Type，如List<object>内成员；上面方法获取实例后则不会有问题。。。。
             string[] propertyNames = SplitFullPath(fullPath, spiltChars);
             if (propertyNames.Count() == 0)
             {
