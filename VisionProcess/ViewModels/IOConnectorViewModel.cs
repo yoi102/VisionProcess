@@ -69,7 +69,7 @@ namespace VisionProcess.ViewModels
             visited = null;
         }
 
-        [RelayCommand(CanExecute = nameof(CanAddInputCommand))]
+        [RelayCommand(CanExecute = nameof(CanAddInput))]
         private void AddInput()
         {
             if (SelectedNode == null) return;
@@ -79,7 +79,7 @@ namespace VisionProcess.ViewModels
             AddInputCommand.NotifyCanExecuteChanged();
         }
 
-        [RelayCommand(CanExecute = nameof(CanAddOutputCommand))]
+        [RelayCommand(CanExecute = nameof(CanAddOutput))]
         private void AddOutput()
         {
             if (SelectedNode == null) return;
@@ -122,7 +122,7 @@ namespace VisionProcess.ViewModels
             return newTreeNode;
         }
 
-        private bool CanAddInputCommand()
+        private bool CanAddInput()
         {
             if (SelectedNode is null)
                 return false;
@@ -131,7 +131,7 @@ namespace VisionProcess.ViewModels
                          !SelectedNode.FullPath.Contains('(');//如果是方法获得的就不能当作输入
         }
 
-        private bool CanAddOutputCommand()
+        private bool CanAddOutput()
         {
             if (SelectedNode is null)
                 return false;
@@ -210,7 +210,7 @@ namespace VisionProcess.ViewModels
         /// <param name="instanceType"></param>
         /// <param name="treeNodes"></param>
         /// <param name="parent"></param>
-        private void FetchMethodInfo(object? instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
+        private void FetchMethodInfo(object instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
             ////复杂度较高12，
             //////导致  System.StackOverflowException！！！！！需要修改！！！可能有些方法导致无限递归
