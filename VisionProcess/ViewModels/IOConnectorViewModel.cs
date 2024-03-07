@@ -127,12 +127,21 @@ namespace VisionProcess.ViewModels
 
         }
 
-        bool IsVisited(object instance, bool isClass)
+        bool IsVisitedOrNoAllow(object instance, Type type)
         {
-            bool result = visited!.Contains(instance);
-            if (!result && isClass)
+            bool isContains = visited!.Contains(instance);
+            if (!isContains && type.IsClass)
                 visited!.Add(instance);
-            return result;
+
+            return isContains ||
+                   instance is DisposableObject disposable && disposable.IsDisposed ||
+                   type.IsPointer ||
+                   type.IsNotPublic ||//若是不公开的类型都舍去
+                   type == typeof(IntPtr) ||
+                   type == typeof(UIntPtr) ||
+                   type == typeof(DateTime) ||
+                   type == typeof(DateTimeOffset) ||
+                   type.IsAssignableTo(typeof(IEnumerator));
         }
         void FetchPropertyAndMethodInfo(object? instance, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
@@ -141,16 +150,7 @@ namespace VisionProcess.ViewModels
                 return;
             #region 获取所有属性
             Type instanceType = instance.GetType();
-
-            if (IsVisited(instance, instanceType.IsClass) ||
-                instanceType.IsPointer ||
-                instanceType.IsNotPublic ||//若是不公开的类型都舍去
-                instance is DisposableObject disposable && disposable.IsDisposed ||
-                instanceType == typeof(IntPtr) ||
-                instanceType == typeof(UIntPtr) ||
-                instanceType == typeof(DateTime) ||
-                instanceType == typeof(DateTimeOffset) ||
-                instanceType.IsAssignableTo(typeof(IEnumerator)))
+            if (IsVisitedOrNoAllow(instance, instanceType))
                 return;
 
             PropertyInfo[] propertyInfos = instanceType.GetProperties();
@@ -269,7 +269,7 @@ namespace VisionProcess.ViewModels
             //    //which ContainsGenericParameters is true.”
 
             //    object? returnValue = method.Invoke(instance, null);
-            //    //if (returnValue is null || IsVisited(returnValue))
+            //    //if (returnValue is null || IsVisitedOrNoAllow(returnValue))
             //    //    continue;
             //    string path = method.Name + "()";
             //    treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead, parent));
