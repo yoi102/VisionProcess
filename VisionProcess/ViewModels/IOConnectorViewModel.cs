@@ -39,7 +39,6 @@ namespace VisionProcess.ViewModels
                 FullPath = path.StartsWith('[') ? parent.FullPath + path : parent.FullPath + "." + path;
             }
         }
-
         public ObservableCollection<TreeNode> ChildNodes { get; } = [];
         public string FullPath { get; }
         public string Path { get; }
@@ -88,21 +87,6 @@ namespace VisionProcess.ViewModels
                 new ConnectorModel(SelectedNode.FullPath.Split('.')[^1], SelectedNode.Type,
                 SelectedNode.FullPath, false, operationModel.Id, operationModel));
             AddOutputCommand.NotifyCanExecuteChanged();
-        }
-
-        /// <summary>
-        /// //只允许一些简单类型或当前项目类型
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private bool AllowFetchType(Type type)
-        {
-            return type.IsPrimitive || type == typeof(string) ||
-                   type == typeof(DateTime) || type.IsEnum ||
-                   typeof(IList).IsAssignableFrom(type) ||
-                   typeof(Mat).IsAssignableFrom(type) ||
-                   (type.Namespace != null && (type.Namespace.Contains("VisionProcess") ||//当前项目的命名空间
-                   type.Namespace.Contains("System.Collections.Generic")));
         }
 
         private void AssignItemToTreeNode(object? instance, string propertyName, Type type, ValueStatus state, ObservableCollection<TreeNode> treeNodes, int index, TreeNode? parent)
@@ -154,7 +138,15 @@ namespace VisionProcess.ViewModels
             return operationModel.Outputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
                          (SelectedNode.State & ValueStatus.CanRead) == ValueStatus.CanRead;
         }
-        private void FetchArrayOrIListPropertyAndMethodInfo(object instance, ObservableCollection<TreeNode> treeNodes, TreeNode? parent, PropertyInfo propertyInfo)
+
+        /// <summary>
+        /// 特殊处理类型为IList Array 的实例、,且将搜索到的实例再扔进<see cref="FetchPropertyAndMethodInfo"/>递归搜索更多
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyInfo"></param>
+        /// <param name="treeNodes"></param>
+        /// <param name="parent"></param>
+        private void FetchArrayOrIListPropertyAndMethodInfo(object instance, PropertyInfo propertyInfo, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
             //复杂度较高 16 但是算了、、、
             //1、这里先将整个  加入TreeNode中先、
@@ -211,48 +203,17 @@ namespace VisionProcess.ViewModels
             }
         }
 
-        private void FetchPropertyAndMethodInfo(object? instance, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
+        /// <summary>
+        /// 搜索实例的所有带返回值无参方法,且将搜索到的返回值再扔进<see cref="FetchPropertyAndMethodInfo"/>递归搜索更多
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="instanceType"></param>
+        /// <param name="treeNodes"></param>
+        /// <param name="parent"></param>
+        private void FetchMethodInfo(object? instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            // 返回方法的还没完成！！！！！
-            if (instance is null)
-                return;
-
-            #region 获取所有属性
-
-            Type instanceType = instance.GetType();
-            if (IsVisitedOrNoAllow(instance, instanceType))
-                return;
-
-            PropertyInfo[] propertyInfos = instanceType.GetProperties();
-            if (propertyInfos.Length < 1)
-                return;
-            //GetMethod 必须为 Public；且不能为静态
-            var targetPropertyInfos = propertyInfos.Where(x => x.GetMethod is not null &&
-                                                                                x.GetMethod.IsPublic &&
-                                                                                !x.GetMethod.IsStatic);
-            foreach (var propertyInfo in targetPropertyInfos)
-            {
-                if (Attribute.GetCustomAttribute(propertyInfo, typeof(ThresholdIgnoreAttribute)) is not null ||
-                    Attribute.GetCustomAttribute(propertyInfo, typeof(JsonPropertyAttribute)) is not null)
-                    continue;
-                if (propertyInfo.PropertyType.IsAssignableTo(typeof(IList)))
-                {
-                    FetchArrayOrIListPropertyAndMethodInfo(instance, treeNodes, parent, propertyInfo);
-                }
-                else if (propertyInfo.GetIndexParameters().Length > 0)//如果自定义类带引锁器,过滤。。。
-                    continue;
-                else//否则视为普通 object?
-                {
-                    var propertyInstance = propertyInfo.GetValue(instance);
-                    AssignPropertyTreeNode(propertyInstance, propertyInfo, treeNodes, parent);
-                }
-            }
-
-            #endregion 获取所有属性
-
-            #region 获取所有无参带返回值方法
-
-            //////导致  System.StackOverflowException！！！！！需要修改！！！
+            ////复杂度较高12，
+            //////导致  System.StackOverflowException！！！！！需要修改！！！可能有些方法导致无限递归
             //MethodInfo[] methods = instanceType.GetMethods();
             //var targetMethods = methods.Where(x => x.IsPublic &&
             //                                                             !x.IsStatic &&
@@ -263,7 +224,7 @@ namespace VisionProcess.ViewModels
             //                                                             !x.ReturnType.IsGenericParameter &&
             //                                                              x.ReturnType != typeof(MatExpr) &&
             //                                                             !x.IsSpecialName &&
-            //                                                             !x.Name.Contains("Clone", StringComparison.OrdinalIgnoreCase)&&
+            //                                                             !x.Name.Contains("Clone", StringComparison.OrdinalIgnoreCase) &&
             //                                                             !x.Name.Contains("Copy", StringComparison.OrdinalIgnoreCase));
             //foreach (var method in targetMethods)
             //{
@@ -279,10 +240,78 @@ namespace VisionProcess.ViewModels
             //    treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead, parent));
             //    FetchPropertyAndMethodInfo(returnValue, treeNodes[^1].ChildNodes, parent);
             //}
+        }
+
+        /// <summary>
+        /// 搜索实例的所有属性和无参带返回值方法、且继续向下寻找知道没有更多为止、并添加到 <see cref="TreeNodes"/>
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="treeNodes"></param>
+        /// <param name="parent"></param>
+        private void FetchPropertyAndMethodInfo(object? instance, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
+        {
+            // 返回方法的还没完成！！！！！
+            if (instance is null)
+                return;
+
+            #region 获取所有属性
+
+            Type instanceType = instance.GetType();
+            if (IsVisitedOrNoAllow(instance, instanceType))
+                return;
+
+            FetchPropertyInfo(instance, instanceType, treeNodes, parent);
+
+            #endregion 获取所有属性
+
+            #region 获取所有无参带返回值方法
+
+            FetchMethodInfo(instance, instanceType, treeNodes, parent);
 
             #endregion 获取所有无参带返回值方法
         }
 
+        /// <summary>
+        /// 搜索实例的所有属性,且将搜索到的实例再扔进<see cref="FetchPropertyAndMethodInfo"/>递归搜索更多
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="instanceType"></param>
+        /// <param name="treeNodes"></param>
+        /// <param name="parent"></param>
+        private void FetchPropertyInfo(object instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
+        {
+            PropertyInfo[] propertyInfos = instanceType.GetProperties();
+            if (propertyInfos.Length < 1)
+                return;
+            //GetMethod 必须为 Public；且不能为静态
+            var targetPropertyInfos = propertyInfos.Where(x => x.GetMethod is not null &&
+                                                                                x.GetMethod.IsPublic &&
+                                                                                !x.GetMethod.IsStatic);
+            foreach (var propertyInfo in targetPropertyInfos)
+            {
+                if (Attribute.GetCustomAttribute(propertyInfo, typeof(ThresholdIgnoreAttribute)) is not null ||
+                    Attribute.GetCustomAttribute(propertyInfo, typeof(JsonPropertyAttribute)) is not null)
+                    continue;
+                if (propertyInfo.PropertyType.IsAssignableTo(typeof(IList)))
+                {
+                    FetchArrayOrIListPropertyAndMethodInfo(instance, propertyInfo, treeNodes, parent);
+                }
+                else if (propertyInfo.GetIndexParameters().Length > 0)//如果自定义类带引锁器,过滤。。。
+                    continue;
+                else//否则视为普通 object?
+                {
+                    var propertyInstance = propertyInfo.GetValue(instance);
+                    AssignPropertyTreeNode(propertyInstance, propertyInfo, treeNodes, parent);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 判断实例是否搜索过防止无限递归、且判断是否允许该类型向下所搜
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private bool IsVisitedOrNoAllow(object instance, Type type)
         {
             bool isContains = visited!.Contains(instance);
@@ -295,10 +324,11 @@ namespace VisionProcess.ViewModels
                    type.IsNotPublic ||//若是不公开的类型都舍去
                    type == typeof(IntPtr) ||
                    type == typeof(UIntPtr) ||
-                   type == typeof(DateTime) ||
+                   type == typeof(DateTime) ||//DateTime、DateTimeOffset 中有个 Date 属性 导致无限递归
                    type == typeof(DateTimeOffset) ||
                    type.IsAssignableTo(typeof(IEnumerator));
         }
+
         [RelayCommand]
         private void TreeNodeSelected(TreeNode treeNode)
         {
