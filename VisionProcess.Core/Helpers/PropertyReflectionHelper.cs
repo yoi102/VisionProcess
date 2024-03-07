@@ -70,8 +70,15 @@ namespace VisionProcess.Core.Helpers
                 return propertyInfo?.GetValue(instance);
             //当有引锁器时、
             //获取对象先
-            var propertyInstance = instanceType.GetProperty(strings.First())?.GetValue(instance);
-
+            object? propertyInstance;
+            if (propertyName.StartsWith("["))
+            {
+                propertyInstance = instance;
+            }
+            else
+            {
+                propertyInstance = instanceType.GetProperty(strings.First())?.GetValue(instance);
+            }
             if (!int.TryParse(strings[1], out int index))
             {
                 return propertyInfo?.GetValue(propertyInstance, [strings[1]]);
@@ -202,9 +209,15 @@ namespace VisionProcess.Core.Helpers
                 return true;
             }
 
-            //当有引锁器时、
-            //获取对象先
-            var propertyInstance = instanceType.GetProperty(strings.First())?.GetValue(instance);
+            object? propertyInstance;
+            if (propertyName.StartsWith("["))
+            {
+                propertyInstance = instance;
+            }
+            else
+            {
+                propertyInstance = instanceType.GetProperty(strings.First())?.GetValue(instance);
+            }
             if (!int.TryParse(strings[1], out int index))
                 propertyInfo?.SetValue(propertyInstance, value, [strings[1]]);//若不是 int ，将视为 sting
             else if (propertyInstance is Array array)
