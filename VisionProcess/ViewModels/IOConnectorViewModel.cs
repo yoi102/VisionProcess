@@ -282,6 +282,7 @@ namespace VisionProcess.ViewModels
                 }
                 catch (Exception ex)
                 {
+                    //一些 openCv 的异常似乎无解
                     if (ex.InnerException is not OpenCVException)
                     {
                         throw;
