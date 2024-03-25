@@ -164,7 +164,7 @@ namespace VisionProcess.Core.Helpers
         /// <returns></returns>
         public static object? RunMethod(object instance, string methodName)
         {
-            MethodInfo? method = instance.GetType().GetMethod(methodName);
+            MethodInfo? method = instance.GetType().GetMethod(methodName, Type.EmptyTypes);
             return method?.Invoke(instance, null);
         }
 
