@@ -13,7 +13,7 @@ namespace VisionProcess.Core.ToolBase
         where TInputs : IInputs, new() where TOutputs : IOutputs, new() where TGraphics : IGraphics, new()
     {
         [ObservableProperty]
-        public string? name;
+        private string? name;
 
         private readonly Stopwatch stopwatch = new();
         private bool isRealTime;

@@ -6,20 +6,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using VisionProcess.Core.Attributes;
+using VisionProcess.Core.Converters;
+using VisionProcess.Core.Strings;
 using VisionProcess.Models;
 
 namespace VisionProcess.ViewModels
 {
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     [Flags]
     public enum ValueStatus
     {
+        [LocalizedDescription("None", typeof(Strings))]
         None = 0,
-        CanRead = 1,
-        CanWrite = 2,
-        All = CanRead | CanWrite
+        [LocalizedDescription("ReadOnly", typeof(Strings))]
+        ReadOnly = 1,
+        [LocalizedDescription("WriteOnly", typeof(Strings))]
+        WriteOnly = 2,
+        [LocalizedDescription("Read&Write", typeof(Strings))]
+        Read_Write = ReadOnly | WriteOnly
     }
 
     public class TreeNode
@@ -126,9 +134,9 @@ namespace VisionProcess.ViewModels
         {
             ValueStatus state = ValueStatus.None;
             if (propertyInfo.GetMethod is null || propertyInfo.GetMethod.IsPublic && !propertyInfo.GetMethod.IsStatic)
-                state |= ValueStatus.CanRead;
+                state |= ValueStatus.ReadOnly;
             if (propertyInfo.SetMethod is not null && propertyInfo.SetMethod.IsPublic)
-                state |= ValueStatus.CanWrite;
+                state |= ValueStatus.WriteOnly;
             if (state == ValueStatus.None)
                 return null;
 
@@ -142,7 +150,7 @@ namespace VisionProcess.ViewModels
             if (SelectedNode is null)
                 return false;
             return operationModel.Inputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
-                         (SelectedNode.State & ValueStatus.CanWrite) == ValueStatus.CanWrite &&
+                         (SelectedNode.State & ValueStatus.WriteOnly) == ValueStatus.WriteOnly &&
                          !SelectedNode.FullPath.Contains('(');//如果是方法获得的就不能当作输入
         }
 
@@ -151,7 +159,7 @@ namespace VisionProcess.ViewModels
             if (SelectedNode is null)
                 return false;
             return operationModel.Outputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
-                         (SelectedNode.State & ValueStatus.CanRead) == ValueStatus.CanRead;
+                         (SelectedNode.State & ValueStatus.ReadOnly) == ValueStatus.ReadOnly;
         }
 
         /// <summary>
@@ -214,7 +222,7 @@ namespace VisionProcess.ViewModels
                 }
                 if (type is null)
                     return;
-                AssignItemToTreeNode(item, string.Empty, type, ValueStatus.All, treeNodes[^1].ChildNodes, i, newTreeNode);
+                AssignItemToTreeNode(item, string.Empty, type, ValueStatus.Read_Write, treeNodes[^1].ChildNodes, i, newTreeNode);
             }
         }
 
@@ -238,7 +246,7 @@ namespace VisionProcess.ViewModels
             {
                 var fieldInstance = fieldInfo.GetValue(instance);
 
-                var newTreeNode = new TreeNode(fieldInfo.Name, fieldInstance, fieldInfo.FieldType, ValueStatus.CanRead, parent);
+                var newTreeNode = new TreeNode(fieldInfo.Name, fieldInstance, fieldInfo.FieldType, ValueStatus.ReadOnly, parent);
                 treeNodes.Add(newTreeNode);
             }
         }
@@ -275,7 +283,7 @@ namespace VisionProcess.ViewModels
                     object? returnValue = method.Invoke(instance, null);
 
                     string path = method.Name + "()";
-                    treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.CanRead, parent));
+                    treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.ReadOnly, parent));
                     FetchMemberInfo(returnValue, treeNodes[^1].ChildNodes, parent);
                 }
                 catch (Exception ex)

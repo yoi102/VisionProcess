@@ -324,4 +324,13 @@
   <data name="AddToOutputs" xml:space="preserve">
     <value>出力に加え</value>
   </data>
+  <data name="ReadOnly" xml:space="preserve">
+    <value>読み出し専用</value>
+  </data>
+  <data name="WriteOnly" xml:space="preserve">
+    <value>書き込み専用</value>
+  </data>
+  <data name="Read&amp;Write" xml:space="preserve">
+    <value>読み書き</value>
+  </data>
 </root>

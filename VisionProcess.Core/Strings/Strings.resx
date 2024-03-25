@@ -349,6 +349,18 @@
     <value>Add To Inputs</value>
   </data>
   <data name="AddToOutputs" xml:space="preserve">
-    <value></value>
+    <value>Add To Outputs</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="ReadOnly" xml:space="preserve">
+    <value>ReadOnly</value>
+  </data>
+  <data name="WriteOnly" xml:space="preserve">
+    <value>WriteOnly</value>
+  </data>
+  <data name="Read&amp;Write" xml:space="preserve">
+    <value>Read-Write</value>
   </data>
 </root>

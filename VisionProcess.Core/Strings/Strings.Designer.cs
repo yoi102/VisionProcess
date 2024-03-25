@@ -88,7 +88,7 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Add To Outputs 的本地化字符串。
         /// </summary>
         public static string AddToOutputs {
             get {
@@ -412,6 +412,15 @@ namespace VisionProcess.Core.Strings {
         }
         
         /// <summary>
+        ///   查找类似 None 的本地化字符串。
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Normalized Box 的本地化字符串。
         /// </summary>
         public static string NormalizedBox {
@@ -525,6 +534,24 @@ namespace VisionProcess.Core.Strings {
         public static string Property {
             get {
                 return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Read-Write 的本地化字符串。
+        /// </summary>
+        public static string Read_Write {
+            get {
+                return ResourceManager.GetString("Read&Write", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ReadOnly 的本地化字符串。
+        /// </summary>
+        public static string ReadOnly {
+            get {
+                return ResourceManager.GetString("ReadOnly", resourceCulture);
             }
         }
         
@@ -759,6 +786,15 @@ namespace VisionProcess.Core.Strings {
         public static string Videos {
             get {
                 return ResourceManager.GetString("Videos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 WriteOnly 的本地化字符串。
+        /// </summary>
+        public static string WriteOnly {
+            get {
+                return ResourceManager.GetString("WriteOnly", resourceCulture);
             }
         }
     }

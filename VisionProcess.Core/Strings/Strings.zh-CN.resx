@@ -339,4 +339,13 @@
   <data name="AddToOutputs" xml:space="preserve">
     <value>添加到输出</value>
   </data>
+  <data name="ReadOnly" xml:space="preserve">
+    <value>只读</value>
+  </data>
+  <data name="WriteOnly" xml:space="preserve">
+    <value>只写</value>
+  </data>
+  <data name="Read&amp;Write" xml:space="preserve">
+    <value>可读写</value>
+  </data>
 </root>
