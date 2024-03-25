@@ -252,8 +252,6 @@ namespace VisionProcess.ViewModels
         /// <param name="parent"></param>
         private void FetchMethodInfo(object instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            ////复杂度较高12，
-            //////导致  System.StackOverflowException！！！！！需要修改！！！可能有些方法导致无限递归
             MethodInfo[] methods = instanceType.GetMethods();
             var targetMethods = methods.Where(x => x.IsPublic &&//必须公开
                                                                          !x.IsStatic &&//必须非静态
