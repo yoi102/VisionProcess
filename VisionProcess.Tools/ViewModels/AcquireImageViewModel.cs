@@ -6,6 +6,7 @@ using OpenCvSharp.WpfExtensions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using VisionProcess.Core.Attributes;
 using VisionProcess.Core.Strings;
 using VisionProcess.Core.ToolBase;
@@ -66,7 +67,7 @@ namespace VisionProcess.Tools.ViewModels
 
         [property: JsonIgnore]
         [RelayCommand]
-        private void AcquireLocalImages()
+        private async Task AcquireLocalImagesAsync()
         {
             var dialog = new OpenFileDialog();
             //dialog.FileName = "Document"; // Default file name
@@ -84,7 +85,7 @@ namespace VisionProcess.Tools.ViewModels
                 //string filename = dialog.FileName;
                 imagePaths = dialog.FileNames.ToList();
                 currentIndex = 0;
-                Execute();
+                await ExecuteAsync();
             }
         }
 

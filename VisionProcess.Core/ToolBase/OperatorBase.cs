@@ -14,7 +14,7 @@ namespace VisionProcess.Core.ToolBase
     {
         [ObservableProperty]
         private string? name;
-
+        private readonly object locker = new object();
         private readonly Stopwatch stopwatch = new();
         private bool isRealTime;
 
@@ -64,7 +64,7 @@ namespace VisionProcess.Core.ToolBase
 
         public RunStatus RunStatus { get; } = new RunStatus();
 
-        public void Execute()
+        private void Execute()
         {
             OnExecuting();
 
@@ -119,9 +119,15 @@ namespace VisionProcess.Core.ToolBase
 
         [property: JsonIgnore]
         [RelayCommand]
-        private async Task ExecuteAsync()
+        public async Task ExecuteAsync()
         {
-            await Task.Run(() => Execute());
+            await Task.Run(() =>
+            {
+                lock (locker)
+                {
+                    Execute();
+                }
+            });
         }
 
         private void ExecuteWhenInputs_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

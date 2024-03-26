@@ -18,6 +18,6 @@ namespace VisionProcess.Core.ToolBase
         ObservableCollection<Record> Records { get; }
         RunStatus RunStatus { get; }
 
-        void Execute();
+        Task ExecuteAsync();
     }
 }

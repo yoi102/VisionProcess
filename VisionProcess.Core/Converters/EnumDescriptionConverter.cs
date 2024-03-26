@@ -21,16 +21,16 @@ namespace VisionProcess.Core.Converters
             return string.Empty;
         }
 
-        private string GetEnumDescription(object enumObj)
+        private string GetEnumDescription(object enumObject)
         {
-            var fi = enumObj.GetType().GetField(enumObj.ToString());
+            var fieldInfo = enumObject.GetType().GetField(enumObject.ToString());
 
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fieldInfo!.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;
             else
-                return enumObj.ToString();
+                return enumObject.ToString();
         }
     }
 }

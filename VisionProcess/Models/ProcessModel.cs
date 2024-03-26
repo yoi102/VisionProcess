@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using VisionProcess.Core.Extensions;
 using VisionProcess.Core.Helpers;
@@ -58,7 +59,7 @@ namespace VisionProcess.Models
 
         private void Init()
         {
-            Connections.WhenAdded(c =>
+            Connections.WhenAdded(async c =>
             {
                 c.Input!.IsConnected = true;
                 c.Output!.IsConnected = true;
@@ -67,7 +68,7 @@ namespace VisionProcess.Models
                 var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerId);
                 var outputValue = PropertyReflectionHelper.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
                 PropertyReflectionHelper.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
-                inputOperationMode.Operator!.Execute();
+                await inputOperationMode.Operator!.ExecuteAsync();
                 c.Output.ValueObservers.Add(c.Input);
             })
             .WhenRemoved(c =>
@@ -116,14 +117,15 @@ namespace VisionProcess.Models
         {   //一个操作运行完时，将当前输出节点所连接的操作输入赋值，并运行。。可能导致运行多次。。
             if (sender is not OperationModel operationModel)
                 return;
+
             foreach (var output in operationModel.Outputs)
             {
                 if (!output.IsConnected)
                     continue;
                 var outputValue = PropertyReflectionHelper.GetValue(operationModel.Operator!, output.ValuePath);
-                output.ValueObservers.ForEach(x =>
+                output.ValueObservers.ForEach(async x =>
                 {
-                    x.SetInputValue(outputValue);
+                    await x.SetInputValue(outputValue);
                 });
             }
         }

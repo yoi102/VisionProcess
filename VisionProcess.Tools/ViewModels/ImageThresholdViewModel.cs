@@ -45,6 +45,7 @@ namespace VisionProcess.Tools.ViewModels
             }
             Outputs.Image = Inputs.Image.Threshold(Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
             //Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
+
             Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
 
             message = Strings.Success;
