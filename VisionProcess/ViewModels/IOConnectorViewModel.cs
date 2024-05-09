@@ -82,6 +82,7 @@ namespace VisionProcess.ViewModels
         {
             return type.IsPointer ||
                    type.IsNotPublic ||//若是不公开的类型都舍去
+                   type.DeclaringType == typeof(object) ||
                    type == typeof(IntPtr) ||
                    type == typeof(UIntPtr) ||
                    type == typeof(DateTime) ||//DateTime、DateTimeOffset 中有个 Date 属性 导致无限递归
@@ -235,19 +236,20 @@ namespace VisionProcess.ViewModels
         /// <param name="parent"></param>
         private void FetchFieldInfo(object instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            //公开字段、只给读好。且不再向下搜索
             FieldInfo[] fieldInfos = instanceType.GetFields();
             if (fieldInfos.Length < 1)
                 return;
-            //GetMethod 必须为 Public；且不能为静态
-            var targetFieldInfos = fieldInfos.Where(x => x.IsPublic
-                                                                                    && !x.IsStatic);
+            // 必须为 Public；且不能为静态
+            var targetFieldInfos = fieldInfos.Where(x => x.IsPublic &&
+                                                                                    x.DeclaringType != typeof(object) &&
+                                                                                    !x.IsStatic);
             foreach (var fieldInfo in targetFieldInfos)
             {
                 var fieldInstance = fieldInfo.GetValue(instance);
 
-                var newTreeNode = new TreeNode(fieldInfo.Name, fieldInstance, fieldInfo.FieldType, ValueStatus.ReadOnly, parent);
-                treeNodes.Add(newTreeNode);
+                treeNodes.Add(new TreeNode(fieldInfo.Name, fieldInstance, fieldInfo.FieldType, ValueStatus.ReadOnly, parent));
+                FetchMemberInfo(fieldInstance, treeNodes[^1].ChildNodes, parent);//只遍历到实例的方法、不继续遍历返回值的实例
+
             }
         }
 
@@ -260,22 +262,19 @@ namespace VisionProcess.ViewModels
         /// <param name="parent"></param>
         private void FetchMethodInfo(object instance, Type instanceType, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            MethodInfo[] methods = instanceType.GetMethods();
-            var targetMethods = methods.Where(x => x.IsPublic &&//必须公开
-                                                                         !x.IsStatic &&//必须非静态
+            MethodInfo[] methods = instanceType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+            var targetMethods = methods.Where(x =>
                                                                          !x.IsConstructor &&//必须非构造器
                                                                          !x.ContainsGenericParameters &&//必须非泛型
                                                                           x.GetParameters().Length == 0 &&//必须无参
                                                                           x.ReturnType.IsPublic &&
                                                                          !x.ReturnType.IsPointer &&
+                                                                          x.DeclaringType != typeof(object) &&//排除声明于 object 的//不使用BindingFlags.DeclaredOnly 
                                                                           x.ReturnType != typeof(void) &&//必须带返回值
                                                                           x.ReturnType != typeof(Mat) &&//必须非返回Mat
-                                                                         !x.IsSpecialName &&//需要区分GetType和ToString  GetHashCode()
+                                                                         !x.IsSpecialName &&
                                                                          !x.Name.Contains("Clone", StringComparison.OrdinalIgnoreCase) &&
-                                                                         !x.Name.Contains("GetType", StringComparison.OrdinalIgnoreCase) &&
-                                                                         !x.Name.Contains("To", StringComparison.OrdinalIgnoreCase) &&
-                                                                         //!x.Name.Contains("ToString", StringComparison.OrdinalIgnoreCase) &&
-                                                                         !x.Name.Contains("GetHashCode", StringComparison.OrdinalIgnoreCase));
+                                                                         !x.Name.Contains("To", StringComparison.OrdinalIgnoreCase));
             foreach (var method in targetMethods)
             {
                 try
@@ -284,15 +283,14 @@ namespace VisionProcess.ViewModels
 
                     string path = method.Name + "()";
                     treeNodes.Add(new TreeNode(path, returnValue, method.ReturnType, ValueStatus.ReadOnly, parent));
-                    FetchMemberInfo(returnValue, treeNodes[^1].ChildNodes, parent);
+                    //FetchMemberInfo(returnValue, treeNodes[^1].ChildNodes, parent);//只遍历到实例的方法、不继续遍历返回值的实例
                 }
                 catch (Exception ex)
                 {
                     //一些 openCv 的异常似乎无解
                     if (ex.InnerException is not OpenCVException)
-                    {
                         throw;
-                    }
+
                 }
             }
         }
@@ -305,7 +303,6 @@ namespace VisionProcess.ViewModels
         /// <param name="parent"></param>
         private void FetchMemberInfo(object? instance, ObservableCollection<TreeNode> treeNodes, TreeNode? parent)
         {
-            // 返回方法的还没完成！！！！！
             if (instance is null)
                 return;
 
@@ -336,6 +333,7 @@ namespace VisionProcess.ViewModels
             var targetPropertyInfos = propertyInfos.Where(x => x.GetMethod is not null &&
                                                                                 x.GetMethod.IsPublic && //必须为 Public
                                                                                 !x.GetMethod.IsStatic && //不能为静态
+                                                                                x.DeclaringType != typeof(object) &&//不能源自 object 类的
                                                                                 x.Name != "Item");//即自带引索器的
             foreach (var propertyInfo in targetPropertyInfos)
             {

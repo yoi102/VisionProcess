@@ -14,14 +14,17 @@ namespace VisionProcess.Services
 
         public static void OpenIOConnectorDialog(OperationModel operationModel)
         {
-            MetroWindow window = new MetroWindow();
-            window.Width = 800;
-            window.Height = 600;
-            window.Title = operationModel.Operator!.Name;
-            window.ResizeMode = ResizeMode.CanResizeWithGrip;
-            window.TitleCharacterCasing = CharacterCasing.Normal;
-            var iOConnectorViewModel =new IOConnectorViewModel(operationModel);
-            window.Content = new IOConnectorView() { DataContext = iOConnectorViewModel };
+            MetroWindow window = new()
+            {
+                Width = 800,
+                Height = 600,
+                Title = operationModel.Operator!.Name,
+                ResizeMode = ResizeMode.CanResizeWithGrip,
+                TitleCharacterCasing = CharacterCasing.Normal,
+                Content = new IOConnectorView() { DataContext = new IOConnectorViewModel(operationModel) }
+            };
+            //var iOConnectorViewModel =new IOConnectorViewModel(operationModel);
+            //window.Content = new IOConnectorView() { DataContext = iOConnectorViewModel };
             window.ShowDialog();
         }
 
