@@ -271,10 +271,7 @@ namespace VisionProcess.ViewModels
                                                                          !x.ReturnType.IsPointer &&
                                                                           x.DeclaringType != typeof(object) &&//排除声明于 object 的//不使用BindingFlags.DeclaredOnly 
                                                                           x.ReturnType != typeof(void) &&//必须带返回值
-                                                                          x.ReturnType != typeof(Mat) &&//必须非返回Mat
-                                                                         !x.IsSpecialName &&
-                                                                         !x.Name.Contains("Clone", StringComparison.OrdinalIgnoreCase) &&
-                                                                         !x.Name.Contains("To", StringComparison.OrdinalIgnoreCase));
+                                                                         !x.IsSpecialName);
             foreach (var method in targetMethods)
             {
                 try
