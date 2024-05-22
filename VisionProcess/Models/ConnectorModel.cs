@@ -15,16 +15,12 @@ namespace VisionProcess.Models
         private readonly bool isInput;
 
         private readonly OperationModel? owner;
+        private readonly Guid ownerId;
         private readonly string valueName;
         private Point anchor;
-
         private bool isConnected = false;
-        private readonly Guid ownerId;
-
         private string title;
-
         private string valuePath;
-
         private Type valueType;
 
         public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerId, OperationModel owner)
@@ -34,34 +30,10 @@ namespace VisionProcess.Models
             this.valuePath = valuePath;
             this.isInput = isInput;
             this.ownerId = ownerId;
-            var p = valuePath.Split(".");
-            valueName = p[^1];
+            valueName = valuePath.Split(".")[^1];
             this.owner = owner;
             if (this.owner.Operator == null)
                 throw new ArgumentNullException(nameof(ConnectorModel.owner.Operator));
-            if (isInput)
-            {
-                this.owner.Operator.Inputs.PropertyChanged += Connector_PropertyChanged;
-            }
-            else
-            {
-                this.owner.Operator.Outputs.PropertyChanged += Connector_PropertyChanged;
-            }
-            //当前节点被移除时取消订阅，以免内存泄露
-            this.owner.Inputs.WhenRemoved(x =>
-            {
-                if (x == this)
-                {
-                    this.owner.Operator.Inputs.PropertyChanged -= Connector_PropertyChanged;
-                }
-            });
-            this.owner.Outputs.WhenRemoved(x =>
-            {
-                if (x == this)
-                {
-                    this.owner.Operator.Outputs.PropertyChanged -= Connector_PropertyChanged;
-                }
-            });
         }
 
         [JsonConstructor]
@@ -73,8 +45,7 @@ namespace VisionProcess.Models
             this.valuePath = valuePath;
             this.isInput = isInput;
             this.ownerId = ownerId;
-            var p = valuePath.Split(".");
-            valueName = p[^1];
+            valueName = valuePath.Split(".")[^1];
         }
 
         public Point Anchor
@@ -89,7 +60,11 @@ namespace VisionProcess.Models
         public bool IsConnected
         {
             get => isConnected;
-            set => SetProperty(ref isConnected, value);
+            set
+            {
+                SetProperty(ref isConnected, value);
+                if (value) OnPropertyChanged(nameof(Value));
+            }
         }
 
         public bool IsInput
@@ -153,14 +128,6 @@ namespace VisionProcess.Models
             {
                 await owner.Operator.ExecuteAsync();
                 owner.Inputs.ForEach(x => x.IsAssigned = false);
-            }
-        }
-
-        private void Connector_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == valueName)
-            {
-                OnPropertyChanged(nameof(Value));
             }
         }
     }
