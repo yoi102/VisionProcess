@@ -72,7 +72,6 @@ namespace VisionProcess.Core.ToolBase
             stopwatch.Start();
 
             RunStatus.Exception = null;
-
             try
             {
                 RunStatus.LastTime = DateTime.Now;

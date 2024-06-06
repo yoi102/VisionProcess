@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using VisionProcess.Core.Helpers;
 using VisionProcess.Core.ToolBase;
 using VisionProcess.Services;
@@ -25,6 +26,8 @@ namespace VisionProcess
 
         public App()
         {
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
             string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
             //lang = "ja-jp";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang); ;
@@ -33,7 +36,6 @@ namespace VisionProcess
             Services = ConfigureServices();
             InfoService.Instance.Services = Services;
             this.InitializeComponent();
-
         }
 
         /// <summary>
@@ -154,6 +156,14 @@ namespace VisionProcess
         [DllImport("User32.dll")]
         private static extern int ShowWindow(IntPtr hwnd, uint nCmdShow);
 
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            // 防止默认的异常处理
+            e.Handled = true;
+
+            // 显示错误消息
+            MessageBox.Show($"An unexpected exception has occurred: {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
         private void CheckMutex(StartupEventArgs e)
         {
             Process currentProc = Process.GetCurrentProcess();
@@ -176,7 +186,6 @@ namespace VisionProcess
                     //FlashWindowEx(ref ffi);
                     ShowWindow(handle, 9);
                     SetForegroundWindow(handle);
-
                 }
 
                 //var hwnd = FindWindow(null, currentProc.ProcessName);//找string的窗口
