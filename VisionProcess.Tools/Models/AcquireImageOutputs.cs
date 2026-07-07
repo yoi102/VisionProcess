@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using OpenCvSharp;
-using VisionProcess.Core.Attributes;
-using VisionProcess.Core.ToolBase;
+using VisionProcess.Abstractions.Attributes;
+using VisionProcess.Abstractions.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
@@ -25,18 +25,39 @@ namespace VisionProcess.Tools.Models
                 }
             }
         }
+
+        /// <summary>
+        /// 用于持久化的图像数据。以 PNG 格式编码后存储，避免直接序列化 <see cref="Mat"/>。
+        /// </summary>
         [ThresholdIgnore]
         [JsonProperty(nameof(Image))]
         public byte[]? ImageBytes
         {
-            get { return Image?.ToBytes(); }
+            get
+            {
+                if (Image is null || Image.Empty())
+                {
+                    return null;
+                }
+
+                Cv2.ImEncode(".png", Image, out byte[] buffer);
+                return buffer;
+            }
             set
             {
-                if (value is not null)
+                if (value is null || value.Length == 0)
                 {
-                    Image = Cv2.ImDecode(value, ImreadModes.Unchanged);
+                    Image = null;
+                    return;
                 }
+
+                Image = Cv2.ImDecode(value, ImreadModes.Unchanged);
             }
+        }
+
+        protected override void ConfigureConnectors(ConnectorProviderBuilder builder)
+        {
+            builder.Add<Mat?>("Image", "Image", () => Image, null);
         }
     }
 }

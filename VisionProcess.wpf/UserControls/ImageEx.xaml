@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="VisionProcess.wpf.UserControls.ImageEx"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:r="clr-namespace:VisionProcess.Lang;assembly=VisionProcess.Lang"
+             Name="IM"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid>
+        <Border Background="Black"
+                CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <ScrollViewer x:Name="BackFrame"
+                              Background="Black"
+                              Cursor="Arrow"
+                              Focusable="False"
+                              HorizontalScrollBarVisibility="Disabled"
+                              MouseDown="BackFrame_MouseDown"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ScrollViewer.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="MenuItem_Click"
+                                      Header="{I18N {x:Static r:LangKeys.AdaptiveForm}}"
+                                      Icon="{md:PackIcon Kind=FitToScreenOutline}" />
+                            <MenuItem Click="MenuItem_Click_1"
+                                      Header="{I18N {x:Static r:LangKeys.SaveImage}}"
+                                      Icon="{md:PackIcon Kind=ContentSave}" />
+                            <MenuItem Name="OpenInNewWindowMenuItem"
+                                      Click="OpenInNewWindow"
+                                      Header="{I18N {x:Static r:LangKeys.OpenInNewWindow}}"
+                                      Icon="{md:PackIcon Kind=WindowRestore}" />
+                        </ContextMenu>
+                    </ScrollViewer.ContextMenu>
+                    <!--  <Image Source="{Binding Path=ImageSource, ElementName=IM}"  -->
+                    <Image x:Name="image"
+                           Width="Auto"
+                           Height="Auto"
+                           MouseDown="Image_MouseDown"
+                           MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                           MouseMove="Image_MouseMove"
+                           MouseWheel="Image_MouseWheel"
+                           RenderOptions.BitmapScalingMode="NearestNeighbor"
+                           Stretch="Uniform">
+
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                </ScrollViewer>
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal">
+                    <TextBlock Margin="10,0,0,0"
+                               Foreground="White"
+                               Text=" X:" />
+                    <TextBlock Name="Path_X"
+                               Foreground="White" />
+                    <TextBlock Margin="10,0,0,0"
+                               Foreground="White"
+                               Text=" Y:" />
+                    <TextBlock Name="Path_Y"
+                               Foreground="White" />
+
+                    <StackPanel x:Name="GrayPanel"
+                                Orientation="Horizontal"
+                                Visibility="Collapsed">
+
+                        <TextBlock Name="Text_Gray"
+                                   Margin="10,0,0,0"
+                                   Foreground="White"
+                                   Text=" Gray:" />
+                        <TextBlock Name="Path_Gray"
+                                   Foreground="White" />
+                    </StackPanel>
+
+                    <StackPanel x:Name="RGBPanel"
+                                Orientation="Horizontal"
+                                Visibility="Collapsed">
+
+                        <TextBlock Name="Text_R"
+                                   Margin="10,0,0,0"
+                                   Foreground="White"
+                                   Text=" R:" />
+                        <TextBlock Name="Path_R"
+                                   Foreground="White" />
+                        <TextBlock Name="Text_G"
+                                   Margin="10,0,0,0"
+                                   Foreground="White"
+                                   Text=" G:" />
+                        <TextBlock Name="Path_G"
+                                   Foreground="White" />
+                        <TextBlock Name="Text_B"
+                                   Margin="10,0,0,0"
+                                   Foreground="White"
+                                   Text=" B:" />
+                        <TextBlock Name="Path_B"
+                                   Foreground="White" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

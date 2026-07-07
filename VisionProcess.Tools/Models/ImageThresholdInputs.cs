@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using OpenCvSharp;
-using VisionProcess.Core.Attributes;
-using VisionProcess.Core.ToolBase;
+using VisionProcess.Abstractions.Attributes;
+using VisionProcess.Abstractions.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
@@ -68,6 +68,14 @@ namespace VisionProcess.Tools.Models
         {
             get { return thresholdValue; }
             set { SetProperty(ref thresholdValue, value); }
+        }
+
+        protected override void ConfigureConnectors(ConnectorProviderBuilder builder)
+        {
+            builder.Add<Mat?>("Image", "Image", () => Image, v => Image = v);
+            builder.Add<double>("MaximumValue", "MaximumValue", () => MaximumValue, v => MaximumValue = v);
+            builder.Add<ThresholdTypes>("ThresholdType", "ThresholdType", () => ThresholdType, v => ThresholdType = v);
+            builder.Add<double>("ThresholdValue", "ThresholdValue", () => ThresholdValue, v => ThresholdValue = v);
         }
     }
 }

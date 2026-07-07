@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using OpenCvSharp;
@@ -6,15 +6,15 @@ using OpenCvSharp.WpfExtensions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using VisionProcess.Core.Attributes;
-using VisionProcess.Core.Strings;
-using VisionProcess.Core.ToolBase;
+using VisionProcess.Lang.Strings;
+using VisionProcess.Abstractions.ToolBase;
+using VisionProcess.Tools.Extensions;
 using VisionProcess.Tools.Models;
 
 namespace VisionProcess.Tools.ViewModels
 {
-    [DefaultToolConnector(false, "Image", "Outputs.Image")]
     public partial class AcquireImageViewModel : OperatorBase<InputsEmpty, AcquireImageOutputs, GraphicsEmpty>
     {
         public AcquireImageViewModel() : base()
@@ -28,41 +28,50 @@ namespace VisionProcess.Tools.ViewModels
         {
         }
 
-        private int currentIndex = 0;
-        private List<string>? imagePaths;
+        /// <summary>
+        /// 当前读取到的图片路径索引。会随文档一起保存。
+        /// </summary>
+        [JsonProperty]
+        public int CurrentIndex { get; set; }
 
-        internal int CurrentIndex
+        /// <summary>
+        /// 已选择的本地图片路径列表。会随文档一起保存。
+        /// </summary>
+        [JsonProperty]
+        public List<string>? ImagePaths { get; set; }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
         {
-            get { return currentIndex; }
-            set { currentIndex = value; }
-        }
-        internal List<string>? ImagePaths
-        {
-            get { return imagePaths; }
-            set { imagePaths = value; }
+            if (Outputs.Image is not null && Records.Count > 0)
+            {
+                Records[^1].DisplayImage = Outputs.Image.ToFrozenBitmapSource();
+            }
         }
 
         protected override bool InternalExecute(out string message)
         {
-            if (imagePaths == null || imagePaths.Count < 1)
+            if (ImagePaths == null || ImagePaths.Count < 1)
             {
                 message = Strings.PleaseSelectFiles;
-                //message = "Please select image files";
                 return false;
             }
 
-            if (currentIndex > imagePaths.Count - 1)
+            if (CurrentIndex > ImagePaths.Count - 1)
             {
-                currentIndex = 0;
+                CurrentIndex = 0;
             }
-            Outputs.Image = new Mat(imagePaths[currentIndex]);
-            Records[^1].DisplayImage = Outputs.Image.ToBitmapSource();
+            Outputs.Image = new Mat(ImagePaths[CurrentIndex]);
+            Records[^1].DisplayImage = Outputs.Image.ToFrozenBitmapSource();
 
-            currentIndex++;
-            ////延时
-            //Thread.Sleep(1000);
+            CurrentIndex++;
             message = Strings.Success;
             return true;
+        }
+
+        protected override IEnumerable<DefaultConnectorInfo> GetDefaultConnectors()
+        {
+            yield return new DefaultConnectorInfo(false, "Image", "Outputs.Image");
         }
 
         [property: JsonIgnore]
@@ -83,8 +92,8 @@ namespace VisionProcess.Tools.ViewModels
             {
                 // Open document
                 //string filename = dialog.FileName;
-                imagePaths = dialog.FileNames.ToList();
-                currentIndex = 0;
+                ImagePaths = dialog.FileNames.ToList();
+                CurrentIndex = 0;
                 await ExecuteAsync();
             }
         }

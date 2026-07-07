@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
+using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using VisionProcess.Core.Attributes;
-using VisionProcess.Core.Strings;
-using VisionProcess.Core.ToolBase;
+using VisionProcess.Lang.Strings;
+using VisionProcess.Abstractions.ToolBase;
+using VisionProcess.Tools.Extensions;
 using VisionProcess.Tools.Models;
 
 namespace VisionProcess.Tools.ViewModels
 {
-    [DefaultToolConnector(true, "Image", "Inputs.Image")]
-    [DefaultToolConnector(false, "Image", "Outputs.Image")]
     public class ColorConvertViewModel : OperatorBase<ColorConvertInputs, ColorConvertOutputs, GraphicsEmpty>
     {
         public ColorConvertViewModel() : base()
@@ -33,9 +33,9 @@ namespace VisionProcess.Tools.ViewModels
                 message = "Input image can not be null";
                 return false;
             }
-            //Cv2.CvtColor(Inputs.Image, Outputs.Image, ColorConversionCodes.RGB2BGRA);//RGB2BGRA? BRG2BGRA?
-            Outputs.Image = Inputs.Image.CvtColor(Inputs.ColorConversionCodes);
-            Records[0].DisplayImage = Outputs.Image.ToBitmapSource();
+            Outputs.Image ??= new Mat();
+            Cv2.CvtColor(Inputs.Image, Outputs.Image, Inputs.ColorConversionCodes);
+            Records[0].DisplayImage = Outputs.Image.ToFrozenBitmapSource();
 
             //to one channel ?
             //R*Weight
@@ -45,6 +45,12 @@ namespace VisionProcess.Tools.ViewModels
             message = Strings.Success;
 
             return true;
+        }
+
+        protected override IEnumerable<DefaultConnectorInfo> GetDefaultConnectors()
+        {
+            yield return new DefaultConnectorInfo(true, "Image", "Inputs.Image");
+            yield return new DefaultConnectorInfo(false, "Image", "Outputs.Image");
         }
 
         private void Init()
@@ -57,7 +63,7 @@ namespace VisionProcess.Tools.ViewModels
         {
             if (e.PropertyName?.Equals(nameof(Inputs.Image)) == true)
             {
-                Records[^1].DisplayImage = Inputs.Image?.ToBitmapSource();
+                Records[^1].DisplayImage = Inputs.Image?.ToFrozenBitmapSource();
             }
         }
     }

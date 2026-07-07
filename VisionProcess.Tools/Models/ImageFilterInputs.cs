@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using OpenCvSharp;
 using System.ComponentModel;
-using VisionProcess.Core.Attributes;
-using VisionProcess.Core.Converters;
-using VisionProcess.Core.Strings;
-using VisionProcess.Core.ToolBase;
+using VisionProcess.Abstractions.Attributes;
+using VisionProcess.Common;
+using VisionProcess.Lang.Strings;
+using VisionProcess.Abstractions.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
@@ -173,5 +173,20 @@ namespace VisionProcess.Tools.Models
         }
 
         #endregion BilateralFilter
+
+        protected override void ConfigureConnectors(ConnectorProviderBuilder builder)
+        {
+            builder.Add<Mat?>("Image", "Image", () => Image, v => Image = v);
+            builder.Add<int>("KernelHeight", "KernelHeight", () => KernelHeight, v => KernelHeight = v);
+            builder.Add<int>("KernelWidth", "KernelWidth", () => KernelWidth, v => KernelWidth = v);
+            builder.Add<int>("KernelSize", "KernelSize", () => KernelSize, v => KernelSize = v);
+            builder.Add<double>("SigmaX", "SigmaX", () => SigmaX, v => SigmaX = v);
+            builder.Add<double>("SigmaY", "SigmaY", () => SigmaY, v => SigmaY = v);
+            builder.Add<int>("Diameter", "Diameter", () => Diameter, v => Diameter = v);
+            builder.Add<double>("SigmaColor", "SigmaColor", () => SigmaColor, v => SigmaColor = v);
+            builder.Add<double>("SigmaSpace", "SigmaSpace", () => SigmaSpace, v => SigmaSpace = v);
+            builder.Add<BorderTypes>("BorderType", "BorderType", () => BorderType, v => BorderType = v);
+            builder.Add<FilterTypes>("FilterType", "FilterType", () => FilterType, v => FilterType = v);
+        }
     }
 }

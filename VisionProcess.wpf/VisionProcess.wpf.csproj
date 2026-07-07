@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antelcat.I18N.WPF" Version="2.0.0-preview-1" />
+    <PackageReference Include="Dirkster.AvalonDock" Version="5.0.0-preview.95" />
+    <PackageReference Include="Dirkster.AvalonDock.DependencyInjection" Version="5.0.0-preview.95" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.Arc" Version="5.0.0-preview.95" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
+    <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.3.3-ci1412" />
+    <PackageReference Include="MessagePipe" Version="1.8.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-preview.5.26302.115" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
+    <PackageReference Include="Nodify" Version="7.3.0" />
+    <PackageReference Include="OpenCvSharp5.Windows" Version="5.0.0.20260703" />
+    <PackageReference Include="OpenCvSharp5.WpfExtensions" Version="5.0.0.20260703" />
+    <PackageReference Include="ValueConverters" Version="4.2.8-pre" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VisionProcess.Abstractions\VisionProcess.Abstractions.csproj" />
+    <ProjectReference Include="..\VisionProcess.Common\VisionProcess.Common.csproj" />
+    <ProjectReference Include="..\VisionProcess.Lang\VisionProcess.Lang.csproj" />
+    <ProjectReference Include="..\VisionProcess.Persistence\VisionProcess.Persistence.csproj" />
+    <ProjectReference Include="..\VisionProcess.Runtime\VisionProcess.Runtime.csproj" />
+    <ProjectReference Include="..\VisionProcess.Tools\VisionProcess.Tools.csproj" />
+    <ProjectReference Include="..\VisionProcess.ViewModel\VisionProcess.ViewModel.csproj" />
+    <ProjectReference Include="..\VisionProcess.wpf.Controls\VisionProcess.wpf.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UserControls\ImageRecord.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

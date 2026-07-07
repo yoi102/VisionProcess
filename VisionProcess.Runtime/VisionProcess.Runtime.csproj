@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VisionProcess.Abstractions\VisionProcess.Abstractions.csproj" />
+    <ProjectReference Include="..\VisionProcess.Common\VisionProcess.Common.csproj" />
+  </ItemGroup>
+
+</Project>

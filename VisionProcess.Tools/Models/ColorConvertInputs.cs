@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using OpenCvSharp;
-using VisionProcess.Core.Attributes;
-using VisionProcess.Core.ToolBase;
+using VisionProcess.Abstractions.Attributes;
+using VisionProcess.Abstractions.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
@@ -45,6 +45,12 @@ namespace VisionProcess.Tools.Models
                     Image = Cv2.ImDecode(value, ImreadModes.Unchanged);
                 }
             }
+        }
+
+        protected override void ConfigureConnectors(ConnectorProviderBuilder builder)
+        {
+            builder.Add<Mat?>("Image", "Image", () => Image, v => Image = v);
+            builder.Add<ColorConversionCodes>("ColorConversionCodes", "ColorConversionCodes", () => ColorConversionCodes, v => ColorConversionCodes = v);
         }
     }
 }
