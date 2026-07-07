@@ -64,6 +64,12 @@ namespace VisionProcess.Application.ViewModels
             {
                 var childEditors = Editors.Where(ed => ed.Parent == editor).ToArray();
                 childEditors.ForEach(ed => Editors.Remove(ed));
+
+                if (SelectedEditor == editor)
+                {
+                    SelectedEditor = Editors.FirstOrDefault();
+                }
+
                 FolderExplorer?.RefreshDocuments();
             });
 
