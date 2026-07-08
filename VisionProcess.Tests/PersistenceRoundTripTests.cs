@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using VisionProcess.Application.ViewModels;
+using VisionProcess.ViewModel.ViewModels;
 using VisionProcess.Contracts;
 using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;

@@ -2,13 +2,12 @@ using System.ComponentModel;
 using AvalonDock.Core;
 using AvalonDock.Mvvm.CommunityToolkit;
 using CommunityToolkit.Mvvm.ComponentModel;
-using VisionProcess.Application.ViewModels;
 using VisionProcess.Runtime.Models;
 using VisionProcess.ViewModel.ViewServices;
 
 namespace VisionProcess.ViewModel.ViewModels.Toolboxes;
 
-public partial class PropertiesToolboxViewModel : ObservableToolboxBase
+public partial class PropertiesToolboxViewModel : ObservableObject
 {
     private readonly IToolboxIconsService _toolboxIconsService;
     private EditorViewModel? _editor;
@@ -16,16 +15,7 @@ public partial class PropertiesToolboxViewModel : ObservableToolboxBase
     public PropertiesToolboxViewModel(IToolboxIconsService toolboxIconsService)
     {
         _toolboxIconsService = toolboxIconsService;
-        Title = "Property";
-        Zone = DockZone.RightTop;
-        Icon = toolboxIconsService.Git;
-        Shortcut = "Ctrl+Shift+G";
-        IsOpenByDefault = true;
-        ContentId = Id = Guid.NewGuid().ToString();
     }
-
-    [ObservableProperty]
-    public partial string ContentId { get; private set; }
 
     [ObservableProperty]
     public partial OperationModel? SelectedOperation { get; private set; }

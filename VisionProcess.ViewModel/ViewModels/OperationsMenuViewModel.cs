@@ -11,7 +11,7 @@ using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
 using VisionProcess.Tools.Tooling;
 
-namespace VisionProcess.Application.ViewModels
+namespace VisionProcess.ViewModel.ViewModels
 {
     public partial class OperationsMenuViewModel : ObservableObject, IOperationsMenu
     {

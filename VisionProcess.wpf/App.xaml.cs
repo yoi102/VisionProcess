@@ -1,4 +1,5 @@
 using AvalonDock;
+using AvalonDock.DependencyInjection;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -9,7 +10,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using VisionProcess.Application.ViewModels;
 using VisionProcess.Contracts;
 using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;
@@ -17,11 +17,12 @@ using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
 using VisionProcess.Services;
 using VisionProcess.ViewModel;
+using VisionProcess.ViewModel.ViewModels;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
 using VisionProcess.ViewModel.ViewServices;
 using VisionProcess.wpf.ViewServices;
 
-namespace VisionProcess
+namespace VisionProcess.wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -199,7 +200,7 @@ namespace VisionProcess
 
             services.AddMessagePipe();
             services.AddViewModels();
-            services.AddSingleton<IDialogService>(_ => dialogService);
+            services.AddSingleton<IDialogService, WindowDialogService>();
             services.AddSingleton(serializer);
             services.AddSingleton(persistence);
             services.AddSingleton<IFileDocumentService>(_ => Current);
@@ -209,29 +210,7 @@ namespace VisionProcess
             services.AddSingleton<FolderExplorerToolboxViewModel>();
             services.AddSingleton<PropertiesToolboxViewModel>();
 
-            services.AddSingleton(sp =>
-            {
-                var folderExplorer = sp.GetRequiredService<FolderExplorerToolboxViewModel>();
-                var properties = sp.GetRequiredService<PropertiesToolboxViewModel>();
-                return new MainViewModel(dialogService, folderExplorer, properties);
-            });
-
             return services.BuildServiceProvider();
-        }
-
-        private static MainViewDto ToDto(MainViewModel model)
-        {
-            return new MainViewDto
-            {
-                AutoSelectNewEditor = model.AutoSelectNewEditor,
-                SelectedEditorId = model.SelectedEditor?.Id,
-                Editors = model.Editors.Select(editor => new EditorDto
-                {
-                    Id = editor.Id,
-                    Name = editor.Name,
-                    Process = ProcessMapper.ToDto(editor.Process)
-                }).ToList()
-            };
         }
 
         [DllImport("User32.dll")]

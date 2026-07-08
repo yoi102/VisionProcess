@@ -2,9 +2,9 @@ using AvalonDock;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using System.Windows;
-using VisionProcess.Application.ViewModels;
+using VisionProcess.ViewModel.ViewModels;
 
-namespace VisionProcess.Views
+namespace VisionProcess.wpf.Views
 {
     /// <summary>
     /// Interaction logic for MainView.xaml

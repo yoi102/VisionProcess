@@ -3,12 +3,11 @@ using AvalonDock.Core;
 using AvalonDock.Mvvm.CommunityToolkit;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using VisionProcess.Application.ViewModels;
 using VisionProcess.ViewModel.ViewServices;
 
 namespace VisionProcess.ViewModel.ViewModels.Toolboxes;
 
-public partial class FolderExplorerToolboxViewModel : ObservableToolboxBase, IDisposable
+public partial class FolderExplorerToolboxViewModel : ObservableObject, IDisposable
 {
     private MainViewModel? _mainViewModel;
     private readonly IFileDocumentService? _fileDocumentService;
@@ -19,16 +18,7 @@ public partial class FolderExplorerToolboxViewModel : ObservableToolboxBase, IDi
         IFileDocumentService? fileDocumentService = null)
     {
         _fileDocumentService = fileDocumentService;
-        ContentId = Id = Guid.NewGuid().ToString();
-        Title = "FolderExplorer";
-        Zone = DockZone.LeftTop;
-        Icon = toolboxIconsService.Explorer;
-        Shortcut = "Ctrl+Shift+E";
-        IsOpenByDefault = true;
     }
-
-    [ObservableProperty]
-    public partial string ContentId { get; private set; }
 
     public ObservableCollection<FolderExplorerDocumentItemViewModel> Documents { get; } = [];
 

@@ -5,7 +5,7 @@ using System;
 using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
 
-namespace VisionProcess.Application.ViewModels
+namespace VisionProcess.ViewModel.ViewModels
 {
     public partial class EditorViewModel : ObservableObject
     {

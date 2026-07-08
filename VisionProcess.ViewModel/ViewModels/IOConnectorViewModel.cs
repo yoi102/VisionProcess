@@ -12,7 +12,7 @@ using VisionProcess.Common;
 using VisionProcess.Lang.Strings;
 using VisionProcess.Runtime.Models;
 
-namespace VisionProcess.Application.ViewModels
+namespace VisionProcess.ViewModel.ViewModels
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     [Flags]

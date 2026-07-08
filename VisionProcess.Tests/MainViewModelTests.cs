@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using VisionProcess.Application.ViewModels;
+using VisionProcess.ViewModel.ViewModels;
 using Xunit;
 
 namespace VisionProcess.Tests

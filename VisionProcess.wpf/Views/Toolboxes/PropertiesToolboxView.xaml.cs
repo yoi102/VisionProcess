@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace VisionProcess.Views.Toolboxes;
+namespace VisionProcess.wpf.Views.Toolboxes;
 
 /// <summary>
 /// PropertiesToolboxView.xaml 的交互逻辑

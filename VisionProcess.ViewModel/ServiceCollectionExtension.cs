@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using VisionProcess.Application.ViewModels;
+using VisionProcess.ViewModel.ViewModels;
 
 namespace VisionProcess.ViewModel;
 

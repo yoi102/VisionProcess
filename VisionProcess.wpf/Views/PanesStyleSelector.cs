@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
-using VisionProcess.Application.ViewModels;
+using VisionProcess.ViewModel.ViewModels;
 
-namespace VisionProcess.Views
+namespace VisionProcess.wpf.Views
 {
     /// <summary>
     /// Selects the appropriate LayoutItem container style based on whether

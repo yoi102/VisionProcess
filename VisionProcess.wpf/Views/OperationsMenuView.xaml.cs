@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace VisionProcess.Views
+namespace VisionProcess.wpf.Views
 {
     /// <summary>
     /// OperationsMenuView.xaml 的交互逻辑

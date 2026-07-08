@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using VisionProcess.Runtime.Models;
 
-namespace VisionProcess.Views
+namespace VisionProcess.wpf.Views
 {
     /// <summary>
     /// EditorView.xaml 的交互逻辑

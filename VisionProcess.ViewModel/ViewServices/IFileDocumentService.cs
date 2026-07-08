@@ -1,4 +1,4 @@
-using VisionProcess.Application.ViewModels;
+using VisionProcess.ViewModel.ViewModels;
 
 namespace VisionProcess.ViewModel.ViewServices
 {

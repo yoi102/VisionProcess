@@ -9,7 +9,7 @@ using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
 
-namespace VisionProcess.Application.ViewModels
+namespace VisionProcess.ViewModel.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {

@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace VisionProcess.Views.Toolboxes;
+namespace VisionProcess.wpf.Views.Toolboxes;
 
 /// <summary>
 /// FolderExplorerToolboxView.xaml 的交互逻辑
