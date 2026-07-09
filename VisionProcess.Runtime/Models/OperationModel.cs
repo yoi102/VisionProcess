@@ -1,12 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Windows;
 using VisionProcess.Abstractions.ToolBase;
-using VisionProcess.Core.Helpers;
-using VisionProcess.Core.Mvvm;
+using VisionProcess.Common.Helpers;
+using VisionProcess.Common.Mvvm;
+using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime.Services;
 
 namespace VisionProcess.Runtime.Models
@@ -16,8 +13,8 @@ namespace VisionProcess.Runtime.Models
         private readonly Guid id;
         private IOperator? @operator;
         private bool isSelected = false;
-        private Point location;
-        private Size size;
+        private VpPoint location;
+        private VpSize size;
 
         public OperationModel() : this(Guid.NewGuid())
         {
@@ -26,34 +23,6 @@ namespace VisionProcess.Runtime.Models
         public OperationModel(Guid id)
         {
             this.id = id;
-            Init();
-        }
-
-        [JsonConstructor]
-        public OperationModel(IOperator @operator, NodifyObservableCollection<ConnectorModel> inputs,
-            NodifyObservableCollection<ConnectorModel> outputs, Point location, bool isSelected, Size size, Guid id)
-        {
-            this.@operator = @operator;
-            this.@operator.Executed += Operation_Executed;
-            this.isSelected = isSelected;
-            this.location = location;
-            this.size = size;
-            this.id = id;
-
-            foreach (var input in inputs)
-            {
-                var type = PropertyReflectionHelper.GetType(@operator, input.ValuePath)!;
-                Inputs.Add(new ConnectorModel(input.Title, type,
-                    input.ValuePath, input.IsInput, input.OwnerId, this)
-                { Anchor = input.Anchor, IsConnected = input.IsConnected });
-            }
-            foreach (var output in outputs)
-            {
-                var type = PropertyReflectionHelper.GetType(@operator, output.ValuePath)!;
-                Outputs.Add(new ConnectorModel(output.Title, type,
-                    output.ValuePath, output.IsInput, output.OwnerId, this)
-                { Anchor = output.Anchor, IsConnected = output.IsConnected });
-            }
             Init();
         }
 
@@ -69,7 +38,7 @@ namespace VisionProcess.Runtime.Models
             set => SetProperty(ref isSelected, value);
         }
 
-        public Point Location
+        public VpPoint Location
         {
             get => location;
             set => SetProperty(ref location, value);
@@ -105,24 +74,25 @@ namespace VisionProcess.Runtime.Models
             }
         }
 
-
-
         public NodifyObservableCollection<ConnectorModel> Outputs { get; } = [];
 
-        public Size Size
+        /// <summary>
+        /// 算子对应的 ViewModel，用于 View 绑定。不随文档持久化。
+        /// </summary>
+        public object? OperatorViewModel { get; set; }
+
+        public VpSize Size
         {
             get => size;
             set => SetProperty(ref size, value);
         }
 
-        [JsonIgnore]
-        public IDialogService? DialogService { get; set; }
+        public IWindowDialogService? WindowDialogService { get; set; }
 
-        [property: JsonIgnore]
         [RelayCommand]
         private void AddIO()
         {
-            DialogService?.OpenIOConnectorDialog(this);
+            WindowDialogService?.OpenIOConnectorDialog(this);
         }
 
         private void Init()
@@ -134,7 +104,7 @@ namespace VisionProcess.Runtime.Models
             });
             Outputs.WhenAdded(x =>
             {
-                
+
                 if (Outputs.Where(y => y.ValuePath == x.ValuePath).Count() > 1)
                     Outputs.Remove(x);
             });

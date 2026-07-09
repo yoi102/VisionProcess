@@ -1,3 +1,4 @@
+using Antelcat.I18N.WPF;
 using AvalonDock;
 using AvalonDock.DependencyInjection;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -7,19 +8,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using VisionProcess.Contracts;
+using VisionProcess.Abstractions.Services;
+using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;
 using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
-using VisionProcess.Services;
 using VisionProcess.ViewModel;
+using VisionProcess.Tools.Services;
+using VisionProcess.ViewModel.Tooling;
 using VisionProcess.ViewModel.ViewModels;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
 using VisionProcess.ViewModel.ViewServices;
+using VisionProcess.wpf.Services;
+using VisionProcess.wpf.Views;
 using VisionProcess.wpf.ViewServices;
 
 namespace VisionProcess.wpf
@@ -38,8 +44,10 @@ namespace VisionProcess.wpf
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             string lang = System.Globalization.CultureInfo.CurrentCulture.Name;
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+            var culture = new System.Globalization.CultureInfo(lang);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            I18NExtension.Culture = culture;
             Services = ConfigureServices();
             Ioc.Default.ConfigureServices(Services);
             this.InitializeComponent();
@@ -68,7 +76,6 @@ namespace VisionProcess.wpf
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             CheckMutex(e);
         }
 
@@ -172,7 +179,7 @@ namespace VisionProcess.wpf
 
         private EditorViewModel CreateEditorFromDto(EditorDto editorDto)
         {
-            var dialogService = Services.GetRequiredService<IDialogService>();
+            var dialogService = Services.GetRequiredService<IWindowDialogService>();
             var process = editorDto.Process is null ? new ProcessModel() : ProcessMapper.ToModel(editorDto.Process);
             var editor = new EditorViewModel(process, editorDto.Id, editorDto.Name)
             {
@@ -181,7 +188,7 @@ namespace VisionProcess.wpf
             editor.Process.OperationsMenu = editor.OperationsMenu;
             foreach (var operation in editor.Process.Operations)
             {
-                operation.DialogService = dialogService;
+                operation.WindowDialogService = dialogService;
             }
 
             return editor;
@@ -200,15 +207,22 @@ namespace VisionProcess.wpf
 
             services.AddMessagePipe();
             services.AddViewModels();
-            services.AddSingleton<IDialogService, WindowDialogService>();
+            services.AddTransient<ICultureSettingService, CultureSettingService>();
+            services.AddTransient<IThemeSettingService, ThemeSettingService>();
+            services.AddTransient<IDialogService, DialogService>();
+            services.AddTransient<ISnackbarService, SnackbarService>();
+            services.AddTransient<IWindowDialogService, WindowDialogService>();
+            services.AddTransient<IFileDialogService, FileDialogService>();
+            services.AddTransient<IOperatorFactory, OperatorFactory>();
+            services.AddTransient<IOperatorViewModelFactory, OperatorViewModelFactory>();
+            services.AddTransient<IToolboxIconsService, ToolboxIconsService>();
             services.AddSingleton(serializer);
             services.AddSingleton(persistence);
             services.AddSingleton<IFileDocumentService>(_ => Current);
             services.AddTransient<EditorViewModel>();
-            services.AddSingleton<IToolboxIconsService, ToolboxIconsService>();
 
-            services.AddSingleton<FolderExplorerToolboxViewModel>();
-            services.AddSingleton<PropertiesToolboxViewModel>();
+
+            services.AddSingleton<MainView>();
 
             return services.BuildServiceProvider();
         }
@@ -239,6 +253,10 @@ namespace VisionProcess.wpf
             if (createdNew)
             {
                 base.OnStartup(e);
+
+                var mainWindow = Current.Services.GetRequiredService<MainView>();
+                this.MainWindow = mainWindow;
+                mainWindow.Show();
             }
             else
             {

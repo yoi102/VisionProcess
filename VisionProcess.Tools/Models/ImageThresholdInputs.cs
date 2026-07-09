@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using OpenCvSharp;
 using VisionProcess.Abstractions.Attributes;
 using VisionProcess.Abstractions.ToolBase;
@@ -12,7 +11,6 @@ namespace VisionProcess.Tools.Models
         private ThresholdTypes thresholdType = ThresholdTypes.Binary;
         private double thresholdValue = 50;
 
-        [JsonIgnore]
         public Mat? Image
         {
             get
@@ -26,19 +24,6 @@ namespace VisionProcess.Tools.Models
                     image?.Dispose();
                     image = value;
                     OnPropertyChanged();
-                }
-            }
-        }
-        [ThresholdIgnore]
-        [JsonProperty(nameof(Image))]
-        public byte[]? ImageBytes
-        {
-            get { return Image?.ToBytes(); }
-            set
-            {
-                if (value is not null)
-                {
-                    Image = Cv2.ImDecode(value, ImreadModes.Unchanged);
                 }
             }
         }

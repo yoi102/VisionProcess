@@ -1,5 +1,5 @@
 using System.IO;
-using VisionProcess.Contracts;
+using VisionProcess.Persistence;
 
 namespace VisionProcess.Persistence
 {

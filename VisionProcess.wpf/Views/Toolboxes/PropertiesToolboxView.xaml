@@ -18,6 +18,6 @@
         </Grid.Resources>
 
         <views:OperationView DataContext="{Binding SelectedOperation}"
-                             Visibility="{Binding ., Converter={StaticResource NotNullValueToVisibility}}" />
+                             Visibility="{Binding DataContext, RelativeSource={RelativeSource Self}, Converter={StaticResource NotNullValueToVisibility}}" />
     </Grid>
 </UserControl>

@@ -1,4 +1,4 @@
-using System.Windows;
+using VisionProcess.Common.Primitives;
 
 namespace VisionProcess.Runtime
 {
@@ -8,7 +8,7 @@ namespace VisionProcess.Runtime
     /// </summary>
     public interface IOperationsMenu
     {
-        void OpenAt(Point location);
+        void OpenAt(VpPoint location);
 
         void Close();
     }

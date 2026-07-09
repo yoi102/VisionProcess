@@ -7,16 +7,18 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:local="clr-namespace:VisionProcess.wpf.Views"
                  xmlns:v_tb="clr-namespace:VisionProcess.wpf.Views.Toolboxes"
+                 xmlns:cv="clr-namespace:VisionProcess.wpf.Converters"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:models="clr-namespace:VisionProcess.Runtime.Models;assembly=VisionProcess.Runtime"
-                 xmlns:r="clr-namespace:VisionProcess.Lang.Strings;assembly=VisionProcess.Lang"
+                 xmlns:r="clr-namespace:VisionProcess.Lang;assembly=VisionProcess.Lang"
                  xmlns:vm="clr-namespace:VisionProcess.ViewModel.ViewModels;assembly=VisionProcess.ViewModel"
                  xmlns:vm_tb="clr-namespace:VisionProcess.ViewModel.ViewModels.Toolboxes;assembly=VisionProcess.ViewModel"
                  xmlns:svc="clr-namespace:VisionProcess.ViewModel.ViewServices;assembly=VisionProcess.ViewModel"
                  xmlns:yr="https://github.com/yoi102/xaml/controls"
-                 xmlns:cm="clr-namespace:VisionProcess.Core;assembly=VisionProcess.Common"
+                 Topmost="{Binding Topmost}"
+                 xmlns:cm="clr-namespace:VisionProcess.wpf.Helpers"
                  Title="VisionProcess"
                  Width="1400"
                  Height="850"
@@ -52,6 +54,54 @@
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
 
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Style="{StaticResource MaterialDesignActionSecondaryToggleButton}"
+                              Content="{md:PackIcon Kind=PinOff,  Size=20}"
+                              IsChecked="{Binding Topmost}"
+                              Background="Transparent"
+                              Foreground="White"
+                              md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=Pin}" />
+                <ToggleButton md:ToggleButtonAssist.OnContent="{md:PackIcon Kind=WeatherNight}"
+                              Background="Transparent"
+                              Content="{md:PackIcon Kind=WhiteBalanceSunny,Size=20}"
+                              Foreground="White"
+                              IsChecked="{Binding IsDarkTheme}"
+                              Style="{StaticResource MaterialDesignActionSecondaryToggleButton}" />
+
+                <Menu VerticalAlignment="Center"
+                      md:MenuAssist.TopLevelMenuItemHeight="25"
+                      Width="70">
+                    <MenuItem Foreground="White"
+                              Header="{Binding CurrentCultureLCID, Converter={x:Static cv:LCIDToStringConverter.Instance}}">
+                        <MenuItem Command="{Binding ChangeCultureCommand}"
+                                  CommandParameter="1033"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Header="{I18N {x:Static r:LangKeys.English}}" />
+                        <MenuItem Command="{Binding ChangeCultureCommand}"
+                                  CommandParameter="1041"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Header="{I18N {x:Static r:LangKeys.Japanese}}" />
+                        <MenuItem Command="{Binding ChangeCultureCommand}"
+                                  CommandParameter="2052"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
+                                  Header="{I18N {x:Static r:LangKeys.Chinese}}" />
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+
+
+
+
+
+
+
+
     <md:DialogHost Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                    Identifier="{x:Static svc:ViewServiceIdentifiers.RootDialogHost}"
                    Background="{DynamicResource MaterialDesign.Brush.Background}"
@@ -62,7 +112,7 @@
                 <DataTemplate DataType="{x:Type vm:EditorViewModel}">
                     <local:EditorView />
                 </DataTemplate>
-          
+
 
                 <!-- Document header template (tab header with icon + title) -->
                 <DataTemplate x:Key="DocumentTabHeaderTemplate">
@@ -77,13 +127,13 @@
                     </StackPanel>
                 </DataTemplate>
 
-                
-                
+
+
                 <!-- LayoutItem style selector: different styles for toolboxes vs documents -->
                 <local:PanesStyleSelector x:Key="PanesStyleSelector">
                     <local:PanesStyleSelector.ToolboxStyle>
                         <Style TargetType="{x:Type avalonDockControls:LayoutAnchorableItem}">
-                             <!--LayoutItem.DataContext is the LayoutItem itself; Model is the LayoutAnchorable (or toolbox VM).--> 
+                            <!--LayoutItem.DataContext is the LayoutItem itself; Model is the LayoutAnchorable (or toolbox VM).-->
                             <!--<Setter Property="Title"
                                     Value="{Binding Model.Title}" />
                             <Setter Property="ContentId"
@@ -94,7 +144,7 @@
                     </local:PanesStyleSelector.ToolboxStyle>
                     <local:PanesStyleSelector.DocumentStyle>
                         <Style TargetType="{x:Type avalonDockControls:LayoutDocumentItem}">
-                             <!--LayoutItem.DataContext is the LayoutItem itself; Model is the EditorViewModel.--> 
+                            <!--LayoutItem.DataContext is the LayoutItem itself; Model is the EditorViewModel.-->
                             <Setter Property="Title"
                                     Value="{Binding Model.Name}" />
                             <Setter Property="ContentId"
@@ -115,17 +165,17 @@
                     <avalonDock:LayoutPanel Orientation="Vertical">
                         <avalonDock:LayoutPanel Orientation="Horizontal">
                             <avalonDock:LayoutAnchorablePane DockWidth="200">
-                                <avalonDock:LayoutAnchorable Title="{x:Static r:Strings.Documents}"
+                                <avalonDock:LayoutAnchorable Title="{I18N {x:Static r:LangKeys.Documents}}"
                                                              CanClose="False"
                                                              CanHide="False">
                                     <v_tb:FolderExplorerToolboxView DataContext="{Binding FolderExplorer}" />
                                 </avalonDock:LayoutAnchorable>
                             </avalonDock:LayoutAnchorablePane>
 
-                            <avalonDock:LayoutDocumentPane  />
+                            <avalonDock:LayoutDocumentPane />
 
                             <avalonDock:LayoutAnchorablePane DockWidth="320">
-                                <avalonDock:LayoutAnchorable Title="{x:Static r:Strings.Property}"
+                                <avalonDock:LayoutAnchorable Title="{I18N {x:Static r:LangKeys.Property}}"
                                                              CanClose="False"
                                                              CanHide="False">
                                     <v_tb:PropertiesToolboxView DataContext="{Binding Properties}" />
@@ -134,10 +184,10 @@
                         </avalonDock:LayoutPanel>
 
                         <avalonDock:LayoutAnchorablePane DockHeight="250">
-                            <avalonDock:LayoutAnchorable Title="{x:Static r:Strings.Operations}"
+                            <avalonDock:LayoutAnchorable Title="{I18N {x:Static r:LangKeys.Operations}}"
                                                          CanClose="False"
                                                          CanHide="False">
-                                
+
                                 <v_tb:OperationsToolboxView DataContext="{Binding .}" />
 
                             </avalonDock:LayoutAnchorable>
@@ -145,6 +195,15 @@
                     </avalonDock:LayoutPanel>
                 </avalonDock:LayoutRoot>
             </avalonDock:DockingManager>
+
+
+
+
+            <md:Snackbar Margin="10"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Bottom"
+                         cm:SnackbarIdentifierAssist.SnackbarIdentifier="{x:Static svc:ViewServiceIdentifiers.RootSnackbar}"
+                         MessageQueue="{md:MessageQueue}" />
         </Grid>
     </md:DialogHost>
 </mah:MetroWindow>

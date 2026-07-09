@@ -1,4 +1,4 @@
-﻿namespace VisionProcess.Core.Shapes
+﻿namespace VisionProcess.Common.Shapes
 {
     /// <summary>
     /// To be added

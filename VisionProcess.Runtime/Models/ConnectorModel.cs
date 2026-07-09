@@ -1,12 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using VisionProcess.Core.Extensions;
-using VisionProcess.Core.Helpers;
+using VisionProcess.Common.Extensions;
+using VisionProcess.Common.Primitives;
+using VisionProcess.Common.Helpers;
 
 namespace VisionProcess.Runtime.Models
 {
@@ -17,7 +16,7 @@ namespace VisionProcess.Runtime.Models
         private readonly OperationModel? owner;
         private readonly Guid ownerId;
         private readonly string valueName;
-        private Point anchor;
+        private VpPoint anchor;
         private bool isConnected = false;
         private string title;
         private string valuePath;
@@ -36,25 +35,12 @@ namespace VisionProcess.Runtime.Models
                 throw new ArgumentNullException(nameof(ConnectorModel.owner.Operator));
         }
 
-        [JsonConstructor]
-        public ConnectorModel(string title, Type valueType, string valuePath, bool isInput, Guid ownerId)
-        {
-            //由于反序列化时会重新 new，所以只需基础信息
-            this.title = title;
-            this.valueType = valueType;
-            this.valuePath = valuePath;
-            this.isInput = isInput;
-            this.ownerId = ownerId;
-            valueName = valuePath.Split(".")[^1];
-        }
-
-        public Point Anchor
+        public VpPoint Anchor
         {
             get => anchor;
             set => SetProperty(ref anchor, value);
         }
 
-        [JsonIgnore]
         public bool IsAssigned { get; set; } = false;
 
         public bool IsConnected
@@ -72,7 +58,6 @@ namespace VisionProcess.Runtime.Models
             get => isInput;
         }
 
-        [JsonIgnore]
         public OperationModel Owner => owner!;
 
         public Guid OwnerId
@@ -86,7 +71,6 @@ namespace VisionProcess.Runtime.Models
             set => SetProperty(ref title, value);
         }
 
-        [JsonIgnore]
         public object? Value
         {
             get
@@ -99,7 +83,6 @@ namespace VisionProcess.Runtime.Models
             }
         }
 
-        [JsonIgnore]
         public List<ConnectorModel> ValueObservers { get; } = new();
 
         public string ValuePath
@@ -108,7 +91,6 @@ namespace VisionProcess.Runtime.Models
             protected set { SetProperty(ref valuePath, value); }
         }
 
-        [JsonIgnore]
         public Type ValueType
         {
             get => valueType;

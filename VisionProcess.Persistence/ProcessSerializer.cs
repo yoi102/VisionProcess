@@ -1,5 +1,5 @@
 using MessagePack;
-using VisionProcess.Contracts;
+using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;
 
 namespace VisionProcess.Persistence

@@ -6,12 +6,12 @@ using VisionProcess.Runtime.Services;
 using VisionProcess.ViewModel.ViewModels;
 using VisionProcess.wpf.Views;
 
-namespace VisionProcess.Services
+namespace VisionProcess.wpf.Services
 {
     /// <summary>
-    /// WPF 对话框服务的实现，将 Application 层的 <see cref="IDialogService"/> 映射到具体窗口。
+    /// WPF 对话框服务的实现，将 Application 层的 <see cref="IWindowDialogService"/> 映射到具体窗口。
     /// </summary>
-    public sealed class WindowDialogService : IDialogService
+    public sealed class WindowDialogService : IWindowDialogService
     {
         public void OpenIOConnectorDialog(OperationModel operationModel)
         {

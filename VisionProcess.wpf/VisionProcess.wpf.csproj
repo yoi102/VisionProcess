@@ -6,7 +6,22 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
+	
+	<PropertyGroup>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<SelfContained>true</SelfContained>
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishAot>false</PublishAot>
+		<ApplicationIcon>VisionProcess.ico</ApplicationIcon>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <None Remove="VisionProcess.ico" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Include="VisionProcess.ico" />
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="Antelcat.I18N.WPF" Version="2.0.0-preview-1" />
     <PackageReference Include="Dirkster.AvalonDock" Version="5.0.0-preview.95" />
@@ -33,6 +48,10 @@
     <ProjectReference Include="..\VisionProcess.Tools\VisionProcess.Tools.csproj" />
     <ProjectReference Include="..\VisionProcess.ViewModel\VisionProcess.ViewModel.csproj" />
     <ProjectReference Include="..\VisionProcess.wpf.Controls\VisionProcess.wpf.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="VisionProcess.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,53 +1,56 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
-using System;
-using System.Linq;
-using VisionProcess.Core.Extensions;
-using VisionProcess.Core.Mvvm;
+using VisionProcess.Common.Extensions;
+using VisionProcess.Common.Mvvm;
+using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
+using VisionProcess.Tools.Services;
+using VisionProcess.ViewModel.Tooling;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
+using VisionProcess.ViewModel.ViewServices;
 
 namespace VisionProcess.ViewModel.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly IDialogService? dialogService;
+        private readonly ICultureSettingService cultureSettingService = null!;
+        private readonly IThemeSettingService themeSettingService = null!;
+        private readonly IDialogService dialogService = null!;
+        private readonly ISnackbarService snackbarService = null!;
+        private readonly IWindowDialogService _windowDialogService = null!;
+        private readonly IOperatorFactory _operatorFactory = null!;
+        private readonly IOperatorViewModelFactory _viewModelFactory = null!;
 
         public MainViewModel(
-            IDialogService? dialogService = null,
-            FolderExplorerToolboxViewModel? folderExplorer = null,
-            PropertiesToolboxViewModel? properties = null)
+             ICultureSettingService cultureSettingService,
+            IThemeSettingService themeSettingService,
+            IDialogService dialogService,
+            ISnackbarService snackbarService,
+            IWindowDialogService _windowDialogService,
+            IOperatorFactory operatorFactory,
+            IOperatorViewModelFactory viewModelFactory,
+            FolderExplorerToolboxViewModel folderExplorer,
+            PropertiesToolboxViewModel properties)
         {
+            this.cultureSettingService = cultureSettingService;
+            this.themeSettingService = themeSettingService;
             this.dialogService = dialogService;
+            this.snackbarService = snackbarService;
+            this._windowDialogService = _windowDialogService;
+            _operatorFactory = operatorFactory;
+            _viewModelFactory = viewModelFactory;
             FolderExplorer = folderExplorer;
             Properties = properties;
             Editors = [];
-            Init();
-            Editors.Add(new EditorViewModel(dialogService)
-            {
-                Name = $"Editor {Editors.Count + 1}"
-            });
-        }
+            Init(); 
 
-        [JsonConstructor]
-        public MainViewModel(
-            NodifyObservableCollection<EditorViewModel> editors,
-            bool autoSelectNewEditor,
-            EditorViewModel? selectedEditor,
-            FolderExplorerToolboxViewModel? folderExplorer = null,
-            PropertiesToolboxViewModel? properties = null)
-        {
-            Editors = editors;
-            this.autoSelectNewEditor = autoSelectNewEditor;
-            if (selectedEditor is not null)
-            {
-                this.selectedEditor = editors.First(x => x.Id == selectedEditor.Id);
-            }
-            FolderExplorer = folderExplorer;
-            Properties = properties;
-            Init();
+            var editor = Ioc.Default.GetRequiredService<EditorViewModel>();
+            editor.Name = $"Editor {Editors.Count + 1}";
+            Editors.Add(editor);
+            IsDarkTheme = themeSettingService.IsDarkTheme;
+            CurrentCultureLCID = cultureSettingService.GetCurrentCultureLCID();
         }
 
         private void Init()
@@ -103,11 +106,10 @@ namespace VisionProcess.ViewModel.ViewModels
 
         #region Commands
 
-        [property: JsonIgnore]
         [RelayCommand]
         private void AddEditor()
         {
-            Editors.Add(new EditorViewModel(dialogService)
+            Editors.Add(new EditorViewModel(_windowDialogService, _operatorFactory, _viewModelFactory)
             {
                 Name = $"Editor {Editors.Count + 1}"
             });
@@ -119,12 +121,45 @@ namespace VisionProcess.ViewModel.ViewModels
             return Editors.Count > 0 && SelectedEditor != null;
         }
 
-        [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanCloseEditor))]
         private void CloseEditor(Guid id)
         {
             Editors.RemoveOne(editor => editor.Id == id);
         }
         #endregion Commands
+
+
+        #region TitleBar
+
+        [ObservableProperty]
+        public partial bool Topmost { get; set; }
+
+        [ObservableProperty]
+        public partial int CurrentCultureLCID { get; set; }
+
+        [ObservableProperty]
+        public partial bool IsDarkTheme { get; set; }
+
+        partial void OnIsDarkThemeChanged(bool value)
+        {
+            themeSettingService.ApplyThemeLightDark(value);
+        }
+
+        [RelayCommand]
+        private void ChangeCulture(string lcidString)
+        {
+            if (!int.TryParse(lcidString, out var lcid))
+                return;
+            CurrentCultureLCID = lcid;
+            cultureSettingService.ChangeCulture(lcid);
+        }
+
+        [RelayCommand]
+        private void ChangeTopmost()
+        {
+            Topmost = !Topmost;
+        }
+
+        #endregion TitleBar
     }
 }

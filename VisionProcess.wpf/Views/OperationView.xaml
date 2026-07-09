@@ -6,10 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:models="clr-namespace:VisionProcess.Runtime.Models;assembly=VisionProcess.Runtime"
-             xmlns:tv="clr-namespace:VisionProcess.Tools.Views;assembly=VisionProcess.Tools"
-             xmlns:tvm="clr-namespace:VisionProcess.Tools.ViewModels;assembly=VisionProcess.Tools"
-             xmlns:yr="https://github.com/yoi102/xaml/controls"
-             xmlns:uc="clr-namespace:VisionProcess.wpf.UserControls"
+             xmlns:tv="clr-namespace:VisionProcess.wpf.Views.Tools"
+             xmlns:tvm="clr-namespace:VisionProcess.ViewModel.ViewModels.Tools;assembly=VisionProcess.ViewModel"
              d:Background="Wheat"
              d:DataContext="{d:DesignInstance Type=models:OperationModel}"
              d:DesignHeight="450"
@@ -36,8 +34,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
-            <RowDefinition />
-            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <DockPanel Margin="3">
@@ -64,7 +60,6 @@
                        VerticalAlignment="Center"
                        DockPanel.Dock="Right"
                        Text="{Binding Operator.RunStatus.ProcessingTime, StringFormat={}{0} ms}" />
-            <!--  Fill="{Binding SpinCtrl.IsCamAvailable, Converter={StaticResource ConnectionColorConverter}}" />  -->
 
             <DockPanel.ToolTip>
                 <StackPanel>
@@ -80,32 +75,9 @@
             </DockPanel.ToolTip>
         </DockPanel>
 
-        <uc:ImageRecord Grid.Row="1"
-                        RecordSource="{Binding Operator.Records, Mode=OneWay}"
+        <ContentControl Grid.Row="1"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch" />
-        <!--<yr:imageEx Grid.Row="1"
-                           ImageSource="{Binding Operator.Records[0].DisplayImage}" />-->
-
-        <GroupBox Grid.Row="2"
-                  Style="{StaticResource MaterialDesignCardGroupBox}">
-            <GroupBox.Header>
-                <yr:EditableTextBlock Grid.Row="1"
-                                      Text="{Binding Operator.Name}" />
-            </GroupBox.Header>
-            <ContentControl Content="{Binding Operator}" />
-        </GroupBox>
-
-        <ScrollViewer Grid.Row="3"
-                      md:ScrollViewerAssist.IsAutoHideEnabled="True"
-                      HorizontalScrollBarVisibility="Disabled"
-                      ToolTip="{Binding ElementName=textblock, Path=Text}"
-                      VerticalScrollBarVisibility="Auto">
-            <TextBlock x:Name="textblock"
-                       Text="{Binding Operator.RunStatus.Message}"
-                       TextWrapping="Wrap" />
-        </ScrollViewer>
+                        Content="{Binding OperatorViewModel}" />
     </Grid>
 </UserControl>

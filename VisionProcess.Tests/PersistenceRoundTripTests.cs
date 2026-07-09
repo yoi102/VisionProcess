@@ -1,28 +1,41 @@
+using System;
 using System.Linq;
-using System.Threading;
-using System.Windows;
-using VisionProcess.ViewModel.ViewModels;
-using VisionProcess.Contracts;
+using OpenCvSharp;
+using VisionProcess.Abstractions.ToolBase;
+using VisionProcess.Common.Primitives;
 using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;
+using VisionProcess.Persistence.Operators;
 using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
-using VisionProcess.Tools.Tooling;
+using VisionProcess.Tools.Models;
+using VisionProcess.Tools.Operators;
+using VisionProcess.Tools.Services;
+using VisionProcess.ViewModel.Tooling;
+using VisionProcess.ViewModel.ViewModels;
+using VisionProcess.ViewModel.ViewModels.Tools;
+using VisionProcess.ViewModel.ViewModels.Toolboxes;
+using VisionProcess.ViewModel.ViewServices;
 using Xunit;
 
 namespace VisionProcess.Tests
 {
     public class PersistenceRoundTripTests
     {
+        public PersistenceRoundTripTests()
+        {
+            TestIoc.EnsureConfigured();
+        }
+
         [Fact]
         public void ProcessMapper_RoundTrip_PreservesOperationsAndConnections()
         {
             // Arrange
             var process = new ProcessModel();
-            var editor = new EditorViewModel(process, default, "Test");
 
-            var acquire = new OperationModel { Operator = OperatorFactory.Create("AcquireImage"), Location = new Point(10, 20) };
-            var threshold = new OperationModel { Operator = OperatorFactory.Create("ImageThreshold"), Location = new Point(100, 200) };
+            var factory = new OperatorFactory();
+            var acquire = new OperationModel { Operator = factory.Create("AcquireImage"), Location = new VpPoint(10, 20) };
+            var threshold = new OperationModel { Operator = factory.Create("ImageThreshold"), Location = new VpPoint(100, 200) };
 
             process.Operations.Add(acquire);
             process.Operations.Add(threshold);
@@ -50,6 +63,78 @@ namespace VisionProcess.Tests
             Assert.NotNull(restoredConnection.Output);
             Assert.True(restoredConnection.Input!.IsConnected);
             Assert.True(restoredConnection.Output!.IsConnected);
+
+            var restoredAcquire = restored.Operations[0];
+            var restoredThreshold = restored.Operations[1];
+            Assert.Same(restoredAcquire.Outputs[0], restoredConnection.Output);
+            Assert.Same(restoredThreshold.Inputs[0], restoredConnection.Input);
+            Assert.Single(restoredConnection.Output.ValueObservers);
+            Assert.Same(restoredConnection.Input, restoredConnection.Output.ValueObservers[0]);
+        }
+
+        [Fact]
+        public void ProcessMapper_RoundTrip_PreservesOperatorState()
+        {
+            // Arrange
+            var process = new ProcessModel();
+            var filter = new OperationModel { Operator = new ImageFilterOperator(), Location = new VpPoint(10, 20) };
+            var filterOp = (ImageFilterOperator)filter.Operator!;
+            filterOp.Inputs.FilterType = FilterTypes.Gaussian;
+            filterOp.Inputs.KernelWidth = 5;
+            filterOp.Inputs.KernelHeight = 7;
+            filterOp.Inputs.SigmaX = 1.5;
+            filterOp.Name = "Filter";
+            filterOp.RunStatus.Message = "Done";
+            filterOp.RunStatus.Result = true;
+
+            var acquire = new OperationModel { Operator = new AcquireImageOperator(), Location = new VpPoint(100, 200) };
+            var acquireOp = (AcquireImageOperator)acquire.Operator!;
+            acquireOp.CurrentIndex = 2;
+            acquireOp.ImagePaths = new List<string> { "a.png", "b.png" };
+
+            process.Operations.Add(filter);
+            process.Operations.Add(acquire);
+
+            // Act
+            var dto = ProcessMapper.ToDto(process);
+            var restored = ProcessMapper.ToModel(dto);
+
+            // Assert
+            var restoredFilter = restored.Operations[0].Operator as ImageFilterOperator;
+            Assert.NotNull(restoredFilter);
+            Assert.Equal(FilterTypes.Gaussian, restoredFilter.Inputs.FilterType);
+            Assert.Equal(5, restoredFilter.Inputs.KernelWidth);
+            Assert.Equal(7, restoredFilter.Inputs.KernelHeight);
+            Assert.Equal(1.5, restoredFilter.Inputs.SigmaX);
+            Assert.Equal("Filter", restoredFilter.Name);
+            Assert.Equal("Done", restoredFilter.RunStatus.Message);
+            Assert.True(restoredFilter.RunStatus.Result);
+
+            var restoredAcquire = restored.Operations[1].Operator as AcquireImageOperator;
+            Assert.NotNull(restoredAcquire);
+            Assert.Equal(2, restoredAcquire.CurrentIndex);
+            Assert.Equal(new[] { "a.png", "b.png" }, restoredAcquire.ImagePaths);
+        }
+
+        [Fact]
+        public void ProcessMapper_RoundTrip_PreservesColorConvertType()
+        {
+            // Arrange
+            var process = new ProcessModel();
+            var color = new OperationModel { Operator = new ColorConvertOperator(), Location = new VpPoint(10, 20) };
+            var colorOp = (ColorConvertOperator)color.Operator!;
+            colorOp.Inputs.ColorConversionCodes = ColorConvertType.RGB2GRAY;
+
+            process.Operations.Add(color);
+
+            // Act
+            var dto = ProcessMapper.ToDto(process);
+            var restored = ProcessMapper.ToModel(dto);
+
+            // Assert
+            var restoredColor = restored.Operations[0].Operator as ColorConvertOperator;
+            Assert.NotNull(restoredColor);
+            Assert.Equal(ColorConvertType.RGB2GRAY, restoredColor.Inputs.ColorConversionCodes);
         }
 
         [Fact]
@@ -66,7 +151,7 @@ namespace VisionProcess.Tests
                     [
                         new EditorDto
                         {
-                            Id = System.Guid.NewGuid(),
+                            Id = Guid.NewGuid(),
                             Name = "Test",
                             Process = new ProcessDto
                             {
@@ -74,9 +159,16 @@ namespace VisionProcess.Tests
                                 [
                                     new OperationDto
                                     {
-                                        Id = System.Guid.NewGuid(),
+                                        Id = Guid.NewGuid(),
                                         Location = new PointDto { X = 1, Y = 2 },
-                                        Size = new SizeDto { Width = 3, Height = 4 }
+                                        Size = new SizeDto { Width = 3, Height = 4 },
+                                        Operator = new ImageThresholdOperatorDto
+                                        {
+                                            Name = "Threshold",
+                                            ThresholdValue = 128,
+                                            MaximumValue = 255,
+                                            ThresholdType = ThresholdTypes.Binary
+                                        }
                                     }
                                 ]
                             }
@@ -85,7 +177,7 @@ namespace VisionProcess.Tests
                 }
             };
 
-            var serializer = new ProcessSerializer(new MigrationRunner(System.Array.Empty<IMigration>()));
+            var serializer = new ProcessSerializer(new MigrationRunner(Array.Empty<IMigration>()));
 
             // Act
             var bytes = serializer.Serialize(container);
@@ -96,23 +188,84 @@ namespace VisionProcess.Tests
             Assert.NotNull(restored.MainView);
             Assert.Single(restored.MainView.Editors);
             Assert.Equal("Test", restored.MainView.Editors[0].Name);
+            var restoredOperator = Assert.IsType<ImageThresholdOperatorDto>(restored.MainView!.Editors[0].Process!.Operations[0].Operator);
+            Assert.Equal("Threshold", restoredOperator.Name);
+            Assert.Equal(128, restoredOperator.ThresholdValue);
+            Assert.Equal(255, restoredOperator.MaximumValue);
+            Assert.Equal(ThresholdTypes.Binary, restoredOperator.ThresholdType);
         }
 
         [Fact]
         public void MainViewModel_RoundTrip_PreservesEditors()
         {
             // Arrange
-            var mainViewModel = new MainViewModel((IDialogService?)null);
+            var mainViewModel = CreateMainViewModel();
             mainViewModel.AddEditorCommand.Execute(null);
             mainViewModel.Editors[0].Name = "Editor A";
 
             // Act
             var dto = ToDto(mainViewModel);
-            var restored = ToModel(dto, null);
+            var restored = ToModel(dto);
 
             // Assert
             Assert.Equal(mainViewModel.Editors.Count, restored.Editors.Count);
             Assert.Equal("Editor A", restored.Editors[0].Name);
+        }
+
+        [Fact]
+        public void EditorViewModel_DtoConstructor_AttachesOperatorViewModels()
+        {
+            // Arrange
+            TestIoc.EnsureConfigured();
+            var process = new ProcessModel();
+            process.Operations.Add(new OperationModel { Operator = new AcquireImageOperator() });
+
+            // Act
+            var editor = new EditorViewModel(process, Guid.NewGuid(), "Test");
+
+            // Assert
+            Assert.IsType<AcquireImageViewModel>(editor.Process.Operations[0].OperatorViewModel);
+        }
+
+        [Fact]
+        public void OperationsMenuViewModel_CreateOperation_SetsOperatorViewModel()
+        {
+            // Arrange
+            TestIoc.EnsureConfigured();
+            var process = new ProcessModel();
+            var menu = new OperationsMenuViewModel(
+                process,
+                new OperatorFactory(),
+                new OperatorViewModelFactory(new StubFileDialogService()),
+                new StubWindowDialogService());
+            menu.OpenAt(new VpPoint(0, 0));
+
+            // Act
+            menu.CreateOperationCommand.Execute(ToolRegistry.GetToolName(typeof(AcquireImageOperator)));
+
+            // Assert
+            Assert.Single(process.Operations);
+            Assert.IsType<AcquireImageViewModel>(process.Operations[0].OperatorViewModel);
+        }
+
+        private static MainViewModel CreateMainViewModel(
+            IWindowDialogService? windowDialogService = null,
+            IOperatorFactory? operatorFactory = null,
+            IOperatorViewModelFactory? viewModelFactory = null)
+        {
+            var folderExplorer = new FolderExplorerToolboxViewModel(new StubFileDocumentService());
+            var properties = new PropertiesToolboxViewModel(new StubToolboxIconsService());
+
+            return new MainViewModel(
+                new StubCultureSettingService(),
+                new StubThemeSettingService(),
+                new StubDialogService(),
+                new StubSnackbarService(),
+                windowDialogService ?? new StubWindowDialogService(),
+                operatorFactory ?? new OperatorFactory(),
+                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()),
+                folderExplorer,
+                properties);
         }
 
         private static MainViewDto ToDto(MainViewModel model)
@@ -130,9 +283,9 @@ namespace VisionProcess.Tests
             };
         }
 
-        private static MainViewModel ToModel(MainViewDto dto, IDialogService? dialogService)
+        private static MainViewModel ToModel(MainViewDto dto)
         {
-            var model = new MainViewModel(dialogService);
+            var model = CreateMainViewModel();
             model.AutoSelectNewEditor = dto.AutoSelectNewEditor;
             model.Editors.Clear();
 

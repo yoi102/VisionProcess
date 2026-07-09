@@ -1,5 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows;
+using VisionProcess.Common.Primitives;
 
 namespace VisionProcess.Runtime.Models
 {
@@ -29,9 +29,9 @@ namespace VisionProcess.Runtime.Models
             set => SetProperty(ref isVisible, value);
         }
 
-        private Point targetLocation;
+        private VpPoint targetLocation;
 
-        public Point TargetLocation
+        public VpPoint TargetLocation
         {
             get => targetLocation;
             set => SetProperty(ref targetLocation, value);

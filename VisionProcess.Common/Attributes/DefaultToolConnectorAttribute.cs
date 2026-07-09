@@ -1,4 +1,4 @@
-﻿namespace VisionProcess.Core.Attributes
+﻿namespace VisionProcess.Common.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public class DefaultToolConnectorAttribute : Attribute

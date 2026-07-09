@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:VisionProcess.ViewModel.ViewModels;assembly=VisionProcess.ViewModel"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:cv="clr-namespace:VisionProcess.wpf.Converters"
-    xmlns:strings="clr-namespace:VisionProcess.Lang.Strings;assembly=VisionProcess.Lang"
+             xmlns:r="clr-namespace:VisionProcess.Lang;assembly=VisionProcess.Lang"
              d:DataContext="{d:DesignInstance Type=vm:IOConnectorViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -54,10 +54,10 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            <Button Content="{x:Static strings:Strings.AddToInputs}"
+            <Button Content="{I18N {x:Static r:LangKeys.AddToInputs}}"
                     Margin="0 0 30 0"
                     Command="{Binding AddInputCommand}" />
-            <Button Content="{x:Static strings:Strings.AddToOutputs}"
+            <Button Content="{I18N {x:Static r:LangKeys.AddToOutputs}}"
                     Margin="30 0 0 0"
                     Command="{Binding AddOutputCommand}" />
 

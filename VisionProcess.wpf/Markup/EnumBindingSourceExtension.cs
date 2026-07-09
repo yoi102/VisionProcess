@@ -1,6 +1,7 @@
-﻿using System.Windows.Markup;
+using System;
+using System.Windows.Markup;
 
-namespace VisionProcess.Core.Extensions
+namespace VisionProcess.wpf.Markup
 {
     /// <summary>
     /// 用于 combobox 枚举源的绑定

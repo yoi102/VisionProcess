@@ -1,31 +1,35 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using VisionProcess.Abstractions.ToolBase;
+using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime;
 using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
-using VisionProcess.Tools.Tooling;
+using VisionProcess.Tools.Services;
+using VisionProcess.ViewModel.Tooling;
 
 namespace VisionProcess.ViewModel.ViewModels
 {
     public partial class OperationsMenuViewModel : ObservableObject, IOperationsMenu
     {
-        private readonly IDialogService? dialogService;
+        private readonly IWindowDialogService? _windowDialogService;
+        private readonly IOperatorFactory _operatorFactory;
+        private readonly IOperatorViewModelFactory _viewModelFactory;
 
-        public OperationsMenuViewModel(ProcessModel processModel, IDialogService? dialogService = null)
+        public OperationsMenuViewModel(ProcessModel processModel, IOperatorFactory operatorFactory, IOperatorViewModelFactory viewModelFactory, IWindowDialogService? _windowDialogService = null)
         {
             AvailableOperations = ToolRegistry.ToolTypes.Select(ToolRegistry.GetToolName).ToList();
             this.processModel = processModel;
-            this.dialogService = dialogService;
+            _operatorFactory = operatorFactory;
+            _viewModelFactory = viewModelFactory;
+            this._windowDialogService = _windowDialogService;
         }
 
         [ObservableProperty]
-        private Point _location;
+        private VpPoint _location;
 
         [ObservableProperty]
         private bool _isVisible;
@@ -34,7 +38,7 @@ namespace VisionProcess.ViewModel.ViewModels
 
         public IEnumerable<string> AvailableOperations { get; }
 
-        public void OpenAt(Point targetLocation)
+        public void OpenAt(VpPoint targetLocation)
         {
             Close();
             Location = targetLocation;
@@ -46,13 +50,19 @@ namespace VisionProcess.ViewModel.ViewModels
             IsVisible = false;
         }
 
-        [property: JsonIgnore]
         [RelayCommand]
         private void CreateOperation(string operationName)
         {
-            var instance = OperatorFactory.Create(operationName);
+            var instance = _operatorFactory.Create(operationName);
             instance.Name = operationName;
-            processModel.Operations.Add(new OperationModel() { Operator = instance, Location = Location, DialogService = dialogService });
+            var viewModel = _viewModelFactory.Create(instance);
+            processModel.Operations.Add(new OperationModel()
+            {
+                Operator = instance,
+                OperatorViewModel = viewModel,
+                Location = Location,
+                WindowDialogService = _windowDialogService
+            });
             IsVisible = false;
         }
     }

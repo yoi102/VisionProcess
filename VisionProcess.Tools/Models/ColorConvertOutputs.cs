@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using OpenCvSharp;
 using VisionProcess.Abstractions.Attributes;
 using VisionProcess.Abstractions.ToolBase;
@@ -9,7 +8,6 @@ namespace VisionProcess.Tools.Models
     {
         private Mat? image;
 
-        [JsonIgnore]
         public Mat? Image
         {
             get
@@ -22,19 +20,6 @@ namespace VisionProcess.Tools.Models
                 {
                     image?.Dispose();
                     image = value;
-                }
-            }
-        }
-        [ThresholdIgnore]
-        [JsonProperty(nameof(Image))]
-        public byte[]? ImageBytes
-        {
-            get { return Image?.ToBytes(); }
-            set
-            {
-                if (value is not null)
-                {
-                    Image = Cv2.ImDecode(value, ImreadModes.Unchanged);
                 }
             }
         }

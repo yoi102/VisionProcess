@@ -61,15 +61,6 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Access to folder &apos;{0}&apos; denied 的本地化字符串。
-        /// </summary>
-        public static string AccessToDirectoryXDenied {
-            get {
-                return ResourceManager.GetString("AccessToDirectoryXDenied", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Adaptive Form 的本地化字符串。
         /// </summary>
         public static string AdaptiveForm {
@@ -124,56 +115,38 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Close 的本地化字符串。
+        ///   查找类似 中文 的本地化字符串。
         /// </summary>
-        public static string Close {
+        public static string Chinese {
             get {
-                return ResourceManager.GetString("Close", resourceCulture);
+                return ResourceManager.GetString("Chinese", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Create 的本地化字符串。
+        ///   查找类似 Confirm 的本地化字符串。
         /// </summary>
-        public static string Create {
+        public static string Confirm {
             get {
-                return ResourceManager.GetString("Create", resourceCulture);
+                return ResourceManager.GetString("Confirm", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Created 的本地化字符串。
+        ///   查找类似 Are you sure you want to exit the application? 的本地化字符串。
         /// </summary>
-        public static string Created {
+        public static string ConfirmExitMessage {
             get {
-                return ResourceManager.GetString("Created", resourceCulture);
+                return ResourceManager.GetString("ConfirmExitMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Delet 的本地化字符串。
+        ///   查找类似 Exit Confirmation 的本地化字符串。
         /// </summary>
-        public static string Delet {
+        public static string ConfirmExitTitle {
             get {
-                return ResourceManager.GetString("Delet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Desktop 的本地化字符串。
-        /// </summary>
-        public static string Desktop {
-            get {
-                return ResourceManager.GetString("Desktop", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Details 的本地化字符串。
-        /// </summary>
-        public static string Details {
-            get {
-                return ResourceManager.GetString("Details", resourceCulture);
+                return ResourceManager.GetString("ConfirmExitTitle", resourceCulture);
             }
         }
         
@@ -183,15 +156,6 @@ namespace VisionProcess.Lang.Strings {
         public static string Diameter {
             get {
                 return ResourceManager.GetString("Diameter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Folder &apos;{0}&apos; not found 的本地化字符串。
-        /// </summary>
-        public static string DirectoryXNotFound {
-            get {
-                return ResourceManager.GetString("DirectoryXNotFound", resourceCulture);
             }
         }
         
@@ -214,38 +178,11 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Drives 的本地化字符串。
+        ///   查找类似 English 的本地化字符串。
         /// </summary>
-        public static string Drives {
+        public static string English {
             get {
-                return ResourceManager.GetString("Drives", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Empty folder 的本地化字符串。
-        /// </summary>
-        public static string EmptyDirectory {
-            get {
-                return ResourceManager.GetString("EmptyDirectory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Files 的本地化字符串。
-        /// </summary>
-        public static string Files {
-            get {
-                return ResourceManager.GetString("Files", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 File size 的本地化字符串。
-        /// </summary>
-        public static string FileSize {
-            get {
-                return ResourceManager.GetString("FileSize", resourceCulture);
+                return ResourceManager.GetString("English", resourceCulture);
             }
         }
         
@@ -255,15 +192,6 @@ namespace VisionProcess.Lang.Strings {
         public static string FilterType {
             get {
                 return ResourceManager.GetString("FilterType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Folders 的本地化字符串。
-        /// </summary>
-        public static string Folders {
-            get {
-                return ResourceManager.GetString("Folders", resourceCulture);
             }
         }
         
@@ -295,6 +223,15 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
+        ///   查找类似 日本語 的本地化字符串。
+        /// </summary>
+        public static string Japanese {
+            get {
+                return ResourceManager.GetString("Japanese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Kernel Height 的本地化字符串。
         /// </summary>
         public static string KernelHeight {
@@ -322,51 +259,6 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Last access 的本地化字符串。
-        /// </summary>
-        public static string LastAccess {
-            get {
-                return ResourceManager.GetString("LastAccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Last modified 的本地化字符串。
-        /// </summary>
-        public static string LastModified {
-            get {
-                return ResourceManager.GetString("LastModified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Local drive 的本地化字符串。
-        /// </summary>
-        public static string LocalDrive {
-            get {
-                return ResourceManager.GetString("LocalDrive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Long paths are not supported 的本地化字符串。
-        /// </summary>
-        public static string LongPathsAreNotSupported {
-            get {
-                return ResourceManager.GetString("LongPathsAreNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Maximize 的本地化字符串。
-        /// </summary>
-        public static string Maximize {
-            get {
-                return ResourceManager.GetString("Maximize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Maximum Value 的本地化字符串。
         /// </summary>
         public static string MaximumValue {
@@ -381,33 +273,6 @@ namespace VisionProcess.Lang.Strings {
         public static string Median {
             get {
                 return ResourceManager.GetString("Median", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Minimize 的本地化字符串。
-        /// </summary>
-        public static string Minimize {
-            get {
-                return ResourceManager.GetString("Minimize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Music 的本地化字符串。
-        /// </summary>
-        public static string Music {
-            get {
-                return ResourceManager.GetString("Music", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 New directory name 的本地化字符串。
-        /// </summary>
-        public static string NewDirectoryName {
-            get {
-                return ResourceManager.GetString("NewDirectoryName", resourceCulture);
             }
         }
         
@@ -430,47 +295,11 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 No selected directories 的本地化字符串。
-        /// </summary>
-        public static string NoSelectedDirectories {
-            get {
-                return ResourceManager.GetString("NoSelectedDirectories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 No selected files 的本地化字符串。
-        /// </summary>
-        public static string NoSelectedFiles {
-            get {
-                return ResourceManager.GetString("NoSelectedFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 OK 的本地化字符串。
+        ///   查找类似 Ok 的本地化字符串。
         /// </summary>
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open 的本地化字符串。
-        /// </summary>
-        public static string Open {
-            get {
-                return ResourceManager.GetString("Open", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open file 的本地化字符串。
-        /// </summary>
-        public static string OpenFile {
-            get {
-                return ResourceManager.GetString("OpenFile", resourceCulture);
             }
         }
         
@@ -498,24 +327,6 @@ namespace VisionProcess.Lang.Strings {
         public static string OutputImage {
             get {
                 return ResourceManager.GetString("OutputImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Password 的本地化字符串。
-        /// </summary>
-        public static string Password {
-            get {
-                return ResourceManager.GetString("Password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Pictures 的本地化字符串。
-        /// </summary>
-        public static string Pictures {
-            get {
-                return ResourceManager.GetString("Pictures", resourceCulture);
             }
         }
         
@@ -556,33 +367,6 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Remove 的本地化字符串。
-        /// </summary>
-        public static string Remove {
-            get {
-                return ResourceManager.GetString("Remove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Restore 的本地化字符串。
-        /// </summary>
-        public static string Restore {
-            get {
-                return ResourceManager.GetString("Restore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Save 的本地化字符串。
-        /// </summary>
-        public static string Save {
-            get {
-                return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Save file 的本地化字符串。
         /// </summary>
         public static string SaveFile {
@@ -601,38 +385,11 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Search 的本地化字符串。
-        /// </summary>
-        public static string Search {
-            get {
-                return ResourceManager.GetString("Search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Select 的本地化字符串。
         /// </summary>
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Select folder 的本地化字符串。
-        /// </summary>
-        public static string SelectDirectory {
-            get {
-                return ResourceManager.GetString("SelectDirectory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Selection 的本地化字符串。
-        /// </summary>
-        public static string Selection {
-            get {
-                return ResourceManager.GetString("Selection", resourceCulture);
             }
         }
         
@@ -682,33 +439,6 @@ namespace VisionProcess.Lang.Strings {
         }
         
         /// <summary>
-        ///   查找类似 The directory name is invalid 的本地化字符串。
-        /// </summary>
-        public static string TheDirectoryNameIsInvalid {
-            get {
-                return ResourceManager.GetString("TheDirectoryNameIsInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The directory name must not be empty 的本地化字符串。
-        /// </summary>
-        public static string TheDirectoryNameMustNotBeEmpty {
-            get {
-                return ResourceManager.GetString("TheDirectoryNameMustNotBeEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The directory &apos;{0}&apos; already exists 的本地化字符串。
-        /// </summary>
-        public static string TheDirectoryXAlreadyExists {
-            get {
-                return ResourceManager.GetString("TheDirectoryXAlreadyExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Threshold Type 的本地化字符串。
         /// </summary>
         public static string ThresholdType {
@@ -723,69 +453,6 @@ namespace VisionProcess.Lang.Strings {
         public static string ThresholdValue {
             get {
                 return ResourceManager.GetString("ThresholdValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Title 的本地化字符串。
-        /// </summary>
-        public static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Toolbox 的本地化字符串。
-        /// </summary>
-        public static string Toolbox {
-            get {
-                return ResourceManager.GetString("Toolbox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Type 的本地化字符串。
-        /// </summary>
-        public static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 User 的本地化字符串。
-        /// </summary>
-        public static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Value 的本地化字符串。
-        /// </summary>
-        public static string Value {
-            get {
-                return ResourceManager.GetString("Value", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The value&apos;s type must be &apos;{0}’ !!! 的本地化字符串。
-        /// </summary>
-        public static string ValueTypeMustBeX {
-            get {
-                return ResourceManager.GetString("ValueTypeMustBeX", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Videos 的本地化字符串。
-        /// </summary>
-        public static string Videos {
-            get {
-                return ResourceManager.GetString("Videos", resourceCulture);
             }
         }
         

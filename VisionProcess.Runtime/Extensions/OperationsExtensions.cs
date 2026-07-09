@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using System.Windows;
+using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime.Models;
 
 namespace VisionProcess.Runtime.Extensions
 {
     public static class OperationsExtensions
     {
-        public static Rect GetBoundingBox(this IEnumerable<OperationModel> nodes, double padding = 0, int gridCellSize = 15)
+        public static VpRect GetBoundingBox(this IEnumerable<OperationModel> nodes, double padding = 0, int gridCellSize = 15)
         {
             var minX = double.MaxValue;
             var minY = double.MaxValue;
@@ -42,10 +42,10 @@ namespace VisionProcess.Runtime.Extensions
                 }
             }
 
-            var result = new Rect(minX - padding, minY - padding, maxX - minX + padding * 2, maxY - minY + padding * 2);
-            result.X = (int)result.X / gridCellSize * gridCellSize;
-            result.Y = (int)result.Y / gridCellSize * gridCellSize;
-            return result;
+            var result = new VpRect(minX - padding, minY - padding, maxX - minX + padding * 2, maxY - minY + padding * 2);
+            var snappedX = (int)result.X / gridCellSize * gridCellSize;
+            var snappedY = (int)result.Y / gridCellSize * gridCellSize;
+            return new VpRect(snappedX, snappedY, result.Width, result.Height);
         }
     }
 }

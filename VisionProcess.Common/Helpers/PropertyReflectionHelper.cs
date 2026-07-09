@@ -2,7 +2,7 @@ using System.Collections;
 using System.Reflection;
 using VisionProcess.Abstractions.ToolBase;
 
-namespace VisionProcess.Core.Helpers
+namespace VisionProcess.Common.Helpers
 {
     public static class PropertyReflectionHelper
     {

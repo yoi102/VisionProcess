@@ -1,9 +1,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using System;
+using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Runtime.Models;
 using VisionProcess.Runtime.Services;
+using VisionProcess.Tools.Services;
+using VisionProcess.ViewModel.Tooling;
 
 namespace VisionProcess.ViewModel.ViewModels
 {
@@ -13,22 +16,35 @@ namespace VisionProcess.ViewModel.ViewModels
 
         private ProcessModel process;
 
-        public EditorViewModel(IDialogService? dialogService = null)
+        public EditorViewModel(IWindowDialogService _windowDialogService, IOperatorFactory operatorFactory, IOperatorViewModelFactory viewModelFactory)
         {
             process = new ProcessModel();
-            OperationsMenu = new OperationsMenuViewModel(process, dialogService);
+            OperationsMenu = new OperationsMenuViewModel(process, operatorFactory, viewModelFactory, _windowDialogService);
             process.OperationsMenu = OperationsMenu;
             Id = Guid.NewGuid();
         }
 
-        [JsonConstructor]
         public EditorViewModel(ProcessModel process, Guid id, string? name)
         {
             this.process = process;
             Id = id;
             this.name = name;
-            OperationsMenu = new OperationsMenuViewModel(process);
+            var operatorFactory = Ioc.Default.GetService<IOperatorFactory>() ?? new OperatorFactory();
+            var viewModelFactory = Ioc.Default.GetService<IOperatorViewModelFactory>() ?? new OperatorViewModelFactory();
+            OperationsMenu = new OperationsMenuViewModel(process, operatorFactory, viewModelFactory);
             process.OperationsMenu = OperationsMenu;
+            AttachViewModels(viewModelFactory);
+        }
+
+        private void AttachViewModels(IOperatorViewModelFactory viewModelFactory)
+        {
+            foreach (var operation in process.Operations)
+            {
+                if (operation.Operator is not null && operation.OperatorViewModel is null)
+                {
+                    operation.OperatorViewModel = viewModelFactory.Create(operation.Operator);
+                }
+            }
         }
 
         public Guid Id { get; }
@@ -41,11 +57,9 @@ namespace VisionProcess.ViewModel.ViewModels
 
         public EditorViewModel? Parent { get; set; }
 
-        [JsonIgnore]
         [ObservableProperty]
         public partial string? FilePath { get; set; }
 
-        [JsonIgnore]
         public OperationsMenuViewModel OperationsMenu { get; }
 
         public ProcessModel Process
@@ -54,7 +68,6 @@ namespace VisionProcess.ViewModel.ViewModels
             set => SetProperty(ref process, value);
         }
 
-        [property: JsonIgnore]
         [RelayCommand]
         private void Disconnect(ConnectionModel connection)
         {

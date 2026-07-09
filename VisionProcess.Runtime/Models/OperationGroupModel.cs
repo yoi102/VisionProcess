@@ -1,4 +1,4 @@
-using System.Windows;
+using VisionProcess.Common.Primitives;
 
 namespace VisionProcess.Runtime.Models
 {
@@ -12,9 +12,9 @@ namespace VisionProcess.Runtime.Models
         {
         }
 
-        private Size _size;
+        private VpSize _size;
 
-        public Size GroupSize
+        public VpSize GroupSize
         {
             get => _size;
             set => SetProperty(ref _size, value);

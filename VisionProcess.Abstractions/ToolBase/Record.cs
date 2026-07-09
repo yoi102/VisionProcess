@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 
 namespace VisionProcess.Abstractions.ToolBase
 {
@@ -22,7 +21,6 @@ namespace VisionProcess.Abstractions.ToolBase
         /// 运行时显示图像，类型由具体算子决定（如 WPF 的 BitmapSource）。
         /// 不直接序列化到持久化数据。
         /// </summary>
-        [JsonIgnore]
         public object? DisplayImage
         {
             get => displayImage;

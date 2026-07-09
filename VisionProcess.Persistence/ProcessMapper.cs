@@ -1,10 +1,12 @@
-using Newtonsoft.Json;
-using System.Windows;
+using OpenCvSharp;
+using System.Collections.ObjectModel;
 using VisionProcess.Abstractions.ToolBase;
-using VisionProcess.Contracts;
-using VisionProcess.Core.Helpers;
+using VisionProcess.Common.Helpers;
+using VisionProcess.Common.Primitives;
+using VisionProcess.Persistence.Operators;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Tools.Tooling;
+using VisionProcess.Tools.Models;
+using VisionProcess.Tools.Operators;
 
 namespace VisionProcess.Persistence
 {
@@ -13,8 +15,6 @@ namespace VisionProcess.Persistence
     /// </summary>
     public static class ProcessMapper
     {
-        private static readonly JsonSerializerSettings JsonSettings = CreateJsonSettings();
-
         public static ProcessDto ToDto(ProcessModel process)
         {
             var dto = new ProcessDto
@@ -56,7 +56,6 @@ namespace VisionProcess.Persistence
 
                 inputConnector.IsConnected = true;
                 outputConnector.IsConnected = true;
-                outputConnector.ValueObservers.Add(inputConnector);
                 process.Connections.Add(new ConnectionModel { Input = inputConnector, Output = outputConnector });
             }
 
@@ -89,6 +88,7 @@ namespace VisionProcess.Persistence
             dto.Location = ToDto(operation.Location);
             dto.IsSelected = operation.IsSelected;
             dto.Size = ToDto(operation.Size);
+            dto.Records = ToRecordDtos(operation.Operator?.Records);
             return dto;
         }
 
@@ -111,25 +111,210 @@ namespace VisionProcess.Persistence
             operation.Location = ToModel(dto.Location);
             operation.IsSelected = dto.IsSelected;
             operation.Size = ToModel(dto.Size);
+            RestoreRecords(operation.Operator?.Records, dto.Records);
             return operation;
+        }
+
+        private static List<RecordDto> ToRecordDtos(ObservableCollection<Record>? records)
+        {
+            if (records is null)
+                return new List<RecordDto>();
+
+            return records.Select(r => new RecordDto
+            {
+                Title = r.Title,
+                ImageData = r.DisplayImage is Mat mat ? EncodeImage(mat) : null
+            }).ToList();
+        }
+
+        private static byte[]? EncodeImage(Mat mat)
+        {
+            try
+            {
+                Cv2.ImEncode(".png", mat, out byte[] buffer);
+                return buffer;
+            }
+            catch
+            {
+                // 编码失败（例如不支持的格式）时放弃保存该图像。
+                return null;
+            }
+        }
+
+        private static void RestoreRecords(ObservableCollection<Record>? records, List<RecordDto>? recordDtos)
+        {
+            if (records is null || recordDtos is null || recordDtos.Count == 0)
+                return;
+
+            foreach (var (record, dto) in records.Zip(recordDtos))
+            {
+                if (dto.ImageData is not null && dto.ImageData.Length > 0)
+                {
+                    try
+                    {
+                        record.DisplayImage = Cv2.ImDecode(dto.ImageData, ImreadModes.Unchanged);
+                    }
+                    catch
+                    {
+                        // 解码失败时保持为空。
+                    }
+                }
+            }
         }
 
         private static OperatorDto ToDto(IOperator @operator)
         {
-            return new OperatorDto
+            OperatorDto dto = @operator switch
             {
-                Kind = ToolRegistry.GetToolName(@operator.GetType()),
-                Json = JsonConvert.SerializeObject(@operator, JsonSettings)
+                AcquireImageOperator op => ToDto(op),
+                ColorConvertOperator op => ToDto(op),
+                ImageFilterOperator op => ToDto(op),
+                ImageThresholdOperator op => ToDto(op),
+                _ => throw new NotSupportedException($"Operator type '{@operator.GetType()}' is not supported for persistence.")
             };
+
+            dto.Name = @operator.Name;
+            dto.RunStatus = ToDto(@operator.RunStatus);
+            return dto;
         }
 
         private static IOperator? ToModel(OperatorDto dto)
         {
-            var type = ToolRegistry.GetToolType(dto.Kind);
-            if (type is null)
+            IOperator? @operator = dto switch
+            {
+                AcquireImageOperatorDto acquireDto => ToModel(acquireDto),
+                ColorConvertOperatorDto colorDto => ToModel(colorDto),
+                ImageFilterOperatorDto filterDto => ToModel(filterDto),
+                ImageThresholdOperatorDto thresholdDto => ToModel(thresholdDto),
+                _ => null
+            };
+
+            if (@operator is null)
                 return null;
 
-            return (IOperator?)JsonConvert.DeserializeObject(dto.Json, type, JsonSettings);
+            @operator.Name = dto.Name;
+            var runStatus = @operator.RunStatus;
+            runStatus.LastTime = dto.RunStatus.LastTime;
+            runStatus.Message = dto.RunStatus.Message;
+            runStatus.ProcessingTime = dto.RunStatus.ProcessingTime;
+            runStatus.Result = dto.RunStatus.Result;
+            return @operator;
+        }
+
+        private static AcquireImageOperatorDto ToDto(AcquireImageOperator @operator)
+        {
+            return new AcquireImageOperatorDto
+            {
+                CurrentIndex = @operator.CurrentIndex,
+                ImagePaths = @operator.ImagePaths ?? new List<string>()
+            };
+        }
+
+        private static AcquireImageOperator ToModel(AcquireImageOperatorDto dto)
+        {
+            return new AcquireImageOperator
+            {
+                CurrentIndex = dto.CurrentIndex,
+                ImagePaths = dto.ImagePaths
+            };
+        }
+
+        private static ColorConvertOperatorDto ToDto(ColorConvertOperator @operator)
+        {
+            return new ColorConvertOperatorDto
+            {
+                ColorConversionCodes = @operator.Inputs.ColorConversionCodes
+            };
+        }
+
+        private static ColorConvertOperator ToModel(ColorConvertOperatorDto dto)
+        {
+            return new ColorConvertOperator
+            {
+                Inputs = { ColorConversionCodes = dto.ColorConversionCodes }
+            };
+        }
+
+        private static ImageFilterOperatorDto ToDto(ImageFilterOperator @operator)
+        {
+            return new ImageFilterOperatorDto
+            {
+                BorderType = @operator.Inputs.BorderType,
+                FilterType = @operator.Inputs.FilterType,
+                KernelHeight = @operator.Inputs.KernelHeight,
+                KernelWidth = @operator.Inputs.KernelWidth,
+                KernelSize = @operator.Inputs.KernelSize,
+                SigmaX = @operator.Inputs.SigmaX,
+                SigmaY = @operator.Inputs.SigmaY,
+                Diameter = @operator.Inputs.Diameter,
+                SigmaColor = @operator.Inputs.SigmaColor,
+                SigmaSpace = @operator.Inputs.SigmaSpace
+            };
+        }
+
+        private static ImageFilterOperator ToModel(ImageFilterOperatorDto dto)
+        {
+            return new ImageFilterOperator
+            {
+                Inputs =
+                {
+                    BorderType = dto.BorderType,
+                    FilterType = dto.FilterType,
+                    KernelHeight = dto.KernelHeight,
+                    KernelWidth = dto.KernelWidth,
+                    KernelSize = dto.KernelSize,
+                    SigmaX = dto.SigmaX,
+                    SigmaY = dto.SigmaY,
+                    Diameter = dto.Diameter,
+                    SigmaColor = dto.SigmaColor,
+                    SigmaSpace = dto.SigmaSpace
+                }
+            };
+        }
+
+        private static ImageThresholdOperatorDto ToDto(ImageThresholdOperator @operator)
+        {
+            return new ImageThresholdOperatorDto
+            {
+                MaximumValue = @operator.Inputs.MaximumValue,
+                ThresholdType = @operator.Inputs.ThresholdType,
+                ThresholdValue = @operator.Inputs.ThresholdValue
+            };
+        }
+
+        private static ImageThresholdOperator ToModel(ImageThresholdOperatorDto dto)
+        {
+            return new ImageThresholdOperator
+            {
+                Inputs =
+                {
+                    MaximumValue = dto.MaximumValue,
+                    ThresholdType = dto.ThresholdType,
+                    ThresholdValue = dto.ThresholdValue
+                }
+            };
+        }
+
+        private static RunStatusDto ToDto(RunStatus runStatus)
+        {
+            return new RunStatusDto
+            {
+                LastTime = runStatus.LastTime,
+                Message = runStatus.Message,
+                ProcessingTime = runStatus.ProcessingTime,
+                Result = runStatus.Result
+            };
+        }
+
+        private static RunStatus ToModel(RunStatusDto dto)
+        {
+            return new RunStatus
+            {
+                LastTime = dto.LastTime,
+                Message = dto.Message,
+                ProcessingTime = dto.ProcessingTime,
+                Result = dto.Result
+            };
         }
 
         private static ConnectorDto ToDto(ConnectorModel connector)
@@ -163,25 +348,12 @@ namespace VisionProcess.Persistence
             };
         }
 
-        private static PointDto ToDto(Point point) => new PointDto { X = point.X, Y = point.Y };
+        private static PointDto ToDto(VpPoint point) => new PointDto { X = point.X, Y = point.Y };
 
-        private static Point ToModel(PointDto dto) => new Point(dto.X, dto.Y);
+        private static VpPoint ToModel(PointDto dto) => new VpPoint(dto.X, dto.Y);
 
-        private static SizeDto ToDto(Size size) => new SizeDto { Width = size.Width, Height = size.Height };
+        private static SizeDto ToDto(VpSize size) => new SizeDto { Width = size.Width, Height = size.Height };
 
-        private static Size ToModel(SizeDto dto) => new Size(dto.Width, dto.Height);
-
-        private static JsonSerializerSettings CreateJsonSettings()
-        {
-            return new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.None,
-                Formatting = Formatting.Indented,
-                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-                DateParseHandling = DateParseHandling.DateTime,
-                Converters = { new OperatorJsonConverter() }
-            };
-        }
+        private static VpSize ToModel(SizeDto dto) => new VpSize(dto.Width, dto.Height);
     }
 }

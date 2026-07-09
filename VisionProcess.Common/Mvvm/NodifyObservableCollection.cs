@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace VisionProcess.Core.Mvvm
+namespace VisionProcess.Common.Mvvm
 {
     public interface INodifyObservableCollection<T>
     {

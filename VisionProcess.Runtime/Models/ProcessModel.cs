@@ -1,15 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using VisionProcess.Abstractions.ToolBase;
-using VisionProcess.Core.Extensions;
-using VisionProcess.Core.Helpers;
-using VisionProcess.Core.Mvvm;
+using VisionProcess.Common.Extensions;
+using VisionProcess.Common.Helpers;
+using VisionProcess.Common.Mvvm;
+using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime.Extensions;
 
 namespace VisionProcess.Runtime.Models
@@ -21,37 +15,6 @@ namespace VisionProcess.Runtime.Models
             operations = new();
             selectedOperations = new();
             Init();
-        }
-
-        [JsonConstructor]
-        public ProcessModel(NodifyObservableCollection<OperationModel> operations,
-            NodifyObservableCollection<ConnectionModel> connections,
-            NodifyObservableCollection<OperationModel> selectedOperations,
-            OperationModel? selectedOperation)
-        {
-            this.operations = operations;
-            foreach (var item in operations)
-            {
-                item.OperatorExecuted += OperatorExecuted;
-            }
-
-            foreach (var connection in connections)
-            {
-                //不出错的话必然是存在的
-                var inputOperation = operations.First(x => x.Id == connection.Input!.OwnerId);
-                var outputOperation = operations.First(x => x.Id == connection.Output!.OwnerId);
-                var inputConnector = inputOperation.Inputs.First(x => x.ValuePath == connection.Input!.ValuePath);
-                var outputConnector = outputOperation.Outputs.First(x => x.ValuePath == connection.Output!.ValuePath);
-                outputConnector.ValueObservers.Add(inputConnector);
-                Connections.Add(new ConnectionModel() { Input = inputConnector, Output = outputConnector });
-            }
-            Init();
-            var selectedIds = selectedOperations.Select(x => x.Id);
-            this.selectedOperations = new(operations.Where(x => selectedIds.Contains(x.Id)));
-            if (selectedOperation is not null)
-            {
-                SelectedOperation = operations.FirstOrDefault(x => x.Id == selectedOperation.Id);
-            }
         }
 
         private void Init()
@@ -140,10 +103,8 @@ namespace VisionProcess.Runtime.Models
             set => SetProperty(ref operations, value);
         }
 
-        [JsonIgnore]
         public IOperationsMenu? OperationsMenu { get; set; }
 
-        [JsonIgnore]
         public PendingConnectionModel PendingConnection { get; set; } = new();
 
         public OperationModel? SelectedOperation
@@ -193,7 +154,6 @@ namespace VisionProcess.Runtime.Models
             return SelectedOperations.Count > 0;
         }
 
-        [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanCreateConnection))]
         private void CreateConnection()
         {
@@ -227,7 +187,6 @@ namespace VisionProcess.Runtime.Models
         //    PendingConnection.IsVisible = false;
         //    OperationsMenu.Closed -= OnOperationsMenuClosed;
         //}
-        [property: JsonIgnore]
         [RelayCommand]
         private void DeleteSelection()
         {
@@ -235,7 +194,6 @@ namespace VisionProcess.Runtime.Models
             list.ForEach(o => Operations.Remove(o));
         }
 
-        [property: JsonIgnore]
         [RelayCommand]
         private void DisconnectConnector(ConnectorModel connector)
         {
@@ -250,7 +208,6 @@ namespace VisionProcess.Runtime.Models
         //    connection.Outputs.IsConnected = false;
         //    Connections.Remove(connection);
         //}
-        [property: JsonIgnore]
         [RelayCommand(CanExecute = nameof(CanGroupSelection))]
         private void GroupSelection()
         {
@@ -259,11 +216,10 @@ namespace VisionProcess.Runtime.Models
             Operations.Add(new OperationGroupModel
             {
                 Location = bounding.Location,
-                GroupSize = new Size(bounding.Width, bounding.Height)
+                GroupSize = new VpSize(bounding.Width, bounding.Height)
             });
         }
 
-        [property: JsonIgnore]
         [RelayCommand]
         private void RemoveIO(ConnectorModel connector)
         {
@@ -277,7 +233,6 @@ namespace VisionProcess.Runtime.Models
                 connector.Owner.Outputs.Remove(connector);
             }
         }
-        [property: JsonIgnore]
         [RelayCommand]
         private void StartConnection()
         {

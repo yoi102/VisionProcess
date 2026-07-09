@@ -1,0 +1,50 @@
+<UserControl x:Class="VisionProcess.wpf.Views.Tools.ColorConvertView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ex="clr-namespace:VisionProcess.wpf.Markup"
+             xmlns:local="clr-namespace:VisionProcess.wpf.Views.Tools"
+             xmlns:m="clr-namespace:VisionProcess.Tools.Models;assembly=VisionProcess.Tools"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:uc="clr-namespace:VisionProcess.wpf.UserControls"
+             d:Background="Wheat"
+             d:DesignHeight="450"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="300" />
+            <RowDefinition  Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <uc:ImageRecord Grid.Row="0"
+                        RecordSource="{Binding Records, Mode=OneWay}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" />
+        <GroupBox  Grid.Row="1"                   Header="ColorConvertView">
+
+            <StackPanel>
+                <ComboBox Margin="20"
+                          ItemsSource="{Binding Source={ex:EnumBindingSource {x:Type m:ColorConvertType}}}"
+                          SelectedItem="{Binding Inputs.ColorConversionCodes}"
+                          Style="{StaticResource MaterialDesignComboBox}" />
+            </StackPanel>
+
+        </GroupBox>
+        <ScrollViewer Grid.Row="2"
+                      md:ScrollViewerAssist.IsAutoHideEnabled="True"
+                      HorizontalScrollBarVisibility="Disabled"
+                      ToolTip="{Binding ElementName=textblock, Path=Text}"
+                      VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="textblock"
+                       Text="{Binding RunStatus.Message}"
+                       TextWrapping="Wrap" />
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

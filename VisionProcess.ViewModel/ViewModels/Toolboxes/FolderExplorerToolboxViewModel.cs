@@ -10,12 +10,11 @@ namespace VisionProcess.ViewModel.ViewModels.Toolboxes;
 public partial class FolderExplorerToolboxViewModel : ObservableObject, IDisposable
 {
     private MainViewModel? _mainViewModel;
-    private readonly IFileDocumentService? _fileDocumentService;
+    private readonly IFileDocumentService _fileDocumentService;
     private bool _isSynchronizingSelection;
 
     public FolderExplorerToolboxViewModel(
-        IToolboxIconsService toolboxIconsService,
-        IFileDocumentService? fileDocumentService = null)
+        IFileDocumentService fileDocumentService)
     {
         _fileDocumentService = fileDocumentService;
     }

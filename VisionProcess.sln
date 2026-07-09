@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.8.11925.187
@@ -11,17 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisionProcess.Tools", "Visi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisionProcess.wpf.Controls", "VisionProcess.wpf.Controls\VisionProcess.wpf.Controls.csproj", "{7BCA0146-6E5D-43DC-921D-6AD7AD98F386}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1856535-05DB-491F-AD61-02F8ACF67A77}"
-	ProjectSection(SolutionItems) = preProject
-		..\ImageDifferenceDetection\.csharpierrc.json = ..\ImageDifferenceDetection\.csharpierrc.json
-		..\ImageDifferenceDetection\.editorconfig = ..\ImageDifferenceDetection\.editorconfig
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisionProcess.Abstractions", "VisionProcess.Abstractions\VisionProcess.Abstractions.csproj", "{FEDB1184-3C9C-4571-95D1-7D0C652C1539}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisionProcess.Runtime", "VisionProcess.Runtime\VisionProcess.Runtime.csproj", "{BE2C4990-3E81-46F8-B4D9-2DA1471A3CA1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisionProcess.Contracts", "VisionProcess.Contracts\VisionProcess.Contracts.csproj", "{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisionProcess.Persistence", "VisionProcess.Persistence\VisionProcess.Persistence.csproj", "{49288F12-BCF5-40DD-954E-EC1212F779A3}"
 EndProject
@@ -113,18 +105,6 @@ Global
 		{BE2C4990-3E81-46F8-B4D9-2DA1471A3CA1}.Release|x64.Build.0 = Release|Any CPU
 		{BE2C4990-3E81-46F8-B4D9-2DA1471A3CA1}.Release|x86.ActiveCfg = Release|Any CPU
 		{BE2C4990-3E81-46F8-B4D9-2DA1471A3CA1}.Release|x86.Build.0 = Release|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Debug|x64.Build.0 = Debug|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Debug|x86.Build.0 = Debug|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Release|x64.ActiveCfg = Release|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Release|x64.Build.0 = Release|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Release|x86.ActiveCfg = Release|Any CPU
-		{9AC0C434-B74C-434C-8367-4CE2EFA7BFEB}.Release|x86.Build.0 = Release|Any CPU
 		{49288F12-BCF5-40DD-954E-EC1212F779A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49288F12-BCF5-40DD-954E-EC1212F779A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49288F12-BCF5-40DD-954E-EC1212F779A3}.Debug|x64.ActiveCfg = Debug|Any CPU

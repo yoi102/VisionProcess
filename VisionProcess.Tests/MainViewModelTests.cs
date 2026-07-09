@@ -1,17 +1,47 @@
 using System;
 using System.Linq;
+using VisionProcess.Abstractions.ToolBase;
+using VisionProcess.Tools.Services;
+using VisionProcess.ViewModel.Tooling;
 using VisionProcess.ViewModel.ViewModels;
+using VisionProcess.ViewModel.ViewModels.Toolboxes;
+using VisionProcess.Runtime.Services;
 using Xunit;
 
 namespace VisionProcess.Tests
 {
     public class MainViewModelTests
     {
+        public MainViewModelTests()
+        {
+            TestIoc.EnsureConfigured();
+        }
+
+        private static MainViewModel CreateMainViewModel(
+            IWindowDialogService? windowDialogService = null,
+            IOperatorFactory? operatorFactory = null,
+            IOperatorViewModelFactory? viewModelFactory = null)
+        {
+            var folderExplorer = new FolderExplorerToolboxViewModel(new StubFileDocumentService());
+            var properties = new PropertiesToolboxViewModel(new StubToolboxIconsService());
+
+            return new MainViewModel(
+                new StubCultureSettingService(),
+                new StubThemeSettingService(),
+                new StubDialogService(),
+                new StubSnackbarService(),
+                windowDialogService ?? new StubWindowDialogService(),
+                operatorFactory ?? new OperatorFactory(),
+                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()),
+                folderExplorer,
+                properties);
+        }
+
         [Fact]
         public void CloseEditor_WhenSelectedEditorIsClosed_SelectsAnotherEditor()
         {
             // Arrange
-            var mainViewModel = new MainViewModel((Runtime.Services.IDialogService?)null);
+            var mainViewModel = CreateMainViewModel();
             mainViewModel.AddEditorCommand.Execute(null);
             var firstEditor = mainViewModel.Editors[0];
             var secondEditor = mainViewModel.Editors[1];
@@ -29,7 +59,7 @@ namespace VisionProcess.Tests
         public void CloseEditor_WhenOnlyEditorIsClosed_SelectedEditorBecomesNull()
         {
             // Arrange
-            var mainViewModel = new MainViewModel((Runtime.Services.IDialogService?)null);
+            var mainViewModel = CreateMainViewModel();
             var firstEditor = mainViewModel.Editors[0];
             mainViewModel.SelectedEditor = firstEditor;
 

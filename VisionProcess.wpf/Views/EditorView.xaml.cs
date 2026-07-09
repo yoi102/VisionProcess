@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime.Models;
 
 namespace VisionProcess.wpf.Views
@@ -35,7 +36,7 @@ namespace VisionProcess.wpf.Views
             }
 
             e.Handled = true;
-            process.OperationsMenu?.OpenAt(editor.MouseLocation);
+            process.OperationsMenu?.OpenAt(new VpPoint(editor.MouseLocation.X, editor.MouseLocation.Y));
         }
 
         private void CloseOperationsMenu(object sender, RoutedEventArgs e)

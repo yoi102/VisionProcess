@@ -117,131 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DirectoryXNotFound" xml:space="preserve">
-    <value>フォルダー '{0}' が見つかりませんでした</value>
-  </data>
-  <data name="AccessToDirectoryXDenied" xml:space="preserve">
-    <value>フォルダー '{0}' へのアクセスが拒否されました</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>キャンセル</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>閉じる</value>
-  </data>
-  <data name="Create" xml:space="preserve">
-    <value>作成</value>
-  </data>
-  <data name="Created" xml:space="preserve">
-    <value>作成日時</value>
-  </data>
-  <data name="Desktop" xml:space="preserve">
-    <value>デスクトップ</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>詳細</value>
-  </data>
   <data name="Documents" xml:space="preserve">
     <value>ドキュメント</value>
-  </data>
-  <data name="Drives" xml:space="preserve">
-    <value>ドライブ</value>
-  </data>
-  <data name="EmptyDirectory" xml:space="preserve">
-    <value>空のフォルダー</value>
-  </data>
-  <data name="Files" xml:space="preserve">
-    <value>ファイル</value>
-  </data>
-  <data name="FileSize" xml:space="preserve">
-    <value>ファイルサイズ</value>
-  </data>
-  <data name="Folders" xml:space="preserve">
-    <value>フォルダー</value>
-  </data>
-  <data name="LastAccess" xml:space="preserve">
-    <value>アクセス日時</value>
-  </data>
-  <data name="LastModified" xml:space="preserve">
-    <value>更新日時</value>
-  </data>
-  <data name="LocalDrive" xml:space="preserve">
-    <value>ローカル ディスク</value>
-  </data>
-  <data name="LongPathsAreNotSupported" xml:space="preserve">
-    <value>ロングパスネームはサポートされていません</value>
-  </data>
-  <data name="Maximize" xml:space="preserve">
-    <value>最大化</value>
-  </data>
-  <data name="Minimize" xml:space="preserve">
-    <value>最小化</value>
-  </data>
-  <data name="Music" xml:space="preserve">
-    <value>ミュージック</value>
-  </data>
-  <data name="NewDirectoryName" xml:space="preserve">
-    <value>新しいフォルダー</value>
-  </data>
-  <data name="NoSelectedDirectories" xml:space="preserve">
-    <value>フォルダーが選択されていません</value>
-  </data>
-  <data name="NoSelectedFiles" xml:space="preserve">
-    <value>ファイルが選択されていません</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>開く</value>
-  </data>
-  <data name="OpenFile" xml:space="preserve">
-    <value>ファイルを開く</value>
-  </data>
-  <data name="Pictures" xml:space="preserve">
-    <value>ピクチャ</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>削除</value>
-  </data>
-  <data name="Restore" xml:space="preserve">
-    <value>元に戻す</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>保存</value>
   </data>
   <data name="SaveFile" xml:space="preserve">
     <value>ファイルの保存</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>検索</value>
-  </data>
   <data name="Select" xml:space="preserve">
     <value>選択</value>
-  </data>
-  <data name="SelectDirectory" xml:space="preserve">
-    <value>フォルダーの選択</value>
-  </data>
-  <data name="Selection" xml:space="preserve">
-    <value>選択</value>
-  </data>
-  <data name="TheDirectoryNameIsInvalid" xml:space="preserve">
-    <value>ディレクトリ名が無効です</value>
-  </data>
-  <data name="TheDirectoryNameMustNotBeEmpty" xml:space="preserve">
-    <value>ディレクトリ名は空にできません</value>
-  </data>
-  <data name="TheDirectoryXAlreadyExists" xml:space="preserve">
-    <value>ディレクトリ '{0}' は既に存在します</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>ユーザー</value>
-  </data>
-  <data name="Videos" xml:space="preserve">
-    <value>ビデオ</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>パスワード</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>成功</value>
@@ -255,9 +138,6 @@
   <data name="AdaptiveForm" xml:space="preserve">
     <value>フォームに合わせる</value>
   </data>
-  <data name="Toolbox" xml:space="preserve">
-    <value>ツール ボックス</value>
-  </data>
   <data name="Property" xml:space="preserve">
     <value>プロパティ</value>
   </data>
@@ -267,14 +147,8 @@
   <data name="PleaseSelectFiles" xml:space="preserve">
     <value>ファイルを選択してください</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>タイトル</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>タイプ</value>
-  </data>
-  <data name="Delet" xml:space="preserve">
-    <value>削除</value>
+  <data name="Disconnect" xml:space="preserve">
+    <value>接続解除</value>
   </data>
   <data name="ThresholdType" xml:space="preserve">
     <value>しきい値の種類</value>
@@ -284,6 +158,9 @@
   </data>
   <data name="MaximumValue" xml:space="preserve">
     <value>最大し値</value>
+  </data>
+  <data name="FilterType" xml:space="preserve">
+    <value>フィルタタイプ</value>
   </data>
   <data name="KernelWidth" xml:space="preserve">
     <value>カーネル幅</value>
@@ -297,8 +174,20 @@
   <data name="KernelSize" xml:space="preserve">
     <value>カーネルサイズ</value>
   </data>
+  <data name="SigmaX" xml:space="preserve">
+    <value>シグマX</value>
+  </data>
+  <data name="SigmaY" xml:space="preserve">
+    <value>シグマY</value>
+  </data>
   <data name="Diameter" xml:space="preserve">
     <value>直径</value>
+  </data>
+  <data name="SigmaColor" xml:space="preserve">
+    <value>シグマカラー</value>
+  </data>
+  <data name="SigmaSpace" xml:space="preserve">
+    <value>シグマスペース</value>
   </data>
   <data name="NormalizedBox" xml:space="preserve">
     <value>正規化ボックス</value>
@@ -308,6 +197,9 @@
   </data>
   <data name="Gaussian" xml:space="preserve">
     <value>ガウス</value>
+  </data>
+  <data name="Bilateral" xml:space="preserve">
+    <value>バイラテラル</value>
   </data>
   <data name="SaveImage" xml:space="preserve">
     <value>画像保存</value>
@@ -324,6 +216,9 @@
   <data name="AddToOutputs" xml:space="preserve">
     <value>出力に加え</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>なし</value>
+  </data>
   <data name="ReadOnly" xml:space="preserve">
     <value>読み出し専用</value>
   </data>
@@ -332,5 +227,29 @@
   </data>
   <data name="Read&amp;Write" xml:space="preserve">
     <value>読み書き</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="ConfirmExitTitle" xml:space="preserve">
+    <value>終了の確認</value>
+  </data>
+  <data name="ConfirmExitMessage" xml:space="preserve">
+    <value>アプリケーションを終了しますか？</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Japanese" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="Chinese" xml:space="preserve">
+    <value>中文</value>
   </data>
 </root>

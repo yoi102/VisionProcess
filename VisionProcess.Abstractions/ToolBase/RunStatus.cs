@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using CommunityToolkit.Mvvm.ComponentModel;
 using VisionProcess.Abstractions.Attributes;
 
 namespace VisionProcess.Abstractions.ToolBase
@@ -30,15 +29,6 @@ namespace VisionProcess.Abstractions.ToolBase
             this.exception = exception;
         }
 
-        [JsonConstructor]
-        public RunStatus(DateTime lastTime, string message, double processingTime, bool result)
-        {
-            this.lastTime = lastTime;
-            this.message = message;
-            this.processingTime = processingTime;
-            this.result = result;
-        }
-        [JsonIgnore]
         [ThresholdIgnore]
         public Exception? Exception
         {
@@ -49,25 +39,25 @@ namespace VisionProcess.Abstractions.ToolBase
         public DateTime LastTime
         {
             get { return lastTime; }
-            internal set { SetProperty(ref lastTime, value); }
+            set { SetProperty(ref lastTime, value); }
         }
 
         public string Message
         {
             get { return message; }
-            internal set { SetProperty(ref message, value); }
+            set { SetProperty(ref message, value); }
         }
 
         public double ProcessingTime
         {
             get { return processingTime; }
-            internal set { SetProperty(ref processingTime, value); }
+            set { SetProperty(ref processingTime, value); }
         }
 
         public bool Result
         {
             get { return result; }
-            internal set { SetProperty(ref result, value); }
+            set { SetProperty(ref result, value); }
         }
     }
 }

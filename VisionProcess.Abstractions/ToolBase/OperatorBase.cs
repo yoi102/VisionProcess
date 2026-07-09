@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using VisionProcess.Abstractions.Attributes;
@@ -33,9 +32,9 @@ namespace VisionProcess.Abstractions.ToolBase
 
         public event EventHandler? Executing;
         [ThresholdIgnore]
-        public TGraphics Graphics { get; } = new TGraphics();
+        public TGraphics Graphics { get; set; } = new TGraphics();
         IGraphics IOperator.Graphics => Graphics;
-        public TInputs Inputs { get; } = new TInputs();
+        public TInputs Inputs { get; set; } = new TInputs();
         IInputs IOperator.Inputs => Inputs;
 
         public bool IsRealTime
@@ -57,11 +56,11 @@ namespace VisionProcess.Abstractions.ToolBase
         }
 
         IOutputs IOperator.Outputs => Outputs;
-        public TOutputs Outputs { get; } = new TOutputs();
+        public TOutputs Outputs { get; set; } = new TOutputs();
         //[ThresholdIgnore]
-        public ObservableCollection<Record> Records { get; } = new ObservableCollection<Record>();
+        public ObservableCollection<Record> Records { get; set; } = new ObservableCollection<Record>();
 
-        public RunStatus RunStatus { get; } = new RunStatus();
+        public RunStatus RunStatus { get; set; } = new RunStatus();
 
         private void Execute()
         {
@@ -117,7 +116,6 @@ namespace VisionProcess.Abstractions.ToolBase
             Executing?.Invoke(this, EventArgs.Empty);
         }
 
-        [property: JsonIgnore]
         [RelayCommand]
         public async Task ExecuteAsync()
         {
