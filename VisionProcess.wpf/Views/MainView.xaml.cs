@@ -1,6 +1,5 @@
 using AvalonDock;
 using AvalonDock.Themes;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using MessagePipe;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -16,11 +15,17 @@ namespace VisionProcess.wpf.Views
     /// </summary>
     public partial class MainView
     {
-        public MainView(MainViewModel mainViewModel, ISubscriber<ThemeChangedEvent> subscriber)
+        private readonly IDialogService dialogService;
+
+        public MainView(
+            MainViewModel mainViewModel,
+            ISubscriber<ThemeChangedEvent> subscriber,
+            IDialogService dialogService)
         {
             InitializeComponent();
 
-            this.DataContext = mainViewModel;
+            DataContext = mainViewModel;
+            this.dialogService = dialogService;
 
             subscriber.Subscribe((h) =>
             {
@@ -46,9 +51,7 @@ namespace VisionProcess.wpf.Views
 
         private async void HandleExitConfirmationAsync(CancelEventArgs e)
         {
-            var dialog = Ioc.Default.GetRequiredService<IDialogService>();
-
-            bool confirm = await dialog.ShowExitConfirmation();
+            bool confirm = await dialogService.ShowExitConfirmation();
 
             if (confirm)
             {

@@ -5,27 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Common.Primitives;
-using VisionProcess.Runtime;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
 using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
 
 namespace VisionProcess.ViewModel.ViewModels
 {
-    public partial class OperationsMenuViewModel : ObservableObject, IOperationsMenu
+    public partial class OperationsMenuViewModel : ObservableObject
     {
-        private readonly IWindowDialogService? _windowDialogService;
         private readonly IOperatorFactory _operatorFactory;
         private readonly IOperatorViewModelFactory _viewModelFactory;
 
-        public OperationsMenuViewModel(ProcessModel processModel, IOperatorFactory operatorFactory, IOperatorViewModelFactory viewModelFactory, IWindowDialogService? _windowDialogService = null)
+        public OperationsMenuViewModel(ProcessModel processModel, IOperatorFactory operatorFactory, IOperatorViewModelFactory viewModelFactory)
         {
             AvailableOperations = ToolRegistry.ToolTypes.Select(ToolRegistry.GetToolName).ToList();
             this.processModel = processModel;
             _operatorFactory = operatorFactory;
             _viewModelFactory = viewModelFactory;
-            this._windowDialogService = _windowDialogService;
         }
 
         [ObservableProperty]
@@ -60,8 +56,7 @@ namespace VisionProcess.ViewModel.ViewModels
             {
                 Operator = instance,
                 OperatorViewModel = viewModel,
-                Location = Location,
-                WindowDialogService = _windowDialogService
+                Location = Location
             });
             IsVisible = false;
         }

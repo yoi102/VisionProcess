@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,13 +18,6 @@ namespace VisionProcess.ViewModel.ViewModels.Tools
     {
         private readonly AcquireImageOperator _operator;
         private readonly IFileDialogService? _fileDialogService;
-
-        /// <summary>
-        /// 供序列化/视图创建使用的无参构造函数。
-        /// </summary>
-        public AcquireImageViewModel() : this(new AcquireImageOperator(), Ioc.Default.GetService<IFileDialogService>())
-        {
-        }
 
         public AcquireImageViewModel(AcquireImageOperator @operator, IFileDialogService? fileDialogService = null)
         {

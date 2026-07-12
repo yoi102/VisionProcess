@@ -1,12 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
-using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
+using VisionProcess.ViewModel.ViewServices;
 
 namespace VisionProcess.ViewModel.ViewModels
 {
@@ -14,25 +12,23 @@ namespace VisionProcess.ViewModel.ViewModels
     {
         private string? name;
 
-        private ProcessModel process;
+        private readonly ProcessModel process;
 
-        public EditorViewModel(IWindowDialogService _windowDialogService, IOperatorFactory operatorFactory, IOperatorViewModelFactory viewModelFactory)
-        {
-            process = new ProcessModel();
-            OperationsMenu = new OperationsMenuViewModel(process, operatorFactory, viewModelFactory, _windowDialogService);
-            process.OperationsMenu = OperationsMenu;
-            Id = Guid.NewGuid();
-        }
+        private readonly IWindowDialogService windowDialogService;
 
-        public EditorViewModel(ProcessModel process, Guid id, string? name)
+        public EditorViewModel(
+            ProcessModel process,
+            Guid id,
+            string? name,
+            IWindowDialogService windowDialogService,
+            IOperatorFactory operatorFactory,
+            IOperatorViewModelFactory viewModelFactory)
         {
-            this.process = process;
+            this.process = process ?? throw new ArgumentNullException(nameof(process));
+            this.windowDialogService = windowDialogService ?? throw new ArgumentNullException(nameof(windowDialogService));
             Id = id;
             this.name = name;
-            var operatorFactory = Ioc.Default.GetService<IOperatorFactory>() ?? new OperatorFactory();
-            var viewModelFactory = Ioc.Default.GetService<IOperatorViewModelFactory>() ?? new OperatorViewModelFactory();
             OperationsMenu = new OperationsMenuViewModel(process, operatorFactory, viewModelFactory);
-            process.OperationsMenu = OperationsMenu;
             AttachViewModels(viewModelFactory);
         }
 
@@ -62,11 +58,7 @@ namespace VisionProcess.ViewModel.ViewModels
 
         public OperationsMenuViewModel OperationsMenu { get; }
 
-        public ProcessModel Process
-        {
-            get => process;
-            set => SetProperty(ref process, value);
-        }
+        public ProcessModel Process => process;
 
         [RelayCommand]
         private void Disconnect(ConnectionModel connection)
@@ -74,6 +66,12 @@ namespace VisionProcess.ViewModel.ViewModels
             connection.Input!.IsConnected = false;
             connection.Output!.IsConnected = false;
             Process.Connections.Remove(connection);
+        }
+
+        [RelayCommand]
+        private void OpenIOConnector(OperationModel operation)
+        {
+            windowDialogService.OpenIOConnectorDialog(operation);
         }
     }
 }

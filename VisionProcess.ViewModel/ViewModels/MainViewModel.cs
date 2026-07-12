@@ -1,12 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using VisionProcess.Common.Extensions;
 using VisionProcess.Common.Mvvm;
-using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
-using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
 using VisionProcess.ViewModel.ViewServices;
@@ -17,36 +13,24 @@ namespace VisionProcess.ViewModel.ViewModels
     {
         private readonly ICultureSettingService cultureSettingService = null!;
         private readonly IThemeSettingService themeSettingService = null!;
-        private readonly IDialogService dialogService = null!;
-        private readonly ISnackbarService snackbarService = null!;
-        private readonly IWindowDialogService _windowDialogService = null!;
-        private readonly IOperatorFactory _operatorFactory = null!;
-        private readonly IOperatorViewModelFactory _viewModelFactory = null!;
+        private readonly IEditorViewModelFactory editorFactory;
 
         public MainViewModel(
-             ICultureSettingService cultureSettingService,
+            ICultureSettingService cultureSettingService,
             IThemeSettingService themeSettingService,
-            IDialogService dialogService,
-            ISnackbarService snackbarService,
-            IWindowDialogService _windowDialogService,
-            IOperatorFactory operatorFactory,
-            IOperatorViewModelFactory viewModelFactory,
+            IEditorViewModelFactory editorFactory,
             FolderExplorerToolboxViewModel folderExplorer,
             PropertiesToolboxViewModel properties)
         {
             this.cultureSettingService = cultureSettingService;
             this.themeSettingService = themeSettingService;
-            this.dialogService = dialogService;
-            this.snackbarService = snackbarService;
-            this._windowDialogService = _windowDialogService;
-            _operatorFactory = operatorFactory;
-            _viewModelFactory = viewModelFactory;
+            this.editorFactory = editorFactory;
             FolderExplorer = folderExplorer;
             Properties = properties;
             Editors = [];
-            Init(); 
+            Init();
 
-            var editor = Ioc.Default.GetRequiredService<EditorViewModel>();
+            var editor = editorFactory.Create();
             editor.Name = $"Editor {Editors.Count + 1}";
             Editors.Add(editor);
             IsDarkTheme = themeSettingService.IsDarkTheme;
@@ -109,11 +93,10 @@ namespace VisionProcess.ViewModel.ViewModels
         [RelayCommand]
         private void AddEditor()
         {
-            Editors.Add(new EditorViewModel(_windowDialogService, _operatorFactory, _viewModelFactory)
-            {
-                Name = $"Editor {Editors.Count + 1}"
-            });
-            SelectedEditor = Editors[^1];
+            var editor = editorFactory.Create();
+            editor.Name = $"Editor {Editors.Count + 1}";
+            Editors.Add(editor);
+            SelectedEditor = editor;
         }
 
         private bool CanCloseEditor()

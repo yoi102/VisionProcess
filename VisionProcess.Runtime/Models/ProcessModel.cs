@@ -103,8 +103,6 @@ namespace VisionProcess.Runtime.Models
             set => SetProperty(ref operations, value);
         }
 
-        public IOperationsMenu? OperationsMenu { get; set; }
-
         public PendingConnectionModel PendingConnection { get; set; } = new();
 
         public OperationModel? SelectedOperation
@@ -165,8 +163,6 @@ namespace VisionProcess.Runtime.Models
             if (target == null)
             {
                 PendingConnection.IsVisible = false;
-                //OperationsMenu.OpenAt(PendingConnection.TargetLocation);
-                //OperationsMenu.Closed += OnOperationsMenuClosed;
                 return;
             }
 
@@ -182,11 +178,6 @@ namespace VisionProcess.Runtime.Models
             });
         }
 
-        //private void OnOperationsMenuClosed()
-        //{
-        //    PendingConnection.IsVisible = false;
-        //    OperationsMenu.Closed -= OnOperationsMenuClosed;
-        //}
         [RelayCommand]
         private void DeleteSelection()
         {

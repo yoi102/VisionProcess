@@ -5,7 +5,7 @@ using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
 using VisionProcess.ViewModel.ViewModels;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
-using VisionProcess.Runtime.Services;
+using VisionProcess.ViewModel.ViewServices;
 using Xunit;
 
 namespace VisionProcess.Tests
@@ -24,15 +24,15 @@ namespace VisionProcess.Tests
         {
             var folderExplorer = new FolderExplorerToolboxViewModel(new StubFileDocumentService());
             var properties = new PropertiesToolboxViewModel(new StubToolboxIconsService());
+            var editorFactory = new EditorViewModelFactory(
+                windowDialogService ?? new StubWindowDialogService(),
+                operatorFactory ?? new OperatorFactory(),
+                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()));
 
             return new MainViewModel(
                 new StubCultureSettingService(),
                 new StubThemeSettingService(),
-                new StubDialogService(),
-                new StubSnackbarService(),
-                windowDialogService ?? new StubWindowDialogService(),
-                operatorFactory ?? new OperatorFactory(),
-                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()),
+                editorFactory,
                 folderExplorer,
                 properties);
         }

@@ -95,7 +95,8 @@
                                   Header="Delete"
                                   Icon="{md:PackIcon Kind=Delete}"
                                   />
-                        <MenuItem Command="{Binding AddIOCommand}"
+                        <MenuItem Command="{Binding DataContext.OpenIOConnectorCommand, Source={StaticResource Proxy}}"
+                                  CommandParameter="{Binding}"
                                   Header="Add I/O"
                                   Icon="{md:PackIcon Kind=Add}"
                                   />
@@ -249,7 +250,9 @@
             </nodify:NodifyEditor.InputBindings>
 
             <CompositeCollection>
-                <nodify:DecoratorContainer x:Name="DecoratorContainer" DataContext="{Binding OperationsMenu}" Location="{Binding Location, Converter={StaticResource VpPointConverter}}">
+                <nodify:DecoratorContainer x:Name="DecoratorContainer"
+                                           DataContext="{Binding DataContext.OperationsMenu, Source={StaticResource Proxy}}"
+                                           Location="{Binding Location, Converter={StaticResource VpPointConverter}}">
                     <local:OperationsMenuView />
                 </nodify:DecoratorContainer>
             </CompositeCollection>

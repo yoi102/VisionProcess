@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using VisionProcess.Abstractions.Services;
 using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
 using VisionProcess.ViewModel;
 using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
@@ -64,7 +63,10 @@ namespace VisionProcess.Tests
 
     internal sealed class StubWindowDialogService : IWindowDialogService
     {
-        public void OpenIOConnectorDialog(OperationModel operationModel) { }
+        public OperationModel? OpenedOperation { get; private set; }
+
+        public void OpenIOConnectorDialog(OperationModel operationModel)
+            => OpenedOperation = operationModel;
     }
 
     internal sealed class StubFileDialogService : IFileDialogService

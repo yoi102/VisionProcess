@@ -7,7 +7,6 @@ using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;
 using VisionProcess.Persistence.Operators;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
 using VisionProcess.Tools.Models;
 using VisionProcess.Tools.Operators;
 using VisionProcess.Tools.Services;
@@ -221,7 +220,7 @@ namespace VisionProcess.Tests
             process.Operations.Add(new OperationModel { Operator = new AcquireImageOperator() });
 
             // Act
-            var editor = new EditorViewModel(process, Guid.NewGuid(), "Test");
+            var editor = CreateEditorFactory().Create(process, Guid.NewGuid(), "Test");
 
             // Assert
             Assert.IsType<AcquireImageViewModel>(editor.Process.Operations[0].OperatorViewModel);
@@ -236,8 +235,7 @@ namespace VisionProcess.Tests
             var menu = new OperationsMenuViewModel(
                 process,
                 new OperatorFactory(),
-                new OperatorViewModelFactory(new StubFileDialogService()),
-                new StubWindowDialogService());
+                new OperatorViewModelFactory(new StubFileDialogService()));
             menu.OpenAt(new VpPoint(0, 0));
 
             // Act
@@ -248,6 +246,18 @@ namespace VisionProcess.Tests
             Assert.IsType<AcquireImageViewModel>(process.Operations[0].OperatorViewModel);
         }
 
+        [Fact]
+        public void EditorViewModel_OpenIOConnector_UsesViewService()
+        {
+            var dialogService = new StubWindowDialogService();
+            var editor = CreateEditorFactory(dialogService).Create();
+            var operation = new OperationModel { Operator = new AcquireImageOperator() };
+
+            editor.OpenIOConnectorCommand.Execute(operation);
+
+            Assert.Same(operation, dialogService.OpenedOperation);
+        }
+
         private static MainViewModel CreateMainViewModel(
             IWindowDialogService? windowDialogService = null,
             IOperatorFactory? operatorFactory = null,
@@ -255,15 +265,12 @@ namespace VisionProcess.Tests
         {
             var folderExplorer = new FolderExplorerToolboxViewModel(new StubFileDocumentService());
             var properties = new PropertiesToolboxViewModel(new StubToolboxIconsService());
+            var editorFactory = CreateEditorFactory(windowDialogService, operatorFactory, viewModelFactory);
 
             return new MainViewModel(
                 new StubCultureSettingService(),
                 new StubThemeSettingService(),
-                new StubDialogService(),
-                new StubSnackbarService(),
-                windowDialogService ?? new StubWindowDialogService(),
-                operatorFactory ?? new OperatorFactory(),
-                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()),
+                editorFactory,
                 folderExplorer,
                 properties);
         }
@@ -292,8 +299,7 @@ namespace VisionProcess.Tests
             foreach (var editorDto in dto.Editors)
             {
                 var process = editorDto.Process is null ? new ProcessModel() : ProcessMapper.ToModel(editorDto.Process);
-                var editor = new EditorViewModel(process, editorDto.Id, editorDto.Name);
-                editor.Process.OperationsMenu = editor.OperationsMenu;
+                var editor = CreateEditorFactory().Create(process, editorDto.Id, editorDto.Name);
                 model.Editors.Add(editor);
             }
 
@@ -304,5 +310,14 @@ namespace VisionProcess.Tests
 
             return model;
         }
+
+        private static IEditorViewModelFactory CreateEditorFactory(
+            IWindowDialogService? windowDialogService = null,
+            IOperatorFactory? operatorFactory = null,
+            IOperatorViewModelFactory? viewModelFactory = null)
+            => new EditorViewModelFactory(
+                windowDialogService ?? new StubWindowDialogService(),
+                operatorFactory ?? new OperatorFactory(),
+                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()));
     }
 }

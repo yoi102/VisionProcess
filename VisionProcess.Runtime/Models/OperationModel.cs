@@ -1,10 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Common.Helpers;
 using VisionProcess.Common.Mvvm;
 using VisionProcess.Common.Primitives;
-using VisionProcess.Runtime.Services;
 
 namespace VisionProcess.Runtime.Models
 {
@@ -85,14 +83,6 @@ namespace VisionProcess.Runtime.Models
         {
             get => size;
             set => SetProperty(ref size, value);
-        }
-
-        public IWindowDialogService? WindowDialogService { get; set; }
-
-        [RelayCommand]
-        private void AddIO()
-        {
-            WindowDialogService?.OpenIOConnectorDialog(this);
         }
 
         private void Init()

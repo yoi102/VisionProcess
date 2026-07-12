@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using VisionProcess.Runtime.Models;
+using VisionProcess.ViewModel.Tooling;
 using VisionProcess.ViewModel.ViewModels;
 using VisionProcess.ViewModel.ViewModels.Toolboxes;
 
@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
         services.AddTransient<MainViewModel>();
-        services.AddTransient<EditorViewModel>();
+        services.AddTransient<IEditorViewModelFactory, EditorViewModelFactory>();
         services.AddTransient<FolderExplorerToolboxViewModel>();
         services.AddTransient<PropertiesToolboxViewModel>();
 

@@ -11,7 +11,6 @@
     <ProjectReference Include="..\VisionProcess.Common\VisionProcess.Common.csproj" />
     <ProjectReference Include="..\VisionProcess.Runtime\VisionProcess.Runtime.csproj" />
     <ProjectReference Include="..\VisionProcess.Tools\VisionProcess.Tools.csproj" />
-    <ProjectReference Include="..\VisionProcess.ViewModel\VisionProcess.ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

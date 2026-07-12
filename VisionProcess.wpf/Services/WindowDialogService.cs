@@ -2,8 +2,8 @@ using MahApps.Metro.Controls;
 using System.Windows;
 using System.Windows.Controls;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
 using VisionProcess.ViewModel.ViewModels;
+using VisionProcess.ViewModel.ViewServices;
 using VisionProcess.wpf.Views;
 
 namespace VisionProcess.wpf.Services

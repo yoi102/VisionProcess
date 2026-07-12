@@ -1,7 +1,6 @@
 using Antelcat.I18N.WPF;
 using AvalonDock;
 using AvalonDock.DependencyInjection;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
@@ -17,7 +16,6 @@ using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Persistence;
 using VisionProcess.Persistence.Migrations;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Runtime.Services;
 using VisionProcess.ViewModel;
 using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
@@ -49,7 +47,6 @@ namespace VisionProcess.wpf
             Thread.CurrentThread.CurrentUICulture = culture;
             I18NExtension.Culture = culture;
             Services = ConfigureServices();
-            Ioc.Default.ConfigureServices(Services);
             this.InitializeComponent();
         }
 
@@ -179,18 +176,10 @@ namespace VisionProcess.wpf
 
         private EditorViewModel CreateEditorFromDto(EditorDto editorDto)
         {
-            var dialogService = Services.GetRequiredService<IWindowDialogService>();
             var process = editorDto.Process is null ? new ProcessModel() : ProcessMapper.ToModel(editorDto.Process);
-            var editor = new EditorViewModel(process, editorDto.Id, editorDto.Name)
-            {
-                Parent = null
-            };
-            editor.Process.OperationsMenu = editor.OperationsMenu;
-            foreach (var operation in editor.Process.Operations)
-            {
-                operation.WindowDialogService = dialogService;
-            }
-
+            var editorFactory = Services.GetRequiredService<IEditorViewModelFactory>();
+            var editor = editorFactory.Create(process, editorDto.Id, editorDto.Name);
+            editor.Parent = null;
             return editor;
         }
 
@@ -203,8 +192,6 @@ namespace VisionProcess.wpf
             var persistence = new ProcessPersistenceService(serializer);
 
             var services = new ServiceCollection();
-            var dialogService = new WindowDialogService();
-
             services.AddMessagePipe();
             services.AddViewModels();
             services.AddTransient<ICultureSettingService, CultureSettingService>();
@@ -219,9 +206,6 @@ namespace VisionProcess.wpf
             services.AddSingleton(serializer);
             services.AddSingleton(persistence);
             services.AddSingleton<IFileDocumentService>(_ => Current);
-            services.AddTransient<EditorViewModel>();
-
-
             services.AddSingleton<MainView>();
 
             return services.BuildServiceProvider();

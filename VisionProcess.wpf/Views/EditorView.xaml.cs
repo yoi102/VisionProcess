@@ -35,8 +35,7 @@ namespace VisionProcess.wpf.Views
         {
             if (e.ChangedButton != MouseButton.Right ||
                 sender is not NodifyEditor editor ||
-                editor.DataContext is not ProcessModel process ||
-                process.OperationsMenu is not OperationsMenuViewModel menu)
+                DataContext is not EditorViewModel editorViewModel)
             {
                 return;
             }
@@ -45,20 +44,19 @@ namespace VisionProcess.wpf.Views
             // doesn't get a chance to open menus declared on graph elements.
             if (FindContextMenuOwner(e.OriginalSource as DependencyObject, editor) is FrameworkElement owner)
             {
-                menu.Close();
+                editorViewModel.OperationsMenu.Close();
                 OpenContextMenu(owner);
                 return;
             }
 
-            menu.OpenAt(new VpPoint(editor.MouseLocation.X, editor.MouseLocation.Y));
+            editorViewModel.OperationsMenu.OpenAt(new VpPoint(editor.MouseLocation.X, editor.MouseLocation.Y));
         }
 
         private void OnEditorPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Left ||
                 sender is not NodifyEditor editor ||
-                editor.DataContext is not ProcessModel process ||
-                process.OperationsMenu is not OperationsMenuViewModel menu)
+                DataContext is not EditorViewModel editorViewModel)
             {
                 return;
             }
@@ -66,7 +64,7 @@ namespace VisionProcess.wpf.Views
             // Allow buttons in the operations menu to execute before it is hidden.
             if (!IsDescendantOf<OperationsMenuView>(e.OriginalSource as DependencyObject, editor))
             {
-                menu.Close();
+                editorViewModel.OperationsMenu.Close();
             }
         }
 
