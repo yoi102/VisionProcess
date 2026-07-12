@@ -83,6 +83,25 @@
             <Setter Property="Location" Value="{Binding Location, Converter={StaticResource VpPointConverter}}" />
             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
             <Setter Property="ActualSize" Value="{Binding Size, Mode=OneWayToSource, Converter={StaticResource VpSizeConverter}}" />
+            <!--
+                Nodify handles node interaction on ItemContainer, not on the Node
+                inside its content template. The menu must therefore live here so
+                Nodify knows that a right-click should open a context menu.
+            -->
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding DataContext.Process.DeleteSelectionCommand, Source={StaticResource Proxy}}"
+                                  Header="Delete"
+                                  Icon="{md:PackIcon Kind=Delete}"
+                                  />
+                        <MenuItem Command="{Binding AddIOCommand}"
+                                  Header="Add I/O"
+                                  Icon="{md:PackIcon Kind=Add}"
+                                  />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <DataTemplate x:Key="ConnectionTemplate" DataType="{x:Type models:ConnectionModel}">
@@ -193,18 +212,6 @@
                             </DataTemplate>
                         </nodify:Node.OutputConnectorTemplate>
 
-                        <nodify:Node.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="{Binding DataContext.Process.DeleteSelectionCommand, Source={StaticResource Proxy}}"
-                                          Header="Delete"
-                                          Icon="{md:PackIcon Kind=Delete}"
-                                          />
-                                <MenuItem Command="{Binding AddIOCommand}"
-                                          Header="Add I/O"
-                                          Icon="{md:PackIcon Kind=Add}"
-                                          />
-                            </ContextMenu>
-                        </nodify:Node.ContextMenu>
                         <nodify:Node.Footer>
                             <DockPanel>
                                 <TextBlock Margin="10,0"
@@ -242,7 +249,7 @@
             </nodify:NodifyEditor.InputBindings>
 
             <CompositeCollection>
-                <nodify:DecoratorContainer DataContext="{Binding OperationsMenu}" Location="{Binding Location, Converter={StaticResource VpPointConverter}}">
+                <nodify:DecoratorContainer x:Name="DecoratorContainer" DataContext="{Binding OperationsMenu}" Location="{Binding Location, Converter={StaticResource VpPointConverter}}">
                     <local:OperationsMenuView />
                 </nodify:DecoratorContainer>
             </CompositeCollection>

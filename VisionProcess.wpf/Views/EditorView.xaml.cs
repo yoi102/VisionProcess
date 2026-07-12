@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime.Models;
+using VisionProcess.ViewModel.ViewModels;
 
 namespace VisionProcess.wpf.Views
 {
@@ -16,72 +17,100 @@ namespace VisionProcess.wpf.Views
         public EditorView()
         {
             InitializeComponent();
-            // NodifyEditor handles mouse events internally (e.g. panning on right-click),
-            // so we must listen to already-handled events to reliably open/close the menu.
-            EventManager.RegisterClassHandler(typeof(NodifyEditor), MouseLeftButtonDownEvent, new MouseButtonEventHandler(CloseOperationsMenu), handledEventsToo: true);
-            EventManager.RegisterClassHandler(typeof(NodifyEditor), MouseRightButtonUpEvent, new MouseButtonEventHandler(OpenOperationsMenu), handledEventsToo: true);
+
+            // Nodify consumes the mouse events used for panning. Listen to handled
+            // routed events on this editor instance so a background right-click is
+            // still visible to the operations menu without globally changing Nodify.
+            Editor.AddHandler(
+                Mouse.PreviewMouseUpEvent,
+                new MouseButtonEventHandler(OnEditorPreviewMouseUp),
+                handledEventsToo: true);
+            Editor.AddHandler(
+                Mouse.PreviewMouseDownEvent,
+                new MouseButtonEventHandler(OnEditorPreviewMouseDown),
+                handledEventsToo: true);
         }
 
-        private void OpenOperationsMenu(object sender, MouseButtonEventArgs e)
+        private void OnEditorPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not NodifyEditor editor || editor.IsPanning || editor.DataContext is not ProcessModel process)
+            if (e.ChangedButton != MouseButton.Right ||
+                sender is not NodifyEditor editor ||
+                editor.DataContext is not ProcessModel process ||
+                process.OperationsMenu is not OperationsMenuViewModel menu)
             {
                 return;
             }
 
-            // Only open the operations menu on the editor background, not on nodes/connections/connectors.
-            if (!IsBlankArea(editor, e.OriginalSource as DependencyObject))
+            // Nodify consumes right-click for panning, so WPF's ContextMenuService
+            // doesn't get a chance to open menus declared on graph elements.
+            if (FindContextMenuOwner(e.OriginalSource as DependencyObject, editor) is FrameworkElement owner)
             {
+                menu.Close();
+                OpenContextMenu(owner);
                 return;
             }
 
-            e.Handled = true;
-            process.OperationsMenu?.OpenAt(new VpPoint(editor.MouseLocation.X, editor.MouseLocation.Y));
+            menu.OpenAt(new VpPoint(editor.MouseLocation.X, editor.MouseLocation.Y));
         }
 
-        private void CloseOperationsMenu(object sender, RoutedEventArgs e)
+        private void OnEditorPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not NodifyEditor editor || editor.DataContext is not ProcessModel process)
+            if (e.ChangedButton != MouseButton.Left ||
+                sender is not NodifyEditor editor ||
+                editor.DataContext is not ProcessModel process ||
+                process.OperationsMenu is not OperationsMenuViewModel menu)
             {
                 return;
             }
 
-            // Don't close the menu when the user is clicking inside it (e.g. on a menu item).
-            if (e.OriginalSource is DependencyObject source && IsInsideOperationsMenu(source, editor))
+            // Allow buttons in the operations menu to execute before it is hidden.
+            if (!IsDescendantOf<OperationsMenuView>(e.OriginalSource as DependencyObject, editor))
             {
-                return;
+                menu.Close();
             }
-
-            process.OperationsMenu?.Close();
         }
 
-        private static bool IsBlankArea(NodifyEditor editor, DependencyObject? source)
+        private static FrameworkElement? FindContextMenuOwner(DependencyObject? source, NodifyEditor editor)
         {
-            if (source is null || ReferenceEquals(source, editor))
-            {
-                return true;
-            }
-
             var current = source;
             while (current is not null && !ReferenceEquals(current, editor))
             {
-                if (current is Node || current is ItemContainer || current is Connection || current is NodeInput || current is NodeOutput)
+                if (current is FrameworkElement { ContextMenu: not null } element &&
+                    current is ItemContainer or Node or NodeInput or NodeOutput or Connection)
                 {
-                    return false;
+                    return element;
                 }
 
                 current = VisualTreeHelper.GetParent(current);
             }
 
-            return true;
+            return null;
         }
 
-        private static bool IsInsideOperationsMenu(DependencyObject source, NodifyEditor editor)
+        private static void OpenContextMenu(FrameworkElement owner)
+        {
+            var contextMenu = owner.ContextMenu;
+            if (contextMenu is null)
+            {
+                return;
+            }
+
+            // ContextMenu is hosted in a separate visual tree and therefore cannot
+            // reliably inherit the node/connector/connection DataContext by itself.
+            contextMenu.DataContext = owner.DataContext;
+            contextMenu.PlacementTarget = owner;
+
+            // Open after Nodify has finished processing the same mouse-up event.
+            owner.Dispatcher.BeginInvoke(() => contextMenu.IsOpen = true);
+        }
+
+        private static bool IsDescendantOf<T>(DependencyObject? source, DependencyObject root)
+            where T : DependencyObject
         {
             var current = source;
-            while (current is not null && !ReferenceEquals(current, editor))
+            while (current is not null && !ReferenceEquals(current, root))
             {
-                if (current is OperationsMenuView)
+                if (current is T)
                 {
                     return true;
                 }
