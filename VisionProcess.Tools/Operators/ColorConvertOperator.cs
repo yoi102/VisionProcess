@@ -25,8 +25,9 @@ namespace VisionProcess.Tools.Operators
                 message = "Input image can not be null";
                 return false;
             }
-            Outputs.Image ??= new Mat();
-            Cv2.CvtColor(Inputs.Image, Outputs.Image, ToOpenCvCode(Inputs.ColorConversionCodes));
+            var output = new Mat();
+            Cv2.CvtColor(Inputs.Image, output, ToOpenCvCode(Inputs.ColorConversionCodes));
+            Outputs.Image = output;
             Records[0].DisplayImage = Outputs.Image;
 
             message = Strings.Success;

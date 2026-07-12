@@ -21,8 +21,9 @@ namespace VisionProcess.Tools.Models
             {
                 if (image != value)
                 {
+                    var ownedImage = value?.Clone();
                     image?.Dispose();
-                    image = value;
+                    image = ownedImage;
                     OnPropertyChanged();
                 }
             }

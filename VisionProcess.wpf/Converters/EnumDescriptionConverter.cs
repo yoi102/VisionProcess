@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
 using System;
+using System.Reflection;
 
 namespace VisionProcess.wpf.Converters
 {
@@ -22,16 +23,14 @@ namespace VisionProcess.wpf.Converters
             return string.Empty;
         }
 
-        private string GetEnumDescription(object enumObject)
+        private static string GetEnumDescription(object enumObject)
         {
-            var fieldInfo = enumObject.GetType().GetField(enumObject.ToString());
-
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])fieldInfo!.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-            if (attributes != null && attributes.Length > 0)
-                return attributes[0].Description;
-            else
-                return enumObject.ToString();
+            string name = enumObject.ToString() ?? string.Empty;
+            return enumObject.GetType()
+                       .GetField(name)?
+                       .GetCustomAttribute<DescriptionAttribute>()?
+                       .Description
+                   ?? name;
         }
     }
 }

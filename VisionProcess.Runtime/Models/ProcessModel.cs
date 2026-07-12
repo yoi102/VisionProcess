@@ -19,17 +19,17 @@ namespace VisionProcess.Runtime.Models
 
         private void Init()
         {
-            Connections.WhenAdded(async c =>
+            Connections.WhenAdded(c =>
             {
-                c.Input!.IsConnected = true;
-                c.Output!.IsConnected = true;
+                if (c.Input is null || c.Output is null)
+                {
+                    return;
+                }
+
+                c.Input.IsConnected = true;
+                c.Input.IsAssigned = false;
+                c.Output.IsConnected = true;
                 //当连接时反射设值。。。
-                var outputOperationMode = operations.First(x => x.Id == c.Output.OwnerId);
-                var inputOperationMode = operations.First(x => x.Id == c.Input.OwnerId);
-                var outputValue = PropertyReflectionHelper.GetValue(outputOperationMode.Operator!, c.Output.ValuePath);
-                PropertyReflectionHelper.TrySetValue(inputOperationMode.Operator!, c.Input.ValuePath, outputValue);
-                await inputOperationMode.Operator!.ExecuteAsync();
-                c.Output.ValueObservers.Add(c.Input);
             })
             .WhenRemoved(c =>
             {
@@ -43,7 +43,6 @@ namespace VisionProcess.Runtime.Models
                 {
                     c.Output!.IsConnected = false;
                 }
-                c.Output!.ValueObservers.Remove(c.Input!);
             });
 
             Operations.WhenAdded(x =>
@@ -78,15 +77,26 @@ namespace VisionProcess.Runtime.Models
             if (sender is not OperationModel operationModel)
                 return;
 
+            _ = PropagateOutputsAsync(operationModel);
+        }
+
+        private async Task PropagateOutputsAsync(OperationModel operationModel)
+        {
             foreach (var output in operationModel.Outputs)
             {
                 if (!output.IsConnected)
                     continue;
                 var outputValue = PropertyReflectionHelper.GetValue(operationModel.Operator!, output.ValuePath);
-                output.ValueObservers.ForEach(async x =>
+                var targets = Connections
+                    .Where(connection => ReferenceEquals(connection.Output, output))
+                    .Select(connection => connection.Input)
+                    .OfType<ConnectorModel>()
+                    .ToArray();
+
+                foreach (var target in targets)
                 {
-                    await x.SetInputValue(outputValue);
-                });
+                    await target.SetInputValue(outputValue);
+                }
             }
         }
 

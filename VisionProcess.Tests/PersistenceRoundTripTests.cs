@@ -43,7 +43,6 @@ namespace VisionProcess.Tests
             var inputConnector = threshold.Inputs.First();
             outputConnector.IsConnected = true;
             inputConnector.IsConnected = true;
-            outputConnector.ValueObservers.Add(inputConnector);
             process.Connections.Add(new ConnectionModel { Input = inputConnector, Output = outputConnector });
 
             process.SelectedOperation = threshold;
@@ -67,8 +66,6 @@ namespace VisionProcess.Tests
             var restoredThreshold = restored.Operations[1];
             Assert.Same(restoredAcquire.Outputs[0], restoredConnection.Output);
             Assert.Same(restoredThreshold.Inputs[0], restoredConnection.Input);
-            Assert.Single(restoredConnection.Output.ValueObservers);
-            Assert.Same(restoredConnection.Input, restoredConnection.Output.ValueObservers[0]);
         }
 
         [Fact]

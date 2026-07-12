@@ -25,29 +25,32 @@ namespace VisionProcess.Tools.Operators
                 message = "Input image can not be null";
                 return false;
             }
-            Outputs.Image ??= new Mat();
+            var output = new Mat();
             switch (Inputs.FilterType)
             {
                 case FilterTypes.NormalizedBox:
-                    Cv2.Blur(Inputs.Image, Outputs.Image, new Size(Inputs.KernelWidth, Inputs.KernelHeight), borderType: Inputs.BorderType);
+                    Cv2.Blur(Inputs.Image, output, new Size(Inputs.KernelWidth, Inputs.KernelHeight), borderType: Inputs.BorderType);
                     break;
 
                 case FilterTypes.Median:
-                    Cv2.MedianBlur(Inputs.Image, Outputs.Image, Inputs.KernelSize);
+                    Cv2.MedianBlur(Inputs.Image, output, Inputs.KernelSize);
                     break;
 
                 case FilterTypes.Gaussian:
-                    Cv2.GaussianBlur(Inputs.Image, Outputs.Image, new Size(Inputs.KernelWidth, Inputs.KernelHeight), Inputs.SigmaX, Inputs.SigmaY, borderType: Inputs.BorderType);
+                    Cv2.GaussianBlur(Inputs.Image, output, new Size(Inputs.KernelWidth, Inputs.KernelHeight), Inputs.SigmaX, Inputs.SigmaY, borderType: Inputs.BorderType);
                     break;
 
                 case FilterTypes.Bilateral:
-                    Cv2.BilateralFilter(Inputs.Image, Outputs.Image, Inputs.Diameter, Inputs.SigmaColor, Inputs.SigmaSpace, borderType: Inputs.BorderType);
+                    Cv2.BilateralFilter(Inputs.Image, output, Inputs.Diameter, Inputs.SigmaColor, Inputs.SigmaSpace, borderType: Inputs.BorderType);
                     break;
 
                 default:
-                    break;
+                    output.Dispose();
+                    message = "Unsupported filter type";
+                    return false;
             }
 
+            Outputs.Image = output;
             Records[0].DisplayImage = Outputs.Image;
             message = Strings.Success;
             return true;

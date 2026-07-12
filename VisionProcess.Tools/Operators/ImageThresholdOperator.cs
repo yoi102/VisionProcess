@@ -25,8 +25,9 @@ namespace VisionProcess.Tools.Operators
                 message = "Input image can not be null";
                 return false;
             }
-            Outputs.Image ??= new Mat();
-            Cv2.Threshold(Inputs.Image, Outputs.Image, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
+            var output = new Mat();
+            Cv2.Threshold(Inputs.Image, output, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
+            Outputs.Image = output;
 
             Records[0].DisplayImage = Outputs.Image;
 

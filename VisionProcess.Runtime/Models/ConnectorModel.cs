@@ -83,8 +83,6 @@ namespace VisionProcess.Runtime.Models
             }
         }
 
-        public List<ConnectorModel> ValueObservers { get; } = new();
-
         public string ValuePath
         {
             get { return valuePath; }
@@ -109,7 +107,6 @@ namespace VisionProcess.Runtime.Models
             if (connectedInputsCount == assignedInputsCount)
             {
                 await owner.Operator.ExecuteAsync();
-                owner.Inputs.ForEach(x => x.IsAssigned = false);
             }
         }
     }

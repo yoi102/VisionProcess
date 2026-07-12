@@ -40,7 +40,16 @@ namespace VisionProcess.Tools.Operators
                 CurrentIndex = 0;
             }
 
-            Outputs.Image = new Mat(ImagePaths[CurrentIndex]);
+            string imagePath = ImagePaths[CurrentIndex];
+            var image = Cv2.ImRead(imagePath, ImreadModes.Color);
+            if (image.Empty())
+            {
+                image.Dispose();
+                message = $"Failed to read image: {imagePath}";
+                return false;
+            }
+
+            Outputs.Image = image;
             Records[^1].DisplayImage = Outputs.Image;
 
             CurrentIndex++;
