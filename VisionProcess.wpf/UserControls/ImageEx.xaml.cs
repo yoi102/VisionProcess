@@ -37,10 +37,6 @@ namespace VisionProcess.wpf.UserControls
 
         private Vec3b[,]? imageData3b;
 
-        private int maxX;
-
-        private int maxY;
-
         private Point middleButtonClickedPosition;
 
         private int mouseDownCount = 0;
@@ -122,8 +118,6 @@ namespace VisionProcess.wpf.UserControls
                 {
                     mat.GetRectangularArray(out Vec3b[,] vec3Ds);
                     imageData3b = vec3Ds;
-                    maxY = imageData3b.GetLength(0);
-                    maxX = imageData3b.GetLength(1);
                     imageData = null;
                     GrayPanel.Visibility = Visibility.Collapsed;
                     RGBPanel.Visibility = Visibility.Visible;
@@ -133,8 +127,6 @@ namespace VisionProcess.wpf.UserControls
                     mat.GetRectangularArray(out byte[,] vecDs);
                     imageData = vecDs;
                     imageData3b = null;
-                    maxY = 0;
-                    maxX = 0;
                     GrayPanel.Visibility = Visibility.Visible;
                     RGBPanel.Visibility = Visibility.Collapsed;
                 }
@@ -172,35 +164,58 @@ namespace VisionProcess.wpf.UserControls
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
-            var cursorPosition = e.GetPosition((IInputElement)e.Source);
+            if (sender is not Image imageControl ||
+                imageControl.ActualWidth <= 0 ||
+                imageControl.ActualHeight <= 0)
+            {
+                return;
+            }
 
-            //获取控件大小
-            Image imageControl = (Image)(IInputElement)e.Source;
+            var cursorPosition = e.GetPosition(imageControl);
+            int pixelWidth;
+            int pixelHeight;
 
-            double xRatio = ImageSource.Width / imageControl.ActualWidth;
-            double yRatio = ImageSource.Height / imageControl.ActualHeight;
+            if (imageData3b is not null)
+            {
+                pixelHeight = imageData3b.GetLength(0);
+                pixelWidth = imageData3b.GetLength(1);
+            }
+            else if (imageData is not null)
+            {
+                pixelHeight = imageData.GetLength(0);
+                pixelWidth = imageData.GetLength(1);
+            }
+            else
+            {
+                return;
+            }
 
-            double x = cursorPosition.X * xRatio;
-            double y = cursorPosition.Y * yRatio;
-            int int_x = (int)x;
-            int int_y = (int)y;
+            // Use the actual array dimensions. ImageSource.Width/Height are DPI-based
+            // device-independent units and can differ from the number of pixels.
+            double x = cursorPosition.X * pixelWidth / imageControl.ActualWidth;
+            double y = cursorPosition.Y * pixelHeight / imageControl.ActualHeight;
+            int int_x = (int)Math.Floor(x);
+            int int_y = (int)Math.Floor(y);
 
             Path_X.Text = x.ToString("0.00");
             Path_Y.Text = y.ToString("0.00");
-            //获取图片像素信息
-            if (imageData3b != null)
+
+            // The right/bottom edge can map exactly to width/height. The unsigned
+            // comparison also rejects negative coordinates produced by transforms.
+            if ((uint)int_x >= (uint)pixelWidth || (uint)int_y >= (uint)pixelHeight)
             {
-                if (y < maxY && x < maxX)
-                {
-                    Path_B.Text = imageData3b[int_y, int_x].Item0.ToString("000");
-                    Path_G.Text = imageData3b[int_y, int_x].Item1.ToString("000");
-                    Path_R.Text = imageData3b[int_y, int_x].Item2.ToString("000");
-                }
+                return;
             }
-            else if (imageData != null)
+
+            if (imageData3b is not null)
             {
-                Path_Gray.Text = imageData[int_y, int_x].ToString("000");
-                Path_Gray.Text = imageData[int_y, int_x].ToString("000");
+                Vec3b pixel = imageData3b[int_y, int_x];
+                Path_B.Text = pixel.Item0.ToString("000");
+                Path_G.Text = pixel.Item1.ToString("000");
+                Path_R.Text = pixel.Item2.ToString("000");
+            }
+            else if (imageData is not null)
+            {
                 Path_Gray.Text = imageData[int_y, int_x].ToString("000");
             }
 
