@@ -118,8 +118,15 @@ namespace VisionProcess.Tests
                 services.AddTransient<ISnackbarService, StubSnackbarService>();
                 services.AddTransient<IWindowDialogService, StubWindowDialogService>();
                 services.AddTransient<IFileDialogService, StubFileDialogService>();
+                services.AddSingleton<IOperatorModule>(sp =>
+                    new BuiltInOperatorModule(sp.GetRequiredService<IFileDialogService>()));
+                services.AddSingleton<IOperatorCatalog>(sp =>
+                    new OperatorCatalog(
+                        sp.GetServices<IOperatorModule>().SelectMany(module => module.Operators)));
                 services.AddTransient<IOperatorFactory, OperatorFactory>();
-                services.AddTransient<IOperatorViewModelFactory>(sp => new OperatorViewModelFactory(sp.GetRequiredService<IFileDialogService>()));
+                services.AddTransient<IOperatorViewModelFactory>(sp =>
+                    new OperatorViewModelFactory(
+                        sp.GetServices<IOperatorModule>().SelectMany(module => module.ViewModels)));
                 services.AddTransient<IToolboxIconsService, StubToolboxIconsService>();
                 services.AddTransient<IFileDocumentService, StubFileDocumentService>();
                 services.AddTransient<FolderExplorerToolboxViewModel>();

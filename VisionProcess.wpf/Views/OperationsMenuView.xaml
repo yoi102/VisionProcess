@@ -44,7 +44,7 @@
                         BorderBrush="Transparent"
                         Command="{Binding DataContext.CreateOperationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         CommandParameter="{Binding}"
-                        Content="{Binding}"
+                        Content="{Binding DisplayName}"
                         Cursor="Hand"
                         Foreground="{DynamicResource ForegroundBrush}">
                         <Button.Style>

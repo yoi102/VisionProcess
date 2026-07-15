@@ -6,7 +6,6 @@ using System.Linq;
 using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Common.Primitives;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Tools.Services;
 using VisionProcess.ViewModel.Tooling;
 
 namespace VisionProcess.ViewModel.ViewModels
@@ -16,9 +15,13 @@ namespace VisionProcess.ViewModel.ViewModels
         private readonly IOperatorFactory _operatorFactory;
         private readonly IOperatorViewModelFactory _viewModelFactory;
 
-        public OperationsMenuViewModel(ProcessModel processModel, IOperatorFactory operatorFactory, IOperatorViewModelFactory viewModelFactory)
+        public OperationsMenuViewModel(
+            ProcessModel processModel,
+            IOperatorCatalog operatorCatalog,
+            IOperatorFactory operatorFactory,
+            IOperatorViewModelFactory viewModelFactory)
         {
-            AvailableOperations = ToolRegistry.ToolTypes.Select(ToolRegistry.GetToolName).ToList();
+            AvailableOperations = operatorCatalog.Operators;
             this.processModel = processModel;
             _operatorFactory = operatorFactory;
             _viewModelFactory = viewModelFactory;
@@ -32,7 +35,7 @@ namespace VisionProcess.ViewModel.ViewModels
 
         private readonly ProcessModel processModel;
 
-        public IEnumerable<string> AvailableOperations { get; }
+        public IReadOnlyList<OperatorDescriptor> AvailableOperations { get; }
 
         public void OpenAt(VpPoint targetLocation)
         {
@@ -47,10 +50,10 @@ namespace VisionProcess.ViewModel.ViewModels
         }
 
         [RelayCommand]
-        private void CreateOperation(string operationName)
+        private void CreateOperation(OperatorDescriptor descriptor)
         {
-            var instance = _operatorFactory.Create(operationName);
-            instance.Name = operationName;
+            var instance = _operatorFactory.Create(descriptor.Id);
+            instance.Name = descriptor.DisplayName;
             var viewModel = _viewModelFactory.Create(instance);
             processModel.Operations.Add(new OperationModel()
             {

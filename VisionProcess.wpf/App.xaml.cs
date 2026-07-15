@@ -155,11 +155,12 @@ namespace VisionProcess.wpf
         private static void SaveDocumentToPath(EditorViewModel document, string filePath)
         {
             var persistence = Current.Services.GetRequiredService<ProcessPersistenceService>();
+            var mapper = Current.Services.GetRequiredService<ProcessMapper>();
             var dto = new EditorDto
             {
                 Id = document.Id,
                 Name = document.Name,
-                Process = ProcessMapper.ToDto(document.Process)
+                Process = mapper.ToDto(document.Process)
             };
             var container = new VersionedContainer
             {
@@ -176,7 +177,8 @@ namespace VisionProcess.wpf
 
         private EditorViewModel CreateEditorFromDto(EditorDto editorDto)
         {
-            var process = editorDto.Process is null ? new ProcessModel() : ProcessMapper.ToModel(editorDto.Process);
+            var mapper = Services.GetRequiredService<ProcessMapper>();
+            var process = editorDto.Process is null ? new ProcessModel() : mapper.ToModel(editorDto.Process);
             var editorFactory = Services.GetRequiredService<IEditorViewModelFactory>();
             var editor = editorFactory.Create(process, editorDto.Id, editorDto.Name);
             editor.Parent = null;
@@ -200,8 +202,16 @@ namespace VisionProcess.wpf
             services.AddTransient<ISnackbarService, SnackbarService>();
             services.AddTransient<IWindowDialogService, WindowDialogService>();
             services.AddTransient<IFileDialogService, FileDialogService>();
+            services.AddSingleton<IOperatorModule>(sp =>
+                new BuiltInOperatorModule(sp.GetRequiredService<IFileDialogService>()));
+            services.AddSingleton<IOperatorCatalog>(sp =>
+                new OperatorCatalog(
+                    sp.GetServices<IOperatorModule>().SelectMany(module => module.Operators)));
+            services.AddSingleton<ProcessMapper>();
             services.AddTransient<IOperatorFactory, OperatorFactory>();
-            services.AddTransient<IOperatorViewModelFactory, OperatorViewModelFactory>();
+            services.AddTransient<IOperatorViewModelFactory>(sp =>
+                new OperatorViewModelFactory(
+                    sp.GetServices<IOperatorModule>().SelectMany(module => module.ViewModels)));
             services.AddTransient<IToolboxIconsService, ToolboxIconsService>();
             services.AddSingleton(serializer);
             services.AddSingleton(persistence);

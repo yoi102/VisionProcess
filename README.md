@@ -1,5 +1,7 @@
 # VisionProcess
 
+模块开发与接入说明：[`docs/module-development.md`](docs/module-development.md)
+
 
 重构中
 

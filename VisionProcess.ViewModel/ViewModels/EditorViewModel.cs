@@ -21,6 +21,7 @@ namespace VisionProcess.ViewModel.ViewModels
             Guid id,
             string? name,
             IWindowDialogService windowDialogService,
+            IOperatorCatalog operatorCatalog,
             IOperatorFactory operatorFactory,
             IOperatorViewModelFactory viewModelFactory)
         {
@@ -28,7 +29,7 @@ namespace VisionProcess.ViewModel.ViewModels
             this.windowDialogService = windowDialogService ?? throw new ArgumentNullException(nameof(windowDialogService));
             Id = id;
             this.name = name;
-            OperationsMenu = new OperationsMenuViewModel(process, operatorFactory, viewModelFactory);
+            OperationsMenu = new OperationsMenuViewModel(process, operatorCatalog, operatorFactory, viewModelFactory);
             AttachViewModels(viewModelFactory);
         }
 

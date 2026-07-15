@@ -5,17 +5,23 @@ using VisionProcess.Common.Helpers;
 using VisionProcess.Common.Primitives;
 using VisionProcess.Persistence.Operators;
 using VisionProcess.Runtime.Models;
-using VisionProcess.Tools.Models;
-using VisionProcess.Tools.Operators;
 
 namespace VisionProcess.Persistence
 {
     /// <summary>
     /// 在运行时模型 <see cref="ProcessModel"/> 与持久化 DTO <see cref="ProcessDto"/> 之间双向映射。
     /// </summary>
-    public static class ProcessMapper
+    public sealed class ProcessMapper
     {
-        public static ProcessDto ToDto(ProcessModel process)
+        private readonly IOperatorCatalog operatorCatalog;
+
+        public ProcessMapper(IOperatorCatalog operatorCatalog)
+        {
+            this.operatorCatalog = operatorCatalog
+                ?? throw new ArgumentNullException(nameof(operatorCatalog));
+        }
+
+        public ProcessDto ToDto(ProcessModel process)
         {
             var dto = new ProcessDto
             {
@@ -27,7 +33,7 @@ namespace VisionProcess.Persistence
             return dto;
         }
 
-        public static ProcessModel ToModel(ProcessDto dto)
+        public ProcessModel ToModel(ProcessDto dto)
         {
             var process = new ProcessModel();
 
@@ -75,14 +81,15 @@ namespace VisionProcess.Persistence
             return process;
         }
 
-        private static OperationDto ToDto(OperationModel operation)
+        private OperationDto ToDto(OperationModel operation)
         {
             OperationDto dto = operation is OperationGroupModel group
                 ? new OperationGroupDto { GroupSize = ToDto(group.GroupSize) }
                 : new OperationDto();
 
             dto.Id = operation.Id;
-            dto.Operator = operation.Operator is null ? null : ToDto(operation.Operator);
+            dto.Operator = null;
+            dto.OperatorState = operation.Operator is null ? null : ToStateDto(operation.Operator);
             dto.Inputs = operation.Inputs.Select(ToDto).ToList();
             dto.Outputs = operation.Outputs.Select(ToDto).ToList();
             dto.Location = ToDto(operation.Location);
@@ -92,11 +99,14 @@ namespace VisionProcess.Persistence
             return dto;
         }
 
-        private static OperationModel ToModel(OperationDto dto)
+        private OperationModel ToModel(OperationDto dto)
         {
+            var @operator = dto.OperatorState is not null
+                ? ToModel(dto.OperatorState)
+                : dto.Operator is null ? null : ToModel(dto.Operator);
             OperationModel operation = dto is OperationGroupDto groupDto
-                ? new OperationGroupModel(dto.Id) { GroupSize = ToModel(groupDto.GroupSize), Operator = dto.Operator is null ? null : ToModel(dto.Operator) }
-                : new OperationModel(dto.Id) { Operator = dto.Operator is null ? null : ToModel(dto.Operator) };
+                ? new OperationGroupModel(dto.Id) { GroupSize = ToModel(groupDto.GroupSize), Operator = @operator }
+                : new OperationModel(dto.Id) { Operator = @operator };
 
             foreach (var inputDto in dto.Inputs)
             {
@@ -162,137 +172,41 @@ namespace VisionProcess.Persistence
             }
         }
 
-        private static OperatorDto ToDto(IOperator @operator)
+        private OperatorStateDto ToStateDto(IOperator @operator)
         {
-            OperatorDto dto = @operator switch
+            if (!operatorCatalog.TryGet(@operator.GetType(), out var descriptor))
             {
-                AcquireImageOperator op => ToDto(op),
-                ColorConvertOperator op => ToDto(op),
-                ImageFilterOperator op => ToDto(op),
-                ImageThresholdOperator op => ToDto(op),
-                _ => throw new NotSupportedException($"Operator type '{@operator.GetType()}' is not supported for persistence.")
-            };
+                throw new NotSupportedException(
+                    $"Operator type '{@operator.GetType()}' is not registered in the module catalog.");
+            }
 
-            dto.Name = @operator.Name;
-            dto.RunStatus = ToDto(@operator.RunStatus);
-            return dto;
+            return new OperatorStateDto
+            {
+                OperatorId = descriptor.Id,
+                StateVersion = descriptor.StateVersion,
+                Payload = descriptor.SerializeState(@operator),
+                Name = @operator.Name,
+                RunStatus = ToDto(@operator.RunStatus)
+            };
+        }
+
+        private IOperator ToModel(OperatorStateDto dto)
+        {
+            var descriptor = operatorCatalog.Get(dto.OperatorId);
+            var @operator = descriptor.DeserializeState(dto.StateVersion, dto.Payload);
+            RestoreCommonState(@operator, dto.Name, dto.RunStatus);
+            return @operator;
         }
 
         private static IOperator? ToModel(OperatorDto dto)
         {
-            IOperator? @operator = dto switch
-            {
-                AcquireImageOperatorDto acquireDto => ToModel(acquireDto),
-                ColorConvertOperatorDto colorDto => ToModel(colorDto),
-                ImageFilterOperatorDto filterDto => ToModel(filterDto),
-                ImageThresholdOperatorDto thresholdDto => ToModel(thresholdDto),
-                _ => null
-            };
+            var @operator = LegacyOperatorMapper.ToModel(dto);
 
             if (@operator is null)
                 return null;
 
-            @operator.Name = dto.Name;
-            var runStatus = @operator.RunStatus;
-            runStatus.LastTime = dto.RunStatus.LastTime;
-            runStatus.Message = dto.RunStatus.Message;
-            runStatus.ProcessingTime = dto.RunStatus.ProcessingTime;
-            runStatus.Result = dto.RunStatus.Result;
+            RestoreCommonState(@operator, dto.Name, dto.RunStatus);
             return @operator;
-        }
-
-        private static AcquireImageOperatorDto ToDto(AcquireImageOperator @operator)
-        {
-            return new AcquireImageOperatorDto
-            {
-                CurrentIndex = @operator.CurrentIndex,
-                ImagePaths = @operator.ImagePaths ?? new List<string>()
-            };
-        }
-
-        private static AcquireImageOperator ToModel(AcquireImageOperatorDto dto)
-        {
-            return new AcquireImageOperator
-            {
-                CurrentIndex = dto.CurrentIndex,
-                ImagePaths = dto.ImagePaths
-            };
-        }
-
-        private static ColorConvertOperatorDto ToDto(ColorConvertOperator @operator)
-        {
-            return new ColorConvertOperatorDto
-            {
-                ColorConversionCodes = @operator.Inputs.ColorConversionCodes
-            };
-        }
-
-        private static ColorConvertOperator ToModel(ColorConvertOperatorDto dto)
-        {
-            return new ColorConvertOperator
-            {
-                Inputs = { ColorConversionCodes = dto.ColorConversionCodes }
-            };
-        }
-
-        private static ImageFilterOperatorDto ToDto(ImageFilterOperator @operator)
-        {
-            return new ImageFilterOperatorDto
-            {
-                BorderType = @operator.Inputs.BorderType,
-                FilterType = @operator.Inputs.FilterType,
-                KernelHeight = @operator.Inputs.KernelHeight,
-                KernelWidth = @operator.Inputs.KernelWidth,
-                KernelSize = @operator.Inputs.KernelSize,
-                SigmaX = @operator.Inputs.SigmaX,
-                SigmaY = @operator.Inputs.SigmaY,
-                Diameter = @operator.Inputs.Diameter,
-                SigmaColor = @operator.Inputs.SigmaColor,
-                SigmaSpace = @operator.Inputs.SigmaSpace
-            };
-        }
-
-        private static ImageFilterOperator ToModel(ImageFilterOperatorDto dto)
-        {
-            return new ImageFilterOperator
-            {
-                Inputs =
-                {
-                    BorderType = dto.BorderType,
-                    FilterType = dto.FilterType,
-                    KernelHeight = dto.KernelHeight,
-                    KernelWidth = dto.KernelWidth,
-                    KernelSize = dto.KernelSize,
-                    SigmaX = dto.SigmaX,
-                    SigmaY = dto.SigmaY,
-                    Diameter = dto.Diameter,
-                    SigmaColor = dto.SigmaColor,
-                    SigmaSpace = dto.SigmaSpace
-                }
-            };
-        }
-
-        private static ImageThresholdOperatorDto ToDto(ImageThresholdOperator @operator)
-        {
-            return new ImageThresholdOperatorDto
-            {
-                MaximumValue = @operator.Inputs.MaximumValue,
-                ThresholdType = @operator.Inputs.ThresholdType,
-                ThresholdValue = @operator.Inputs.ThresholdValue
-            };
-        }
-
-        private static ImageThresholdOperator ToModel(ImageThresholdOperatorDto dto)
-        {
-            return new ImageThresholdOperator
-            {
-                Inputs =
-                {
-                    MaximumValue = dto.MaximumValue,
-                    ThresholdType = dto.ThresholdType,
-                    ThresholdValue = dto.ThresholdValue
-                }
-            };
         }
 
         private static RunStatusDto ToDto(RunStatus runStatus)
@@ -315,6 +229,19 @@ namespace VisionProcess.Persistence
                 ProcessingTime = dto.ProcessingTime,
                 Result = dto.Result
             };
+        }
+
+        private static void RestoreCommonState(
+            IOperator @operator,
+            string? name,
+            RunStatusDto runStatusDto)
+        {
+            @operator.Name = name;
+            var runStatus = @operator.RunStatus;
+            runStatus.LastTime = runStatusDto.LastTime;
+            runStatus.Message = runStatusDto.Message;
+            runStatus.ProcessingTime = runStatusDto.ProcessingTime;
+            runStatus.Result = runStatusDto.Result;
         }
 
         private static ConnectorDto ToDto(ConnectorModel connector)

@@ -48,8 +48,9 @@ namespace VisionProcess.Tests
             process.SelectedOperation = threshold;
 
             // Act
-            var dto = ProcessMapper.ToDto(process);
-            var restored = ProcessMapper.ToModel(dto);
+            var mapper = CreateMapper();
+            var dto = mapper.ToDto(process);
+            var restored = mapper.ToModel(dto);
 
             // Assert
             Assert.Equal(process.Operations.Count, restored.Operations.Count);
@@ -92,8 +93,9 @@ namespace VisionProcess.Tests
             process.Operations.Add(acquire);
 
             // Act
-            var dto = ProcessMapper.ToDto(process);
-            var restored = ProcessMapper.ToModel(dto);
+            var mapper = CreateMapper();
+            var dto = mapper.ToDto(process);
+            var restored = mapper.ToModel(dto);
 
             // Assert
             var restoredFilter = restored.Operations[0].Operator as ImageFilterOperator;
@@ -124,13 +126,45 @@ namespace VisionProcess.Tests
             process.Operations.Add(color);
 
             // Act
-            var dto = ProcessMapper.ToDto(process);
-            var restored = ProcessMapper.ToModel(dto);
+            var mapper = CreateMapper();
+            var dto = mapper.ToDto(process);
+            var restored = mapper.ToModel(dto);
 
             // Assert
             var restoredColor = restored.Operations[0].Operator as ColorConvertOperator;
             Assert.NotNull(restoredColor);
             Assert.Equal(ColorConvertType.RGB2GRAY, restoredColor.Inputs.ColorConversionCodes);
+        }
+
+        [Fact]
+        public void ProcessMapper_LoadsLegacyV1OperatorPayload()
+        {
+            var dto = new ProcessDto
+            {
+                Operations =
+                [
+                    new OperationDto
+                    {
+                        Id = Guid.NewGuid(),
+                        Operator = new ImageThresholdOperatorDto
+                        {
+                            Name = "Legacy threshold",
+                            ThresholdValue = 100,
+                            MaximumValue = 200,
+                            ThresholdType = ThresholdTypes.BinaryInv
+                        }
+                    }
+                ]
+            };
+
+            var restored = CreateMapper().ToModel(dto);
+
+            var @operator = Assert.IsType<ImageThresholdOperator>(
+                restored.Operations.Single().Operator);
+            Assert.Equal("Legacy threshold", @operator.Name);
+            Assert.Equal(100, @operator.Inputs.ThresholdValue);
+            Assert.Equal(200, @operator.Inputs.MaximumValue);
+            Assert.Equal(ThresholdTypes.BinaryInv, @operator.Inputs.ThresholdType);
         }
 
         [Fact]
@@ -229,14 +263,17 @@ namespace VisionProcess.Tests
             // Arrange
             TestIoc.EnsureConfigured();
             var process = new ProcessModel();
+            var catalog = new OperatorCatalog(BuiltInOperatorDescriptors.All);
             var menu = new OperationsMenuViewModel(
                 process,
-                new OperatorFactory(),
-                new OperatorViewModelFactory(new StubFileDialogService()));
+                catalog,
+                new OperatorFactory(catalog),
+                new OperatorViewModelFactory(
+                    BuiltInOperatorViewModels.Create(new StubFileDialogService())));
             menu.OpenAt(new VpPoint(0, 0));
 
             // Act
-            menu.CreateOperationCommand.Execute(ToolRegistry.GetToolName(typeof(AcquireImageOperator)));
+            menu.CreateOperationCommand.Execute(catalog.Get("AcquireImage"));
 
             // Assert
             Assert.Single(process.Operations);
@@ -282,7 +319,7 @@ namespace VisionProcess.Tests
                 {
                     Id = editor.Id,
                     Name = editor.Name,
-                    Process = ProcessMapper.ToDto(editor.Process)
+                    Process = CreateMapper().ToDto(editor.Process)
                 }).ToList()
             };
         }
@@ -295,7 +332,7 @@ namespace VisionProcess.Tests
 
             foreach (var editorDto in dto.Editors)
             {
-                var process = editorDto.Process is null ? new ProcessModel() : ProcessMapper.ToModel(editorDto.Process);
+                var process = editorDto.Process is null ? new ProcessModel() : CreateMapper().ToModel(editorDto.Process);
                 var editor = CreateEditorFactory().Create(process, editorDto.Id, editorDto.Name);
                 model.Editors.Add(editor);
             }
@@ -312,9 +349,17 @@ namespace VisionProcess.Tests
             IWindowDialogService? windowDialogService = null,
             IOperatorFactory? operatorFactory = null,
             IOperatorViewModelFactory? viewModelFactory = null)
-            => new EditorViewModelFactory(
+        {
+            var catalog = new OperatorCatalog(BuiltInOperatorDescriptors.All);
+            return new EditorViewModelFactory(
                 windowDialogService ?? new StubWindowDialogService(),
-                operatorFactory ?? new OperatorFactory(),
-                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()));
+                catalog,
+                operatorFactory ?? new OperatorFactory(catalog),
+                viewModelFactory ?? new OperatorViewModelFactory(
+                    BuiltInOperatorViewModels.Create(new StubFileDialogService())));
+        }
+
+        private static ProcessMapper CreateMapper()
+            => new(new OperatorCatalog(BuiltInOperatorDescriptors.All));
     }
 }

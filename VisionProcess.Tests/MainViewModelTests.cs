@@ -24,10 +24,13 @@ namespace VisionProcess.Tests
         {
             var folderExplorer = new FolderExplorerToolboxViewModel(new StubFileDocumentService());
             var properties = new PropertiesToolboxViewModel(new StubToolboxIconsService());
+            var catalog = new OperatorCatalog(BuiltInOperatorDescriptors.All);
             var editorFactory = new EditorViewModelFactory(
                 windowDialogService ?? new StubWindowDialogService(),
-                operatorFactory ?? new OperatorFactory(),
-                viewModelFactory ?? new OperatorViewModelFactory(new StubFileDialogService()));
+                catalog,
+                operatorFactory ?? new OperatorFactory(catalog),
+                viewModelFactory ?? new OperatorViewModelFactory(
+                    BuiltInOperatorViewModels.Create(new StubFileDialogService())));
 
             return new MainViewModel(
                 new StubCultureSettingService(),

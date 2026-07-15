@@ -1,8 +1,5 @@
 using System;
-using VisionProcess.Abstractions.Services;
 using VisionProcess.Abstractions.ToolBase;
-using VisionProcess.Tools.Operators;
-using VisionProcess.ViewModel.ViewModels.Tools;
 
 namespace VisionProcess.ViewModel.Tooling
 {
@@ -11,11 +8,12 @@ namespace VisionProcess.ViewModel.Tooling
     /// </summary>
     public sealed class OperatorViewModelFactory : IOperatorViewModelFactory
     {
-        private readonly IFileDialogService? _fileDialogService;
+        private readonly IReadOnlyDictionary<Type, IOperatorViewModelRegistration> registrations;
 
-        public OperatorViewModelFactory(IFileDialogService? fileDialogService = null)
+        public OperatorViewModelFactory(IEnumerable<IOperatorViewModelRegistration> registrations)
         {
-            _fileDialogService = fileDialogService;
+            ArgumentNullException.ThrowIfNull(registrations);
+            this.registrations = registrations.ToDictionary(item => item.OperatorType);
         }
 
         /// <summary>
@@ -23,14 +21,12 @@ namespace VisionProcess.ViewModel.Tooling
         /// </summary>
         public object Create(IOperator @operator)
         {
-            return @operator switch
-            {
-                AcquireImageOperator op => new AcquireImageViewModel(op, _fileDialogService),
-                ColorConvertOperator op => new ColorConvertViewModel(op),
-                ImageFilterOperator op => new ImageFilterViewModel(op),
-                ImageThresholdOperator op => new ImageThresholdViewModel(op),
-                _ => throw new ArgumentException($"Unknown operator type '{@operator.GetType()}'.", nameof(@operator))
-            };
+            ArgumentNullException.ThrowIfNull(@operator);
+            return registrations.TryGetValue(@operator.GetType(), out var registration)
+                ? registration.Create(@operator)
+                : throw new ArgumentException(
+                    $"No ViewModel is registered for operator type '{@operator.GetType()}'.",
+                    nameof(@operator));
         }
     }
 }

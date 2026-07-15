@@ -29,5 +29,8 @@ namespace VisionProcess.Persistence
 
         [Key(8)]
         public List<RecordDto> Records { get; set; } = new List<RecordDto>();
+
+        [Key(9)]
+        public OperatorStateDto? OperatorState { get; set; }
     }
 }
