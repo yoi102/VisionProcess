@@ -216,6 +216,18 @@
   <data name="AddToOutputs" xml:space="preserve">
     <value>添加到输出</value>
   </data>
+  <data name="AddAllInputs" xml:space="preserve">
+    <value>添加全部输入</value>
+  </data>
+  <data name="AddAllOutputs" xml:space="preserve">
+    <value>添加全部输出</value>
+  </data>
+  <data name="AvailableInputs" xml:space="preserve">
+    <value>可用输入</value>
+  </data>
+  <data name="AvailableOutputs" xml:space="preserve">
+    <value>可用输出</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>无</value>
   </data>

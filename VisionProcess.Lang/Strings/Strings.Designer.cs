@@ -86,6 +86,30 @@ namespace VisionProcess.Lang.Strings {
                 return ResourceManager.GetString("AddToOutputs", resourceCulture);
             }
         }
+
+        public static string AddAllInputs {
+            get {
+                return ResourceManager.GetString("AddAllInputs", resourceCulture);
+            }
+        }
+
+        public static string AddAllOutputs {
+            get {
+                return ResourceManager.GetString("AddAllOutputs", resourceCulture);
+            }
+        }
+
+        public static string AvailableInputs {
+            get {
+                return ResourceManager.GetString("AvailableInputs", resourceCulture);
+            }
+        }
+
+        public static string AvailableOutputs {
+            get {
+                return ResourceManager.GetString("AvailableOutputs", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Bilateral 的本地化字符串。

@@ -216,6 +216,18 @@
   <data name="AddToOutputs" xml:space="preserve">
     <value>Add To Outputs</value>
   </data>
+  <data name="AddAllInputs" xml:space="preserve">
+    <value>Add All Inputs</value>
+  </data>
+  <data name="AddAllOutputs" xml:space="preserve">
+    <value>Add All Outputs</value>
+  </data>
+  <data name="AvailableInputs" xml:space="preserve">
+    <value>Available Inputs</value>
+  </data>
+  <data name="AvailableOutputs" xml:space="preserve">
+    <value>Available Outputs</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
   </data>

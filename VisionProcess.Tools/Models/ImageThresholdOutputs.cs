@@ -1,32 +1,36 @@
-using OpenCvSharp;
-using VisionProcess.Abstractions.Attributes;
 using VisionProcess.Abstractions.ToolBase;
 
 namespace VisionProcess.Tools.Models
 {
-    public class ImageThresholdOutputs : OutputsBase
+    public sealed class ImageThresholdOutputs : ImageOutputsBase
     {
-        private Mat? image;
+        private double appliedThreshold;
+        private long nonZeroPixelCount;
 
-        public Mat? Image
+        public double AppliedThreshold
         {
-            get
-            {
-                return image;
-            }
-            internal set
-            {
-                if (image != value)
-                {
-                    image?.Dispose();
-                    image = value;
-                }
-            }
+            get => appliedThreshold;
+            internal set => SetProperty(ref appliedThreshold, value);
         }
 
-        protected override void ConfigureConnectors(ConnectorProviderBuilder builder)
+        public long NonZeroPixelCount
         {
-            builder.Add<Mat?>("Image", "Image", () => Image, null);
+            get => nonZeroPixelCount;
+            internal set => SetProperty(ref nonZeroPixelCount, value);
+        }
+
+        protected override void ConfigureAdditionalConnectors(ConnectorProviderBuilder builder)
+        {
+            builder.Add<double>(
+                "AppliedThreshold",
+                "AppliedThreshold",
+                () => AppliedThreshold,
+                null);
+            builder.Add<long>(
+                "NonZeroPixelCount",
+                "NonZeroPixelCount",
+                () => NonZeroPixelCount,
+                null);
         }
     }
 }

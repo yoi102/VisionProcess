@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenCvSharp;
 using VisionProcess.Abstractions.ToolBase;
 using VisionProcess.Lang.Strings;
@@ -40,7 +41,8 @@ namespace VisionProcess.Tools.Operators
                 CurrentIndex = 0;
             }
 
-            string imagePath = ImagePaths[CurrentIndex];
+            var frameIndex = CurrentIndex;
+            string imagePath = ImagePaths[frameIndex];
             var image = Cv2.ImRead(imagePath, ImreadModes.Color);
             if (image.Empty())
             {
@@ -50,6 +52,10 @@ namespace VisionProcess.Tools.Operators
             }
 
             Outputs.Image = image;
+            Outputs.FilePath = imagePath;
+            Outputs.FileName = Path.GetFileName(imagePath);
+            Outputs.FrameIndex = frameIndex;
+            Outputs.FrameCount = ImagePaths.Count;
             Records[^1].DisplayImage = Outputs.Image;
 
             CurrentIndex++;

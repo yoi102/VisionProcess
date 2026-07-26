@@ -16,13 +16,24 @@
         <cv:EnumDescriptionConverter x:Key="enumDescriptionConverter" />
 
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80*" />
-            <RowDefinition Height="20*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="4,0,0,0"
+                       Text="{I18N {x:Static r:LangKeys.AvailableInputs}}" />
+            <TextBlock Margin="0,0,20,0"
+                       Text="{Binding InputPortItemCount, StringFormat=: {0}}" />
+            <TextBlock Text="{I18N {x:Static r:LangKeys.AvailableOutputs}}" />
+            <TextBlock Text="{Binding OutputPortItemCount, StringFormat=: {0}}" />
+        </StackPanel>
+
         <TreeView x:Name="treeView"
-                  Margin="20"
+                  Grid.Row="1"
+                  Margin="0,12"
                   ItemsSource="{Binding TreeNodes}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
@@ -45,22 +56,32 @@
                                 <TextBlock Text="{Binding Path=Value,StringFormat=Value：{0}}" />
                             </StackPanel>
                         </Grid.ToolTip>
-                        <Label Content="{Binding Path=Path}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontWeight="SemiBold"
+                                       Text="{Binding Path=Path}" />
+                            <TextBlock Margin="10,0,0,0"
+                                       Opacity="0.6"
+                                       Text="{Binding Path=Type.Name, StringFormat=({0})}" />
+                        </StackPanel>
                     </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+        <WrapPanel Grid.Row="2"
+                   HorizontalAlignment="Center">
             <Button Content="{I18N {x:Static r:LangKeys.AddToInputs}}"
-                    Margin="0 0 30 0"
+                    Margin="4"
                     Command="{Binding AddInputCommand}" />
+            <Button Content="{I18N {x:Static r:LangKeys.AddAllInputs}}"
+                    Margin="4"
+                    Command="{Binding AddAllInputsCommand}" />
             <Button Content="{I18N {x:Static r:LangKeys.AddToOutputs}}"
-                    Margin="30 0 0 0"
+                    Margin="20,4,4,4"
                     Command="{Binding AddOutputCommand}" />
-
-        </StackPanel>
+            <Button Content="{I18N {x:Static r:LangKeys.AddAllOutputs}}"
+                    Margin="4"
+                    Command="{Binding AddAllOutputsCommand}" />
+        </WrapPanel>
     </Grid>
 </UserControl>

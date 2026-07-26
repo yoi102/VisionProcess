@@ -58,7 +58,11 @@ namespace VisionProcess.ViewModel.ViewModels
         private readonly OperationModel operationModel;
 
         [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(AddInputCommand), nameof(AddOutputCommand))]
+        [NotifyCanExecuteChangedFor(
+            nameof(AddInputCommand),
+            nameof(AddOutputCommand),
+            nameof(AddAllInputsCommand),
+            nameof(AddAllOutputsCommand))]
         private TreeNode? selectedNode;
 
         [ObservableProperty]
@@ -73,6 +77,10 @@ namespace VisionProcess.ViewModel.ViewModels
                 BuildTree(provider);
             }
         }
+
+        public int InputPortItemCount => GetPortNodes(isInput: true).Count();
+
+        public int OutputPortItemCount => GetPortNodes(isInput: false).Count();
 
         private void BuildTree(IConnectorProvider provider)
         {
@@ -118,39 +126,101 @@ namespace VisionProcess.ViewModel.ViewModels
         [RelayCommand(CanExecute = nameof(CanAddInput))]
         private void AddInput()
         {
-            if (SelectedNode == null) return;
-            operationModel.Inputs.Add(
-                new ConnectorModel(SelectedNode.FullPath.Split('.')[^1], SelectedNode.Type,
-                SelectedNode.FullPath, true, operationModel.Id, operationModel));
-            AddInputCommand.NotifyCanExecuteChanged();
+            if (SelectedNode is null)
+                return;
+
+            AddConnector(SelectedNode, isInput: true);
+            NotifyConnectorCommands();
         }
 
         [RelayCommand(CanExecute = nameof(CanAddOutput))]
         private void AddOutput()
         {
-            if (SelectedNode == null) return;
-            operationModel.Outputs.Add(
-                new ConnectorModel(SelectedNode.FullPath.Split('.')[^1], SelectedNode.Type,
-                SelectedNode.FullPath, false, operationModel.Id, operationModel));
+            if (SelectedNode is null)
+                return;
+
+            AddConnector(SelectedNode, isInput: false);
+            NotifyConnectorCommands();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanAddAllInputs))]
+        private void AddAllInputs()
+        {
+            foreach (var node in GetPortNodes(isInput: true).Where(CanAddInputNode))
+            {
+                AddConnector(node, isInput: true);
+            }
+
+            NotifyConnectorCommands();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanAddAllOutputs))]
+        private void AddAllOutputs()
+        {
+            foreach (var node in GetPortNodes(isInput: false).Where(CanAddOutputNode))
+            {
+                AddConnector(node, isInput: false);
+            }
+
+            NotifyConnectorCommands();
+        }
+
+        private bool CanAddInput() => CanAddInputNode(SelectedNode);
+
+        private bool CanAddOutput() => CanAddOutputNode(SelectedNode);
+
+        private bool CanAddAllInputs()
+            => GetPortNodes(isInput: true).Any(CanAddInputNode);
+
+        private bool CanAddAllOutputs()
+            => GetPortNodes(isInput: false).Any(CanAddOutputNode);
+
+        private bool CanAddInputNode(TreeNode? node)
+        {
+            if (node is null)
+                return false;
+            return operationModel.Inputs.All(x => x.ValuePath != node.FullPath) &&
+                   node.FullPath.StartsWith("Inputs.", StringComparison.OrdinalIgnoreCase) &&
+                   (node.State & ValueStatus.WriteOnly) == ValueStatus.WriteOnly;
+        }
+
+        private bool CanAddOutputNode(TreeNode? node)
+        {
+            if (node is null)
+                return false;
+            return operationModel.Outputs.All(x => x.ValuePath != node.FullPath) &&
+                   node.FullPath.StartsWith("Outputs.", StringComparison.OrdinalIgnoreCase) &&
+                   (node.State & ValueStatus.ReadOnly) == ValueStatus.ReadOnly;
+        }
+
+        private IEnumerable<TreeNode> GetPortNodes(bool isInput)
+        {
+            var prefix = isInput ? "Inputs." : "Outputs.";
+            return TreeNodes
+                .SelectMany(root => root.ChildNodes)
+                .Where(node => node.FullPath.StartsWith(
+                    prefix,
+                    StringComparison.OrdinalIgnoreCase));
+        }
+
+        private void AddConnector(TreeNode node, bool isInput)
+        {
+            var connectors = isInput ? operationModel.Inputs : operationModel.Outputs;
+            connectors.Add(new ConnectorModel(
+                node.Path,
+                node.Type,
+                node.FullPath,
+                isInput,
+                operationModel.Id,
+                operationModel));
+        }
+
+        private void NotifyConnectorCommands()
+        {
+            AddInputCommand.NotifyCanExecuteChanged();
             AddOutputCommand.NotifyCanExecuteChanged();
-        }
-
-        private bool CanAddInput()
-        {
-            if (SelectedNode is null)
-                return false;
-            return operationModel.Inputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
-                   SelectedNode.FullPath.StartsWith("Inputs.", StringComparison.OrdinalIgnoreCase) &&
-                   (SelectedNode.State & ValueStatus.WriteOnly) == ValueStatus.WriteOnly;
-        }
-
-        private bool CanAddOutput()
-        {
-            if (SelectedNode is null)
-                return false;
-            return operationModel.Outputs.FirstOrDefault(x => x.ValuePath == SelectedNode.FullPath) == null &&
-                   SelectedNode.FullPath.StartsWith("Outputs.", StringComparison.OrdinalIgnoreCase) &&
-                   (SelectedNode.State & ValueStatus.ReadOnly) == ValueStatus.ReadOnly;
+            AddAllInputsCommand.NotifyCanExecuteChanged();
+            AddAllOutputsCommand.NotifyCanExecuteChanged();
         }
 
         [RelayCommand]

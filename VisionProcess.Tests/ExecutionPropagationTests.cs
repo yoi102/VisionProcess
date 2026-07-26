@@ -103,10 +103,19 @@ public sealed class ExecutionPropagationTests
         await ExecuteAndWaitAsync(sourceOperator, targetOperator);
         Assert.True(targetOperator.RunStatus.Result, targetOperator.RunStatus.Exception?.ToString() ?? targetOperator.RunStatus.Message);
         var firstOutput = targetOperator.Outputs.Image;
+        Assert.Equal(0, sourceOperator.Outputs.FrameIndex);
+        Assert.Equal(2, sourceOperator.Outputs.FrameCount);
+        Assert.Equal("0.png", sourceOperator.Outputs.FileName);
+        Assert.True(sourceOperator.Outputs.Width > 0);
+        Assert.True(sourceOperator.Outputs.Height > 0);
+        Assert.True(sourceOperator.Outputs.Channels > 0);
+        Assert.True(sourceOperator.Outputs.HasImage);
 
         await ExecuteAndWaitAsync(sourceOperator, targetOperator);
         Assert.True(targetOperator.RunStatus.Result, targetOperator.RunStatus.Exception?.ToString() ?? targetOperator.RunStatus.Message);
         var secondOutput = targetOperator.Outputs.Image;
+        Assert.Equal(1, sourceOperator.Outputs.FrameIndex);
+        Assert.Equal("1.png", sourceOperator.Outputs.FileName);
 
         Assert.NotNull(firstOutput);
         Assert.NotNull(secondOutput);

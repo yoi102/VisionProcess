@@ -216,6 +216,18 @@
   <data name="AddToOutputs" xml:space="preserve">
     <value>出力に加え</value>
   </data>
+  <data name="AddAllInputs" xml:space="preserve">
+    <value>すべての入力を追加</value>
+  </data>
+  <data name="AddAllOutputs" xml:space="preserve">
+    <value>すべての出力を追加</value>
+  </data>
+  <data name="AvailableInputs" xml:space="preserve">
+    <value>利用可能な入力</value>
+  </data>
+  <data name="AvailableOutputs" xml:space="preserve">
+    <value>利用可能な出力</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>なし</value>
   </data>

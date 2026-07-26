@@ -26,7 +26,15 @@ namespace VisionProcess.Tools.Operators
                 return false;
             }
             var output = new Mat();
-            Cv2.Threshold(Inputs.Image, output, Inputs.ThresholdValue, Inputs.MaximumValue, Inputs.ThresholdType);
+            Outputs.AppliedThreshold = Cv2.Threshold(
+                Inputs.Image,
+                output,
+                Inputs.ThresholdValue,
+                Inputs.MaximumValue,
+                Inputs.ThresholdType);
+            Outputs.NonZeroPixelCount = output.Channels() == 1
+                ? Cv2.CountNonZero(output)
+                : 0;
             Outputs.Image = output;
 
             Records[0].DisplayImage = Outputs.Image;
